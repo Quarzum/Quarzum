@@ -12,12 +12,14 @@ using namespace std;
     Including utility-type headers
 
 */
-#include "lib/configfile.hpp"
+
 #include "lib/errorcodes.h"
 #include "lib/error.hpp"
 #include "lib/tokentype.h"
 #include "lib/tokenlist.hpp"
 #include "lib/utilities.hpp"
+#include "lib/config.h"
+#include "lib/configfile.hpp"
 /*
 
     Including compiler core headers

@@ -1,4 +1,11 @@
 #pragma once
+
+void applyConfig(const string path)
+{
+    /* Applies a config rule */
+    AUTO_RESIZE = true;
+}
+
 void chechForConfigFile(string path)
 {
     /* Determines the location where the config file should be */
@@ -7,10 +14,10 @@ void chechForConfigFile(string path)
     path = path.substr(path.find_last_of("/") + 1);
     path = path.substr(0, path.size() - 3);
     ifstream input(location + path + ".config.qz");
-    cout << location + path + ".config.qz" << endl;
+
     if (input.good())
     {
         /* If it exists, execute instructions */
-        cout << "Config file detected" << endl;
+        applyConfig(getSource(location + path + ".config.qz"));
     }
 }
