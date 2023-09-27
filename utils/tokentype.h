@@ -51,6 +51,7 @@ enum TokenType
     X32,
     X64,
     THIS,
+    STATIC,
     // Others
     IDENTIFIER
 };
