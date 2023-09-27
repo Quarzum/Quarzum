@@ -1,3 +1,4 @@
+// Void function to compile source code into asm
 void compile(string source)
 {
     Lexer lexer = Lexer(source);
