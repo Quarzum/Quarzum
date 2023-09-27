@@ -158,3 +158,7 @@ void validateFormat(char *argv[])
         throwError(INVALID_FORMAT);
     }
 }
+bool isKeyword(string src)
+{
+    return keywords.count(src);
+}

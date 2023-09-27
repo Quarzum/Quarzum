@@ -3,7 +3,10 @@ void compile(string source)
 {
     Lexer lexer = Lexer(source);
     TokenList tokens = lexer.tokenize();
-    debug(tokens.getItems());
+    if (SHOW_COMPILER_DEBUG)
+    {
+        debug(tokens.getItems());
+    }
 
     Parser parser = Parser(tokens);
     Root root = parser.parse();

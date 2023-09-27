@@ -1,4 +1,3 @@
-#pragma once
 class Lexer
 {
 public:
@@ -17,7 +16,7 @@ public:
             else if (c == '"')
             {
                 buffer += c;
-                if (buffer[0] == '"' && buffer.length() > 1)
+                if (isException() && buffer.length() > 1)
                 {
                     addToken(STRING_LITERAL, buffer);
                 }
@@ -27,24 +26,14 @@ public:
                 buffer += c;
                 if (!isException() && !isEOF() && !isalnum(next()))
                 {
-                    if (buffer == "exit")
+                    if (isKeyword(buffer))
                     {
-                        addToken(EXIT, "exit");
-                    }
-                    else if (buffer == "int")
-                    {
-                        addToken(INT_KEYWORD, "int");
-                    }
-                    else if (buffer == "import")
-                    {
-                        addToken(IMPORT, "import");
-                    }
-                    else if (buffer == "from")
-                    {
-                        addToken(FROM, "from");
+                        /* If the buffer is a keyword, store the correspondant token */
+                        addToken(TokenType(keywords.at(buffer)), buffer);
                     }
                     else
                     {
+                        /* If it isn't, then it is an IDENTIFIER */
                         addToken(IDENTIFIER, buffer);
                     }
                 }
@@ -84,16 +73,15 @@ public:
     }
 
 private:
-    string m_src;
+    string m_src, buffer;
     TokenList tokens;
     unsigned int size, line, i = 0;
-    string buffer;
+    char c;
     bool isEOF()
     {
         /* Returns true if m_src[i] is the final character */
         return i + 1 > size;
     };
-    char c;
     char next(short unsigned int distance = 1)
     {
         /* Returns the next character if it exists*/
@@ -111,6 +99,7 @@ private:
     }
     bool isException()
     {
+        /* Returns if the begin of the buffer is a quote */
         return buffer[0] == '"';
     }
 };

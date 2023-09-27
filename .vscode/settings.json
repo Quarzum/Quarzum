@@ -7,6 +7,7 @@
         "string": "cpp",
         "array": "cpp",
         "tuple": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "random": "cpp"
     }
 }
