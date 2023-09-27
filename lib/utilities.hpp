@@ -34,6 +34,54 @@ map<string, int> keywords = {
     {"short", 39},
     {"long", 40},
 };
+string tokens[] = {
+    "EXIT",
+    "RETURN",
+    "IMPORT",
+    "FROM",
+    "INT_LITERAL",
+    "INT_KEYWORD",
+    "STRING_LITERAL",
+    "STRING_KEYWORD",
+    "NUMBER_LITERAL",
+    "NUMBER_KEYWORD",
+    "TRUE",
+    "FALSE",
+    "BOOL_KEYWORD",
+    "VAR_KEYWORD",
+    "FUNCTION_KEYWORD",
+    "NULL_KEYWORD",
+    "STRUCT_KEYWORD",
+    "ENUM_KEYWORD",
+    "CLASS_KEYWORD",
+    "PUBLIC_KEYWORD",
+    "PRIVATE_KEYWORD",
+    "MODULE_KEYWORD",
+    "OPERATOR",
+    "AND",
+    "OR",
+    "NOT",
+    "GREATER",
+    "LOWER",
+    "EQUAL",
+    "COMMA",
+    "POINT",
+    "PAR_OPEN",
+    "PAR_CLOSE",
+    "C_BRACKET_OPEN",
+    "C_BRACKET_CLOSE",
+    "S_BRACKET_OPEN",
+    "S_BRACKET_CLOSE",
+    "CONST",
+    "UNSIGNED",
+    "SHORT",
+    "LONG",
+    "X8",
+    "X16",
+    "X32",
+    "X64",
+    "THIS",
+    "IDENTIFIER"};
 int findKeyword(string keyword)
 {
     return keywords.at(keyword);
@@ -98,7 +146,7 @@ void debug(deque<Token> composed)
     /* Shows in console a list of tokens */
     for (unsigned short int i = 0; i < composed.size(); i++)
     {
-        cout << composed.at(i).type << " | " << composed.at(i).value << endl;
+        cout << tokens[composed.at(i).type] << " -> " << composed.at(i).value << endl;
     }
 }
 void validateFormat(char *argv[])

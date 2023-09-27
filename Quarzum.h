@@ -12,7 +12,7 @@ using namespace std;
     Including utility-type headers
 
 */
-
+#include "lib/configfile.hpp"
 #include "lib/errorcodes.h"
 #include "lib/error.hpp"
 #include "lib/tokentype.h"
