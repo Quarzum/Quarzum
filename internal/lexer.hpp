@@ -24,7 +24,7 @@ public:
             else if (isalpha(c))
             {
                 buffer += c;
-                if (!isException() && !isEOF() && !isalnum(next()))
+                if (!isException() && !isalnum(next()))
                 {
                     if (isKeyword(buffer))
                     {
@@ -41,7 +41,7 @@ public:
             else if (isdigit(c))
             {
                 buffer += c;
-                if (!isException() && !isEOF() && !isdigit(next()))
+                if (!isException() && !isdigit(next()))
                 {
                     addToken(INT_LITERAL, buffer);
                 }

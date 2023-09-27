@@ -17,6 +17,7 @@ using namespace std;
 #include "utils/error.hpp"
 #include "utils/tokentype.h"
 #include "utils/tokenlist.hpp"
+#include "utils/nodes.h"
 #include "utils/utilities.hpp"
 #include "utils/config.h"
 #include "utils/configfile.hpp"
