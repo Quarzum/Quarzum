@@ -81,6 +81,7 @@ string tokens[] = {
     "X32",
     "X64",
     "THIS",
+    "STATIC",
     "IDENTIFIER"};
 int findKeyword(string keyword)
 {

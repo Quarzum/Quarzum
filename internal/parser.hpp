@@ -8,6 +8,12 @@ public:
     {
         if (next(distance).type == INT_LITERAL)
         {
+            if (isOperator(next(distance + 1).value[0]) && next(distance + 2).type == INT_LITERAL)
+            {
+                string res;
+                res += stoi(next(distance).value) + stoi(next(distance + 2).value);
+                return Expr{INT_LITERAL, res};
+            }
             return Expr{next()};
         }
         return {};

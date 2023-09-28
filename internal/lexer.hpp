@@ -59,7 +59,8 @@ public:
                 }
                 else if (isOperator(c))
                 {
-                    string s(c, 1);
+                    string s;
+                    s = c;
                     addToken(OPERATOR, s);
                 }
             }
