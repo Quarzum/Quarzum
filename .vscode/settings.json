@@ -9,6 +9,7 @@
         "tuple": "cpp",
         "utility": "cpp",
         "random": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "optional": "cpp"
     }
 }

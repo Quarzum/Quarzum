@@ -9,6 +9,10 @@ bool isSizeModifier(string value)
 {
     return (value == "x8" || value == "x16" || value == "x32" || value == "x64");
 };
+bool isLiteral(TokenType type)
+{
+    return (type == INT_LITERAL || type == NUMBER_LITERAL || type == STRING_LITERAL);
+}
 map<string, int> keywords = {
     {"exit", 0},
     {"return", 1},

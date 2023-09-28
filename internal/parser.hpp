@@ -4,18 +4,20 @@ class Parser
 public:
     Parser(TokenList tokens) : m_tokens(move(tokens)) {}
 
-    experimental::optional<Expr> parse_expr(unsigned short int distance = 1)
+    /* Expr parsing procedure */
+    experimental::optional<Expr> parse_expr(unsigned short int d = 1)
     {
-        if (next(distance).type == INT_LITERAL)
+        if (isLiteral(next(d).type))
         {
+            TokenType t = next(d).type;
             /* Check if is not a single literal, but a 2 literal operation */
-            if (isOperator(next(distance + 1).value[0]))
+            if (isOperator(next(d + 1).value[0]))
             {
-                Token arg1 = next(distance);
-                char op = next(distance + 1).value[0];
-                if (next(distance + 2).type == INT_LITERAL)
+                Token arg1 = next(d);
+                char op = next(d + 1).value[0];
+                if (next(d + 2).type == t)
                 {
-                    Token arg2 = next(distance + 2);
+                    Token arg2 = next(d + 2);
                     /* Check if there is not a division by 0 */
                     if (op != '/' && arg2.value != "0")
                     {
@@ -24,7 +26,7 @@ public:
                         ss >> res;
                         string s;
                         s += res;
-                        return Expr{INT_LITERAL, s};
+                        return Expr{t, s};
                     }
                     throwError(DIVIDE_BY_ZERO);
                 }
