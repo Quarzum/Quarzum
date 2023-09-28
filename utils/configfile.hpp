@@ -2,7 +2,7 @@
 
 void applyConfig(const string path)
 {
-    /* Applies a config rule */
+    /* TODO: Applies a config rule */
     AUTO_RESIZE = true;
 }
 

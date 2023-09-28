@@ -1,6 +1,3 @@
-#pragma once
-using namespace std;
-
 bool isOperator(char value)
 {
     return (value == '+' || value == '-' || value == '*' || value == '/' || value == '%' || value == '^');
