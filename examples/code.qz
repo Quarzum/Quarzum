@@ -1,1 +1,1 @@
-int i = "hola" + "mundo"
+int i = 1 + 34
