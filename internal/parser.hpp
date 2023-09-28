@@ -8,11 +8,27 @@ public:
     {
         if (next(distance).type == INT_LITERAL)
         {
-            if (isOperator(next(distance + 1).value[0]) && next(distance + 2).type == INT_LITERAL)
+            /* Check if is not a single literal, but a 2 literal operation */
+            if (isOperator(next(distance + 1).value[0]))
             {
-                string res;
-                res += stoi(next(distance).value) + stoi(next(distance + 2).value);
-                return Expr{INT_LITERAL, res};
+                Token arg1 = next(distance);
+                char op = next(distance + 1).value[0];
+                if (next(distance + 2).type == INT_LITERAL)
+                {
+                    Token arg2 = next(distance + 2);
+                    /* Check if there is not a division by 0 */
+                    if (op != '/' && arg2.value != "0")
+                    {
+                        istringstream ss(arg1.value + op + arg2.value);
+                        int res;
+                        ss >> res;
+                        string s;
+                        s += res;
+                        return Expr{INT_LITERAL, s};
+                    }
+                    throwError(DIVIDE_BY_ZERO);
+                }
+                throwError(EXPECTED_LITERAL);
             }
             return Expr{next()};
         }

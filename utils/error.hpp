@@ -3,7 +3,10 @@ std::string errors[] = {
     "Format not supported",
     "Unexpected token",
     "Syntax error",
-    "Expected expression"};
+    "Expected expression",
+    "Out of range",
+    "Divide by zero",
+    "Expected literal"};
 
 void throwError(int code)
 {
