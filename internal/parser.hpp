@@ -13,21 +13,16 @@ public:
             /* Check if is not a single literal, but a 2 literal operation */
             if (isOperator(next(d + 1).value[0]))
             {
-
                 Token arg1 = next(d);
                 char op = next(d + 1).value[0];
                 Token arg2 = next(d + 2);
-
                 /* Check if the types match */
                 if (arg2.type == t)
                 {
                     /* Check if there is not a division by 0 */
                     if (op != '/' && arg2.value != "0")
                     {
-                        istringstream ss(arg1.value + op + arg2.value);
-                        int res;
-                        ss >> res;
-                        auto s = to_string(res);
+                        string s = arg1.value + " " + op + " " + arg2.value;
                         /* Return an expr with the new value */
                         return Expr{t, s};
                     }
@@ -70,6 +65,7 @@ public:
                         if (auto expr = parse_expr(3))
                         {
                             // Push-back an int assign with value
+                            cout << "Expression parsed successfully, value: " << expr.value().literal.value << endl;
                             break;
                         }
                         throwError(EXPECTED_EXPR);

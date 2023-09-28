@@ -10,6 +10,7 @@
         "utility": "cpp",
         "random": "cpp",
         "iterator": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "iostream": "cpp"
     }
 }
