@@ -47,14 +47,14 @@ public:
             case IMPORT:
                 if (next().type == IDENTIFIER && next(2).type == FROM && next(3).type == STRING_LITERAL)
                 {
-                    tree.imports.push_back({next(), next(3).value});
+                    addImport({next(), next(3).value});
                 }
                 break;
             case EXIT:
                 if (auto expr = parse_expr())
                 {
                     debug("EXIT -> code: " + expr.value().literal.value);
-                    tree.childs.push_back(Exit{expr.value()});
+                    addStatement({expr.value()});
                     break;
                 }
                 throwError(SYNTAX_ERROR);
@@ -105,5 +105,13 @@ private:
         {
             cout << input << endl;
         }
+    }
+    void addStatement(Exit stat)
+    {
+        tree.childs.push_back(stat);
+    }
+    void addImport(Import imp)
+    {
+        tree.imports.push_back(imp);
     }
 };
