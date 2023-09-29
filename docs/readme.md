@@ -1,6 +1,6 @@
 # Quarzum docs
 
-This document contain everything you need to know about the Quarzum programming language. If you want to learn more about programming in Quarzum, or you want to help the Quarzum developement, keep reading:
+This document contain everything you need to know about the Quarzum programming language. If you want to learn more about programming in Quarzum, or you want to help the Quarzum developement, keep reading. To know the basics of what is Quarzum see the [get started file](./get-started.md).
 
 ## Design
 
