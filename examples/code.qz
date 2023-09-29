@@ -1,1 +1,3 @@
 int i = 1 + 3
+int j
+exit 8

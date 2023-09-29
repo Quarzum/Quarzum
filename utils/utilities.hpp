@@ -104,13 +104,15 @@ string getSource(const string path)
     }
     return source;
 }
-void debug(deque<Token> composed)
+void debugTokens(deque<Token> composed)
 {
+    cout << "\nTokens\n-----------\n";
     /* Shows in console a list of tokens */
     for (unsigned short int i = 0; i < composed.size(); i++)
     {
         cout << tokens[composed.at(i).type] << " -> " << composed.at(i).value << endl;
     }
+    cout << "\n\n\n";
 }
 void validateFormat(char *argv[])
 {

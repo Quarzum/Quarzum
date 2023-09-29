@@ -1,3 +1,5 @@
+#pragma once
+using namespace std;
 class Parser
 {
 public:
@@ -51,6 +53,7 @@ public:
             case EXIT:
                 if (auto expr = parse_expr())
                 {
+                    debug("EXIT -> code: " + expr.value().literal.value);
                     tree.childs.push_back(Exit{expr.value()});
                     break;
                 }
@@ -64,7 +67,7 @@ public:
                         if (auto expr = parse_expr(3))
                         {
                             // Push-back an int assign with value
-                            cout << "Expression parsed successfully, value: " << expr.value().literal.value << endl;
+                            debug("INT_INIT -> id: " + next().value + ", value: " + expr.value().literal.value);
                             break;
                         }
                         throwError(EXPECTED_EXPR);
@@ -72,6 +75,8 @@ public:
                     else
                     {
                         // Push-back an int assign without value
+                        debug("INT_INIT -> id: " + next().value + ", value: null");
+                        break;
                     }
                     break;
                 }
@@ -93,5 +98,12 @@ private:
     Token next(short unsigned int distance = 1)
     {
         return m_tokens.get(i + distance);
+    }
+    void debug(string input)
+    {
+        if (SHOW_COMPILER_DEBUG)
+        {
+            cout << input << endl;
+        }
     }
 };
