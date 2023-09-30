@@ -50,10 +50,14 @@ enum TokenType
     X16,
     X32,
     X64,
+    X128,
     THIS,
     STATIC,
     // Others
-    IDENTIFIER
+    IDENTIFIER,
+    OUT,
+    INPUT,
+    TYPEOF
 };
 struct Token
 {

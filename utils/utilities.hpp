@@ -30,11 +30,34 @@ map<string, int> keywords = {
     {"public", 19},
     {"private", 20},
     {"module", 21},
+    {"and", 23},
+    {"or", 24},
+    {"not", 25},
     {"const", 37},
     {"unsigned", 38},
     {"short", 39},
     {"long", 40},
+    {"this", 46},
+    {"static", 47},
+    {"out", 49},
+    {"input", 50},
+    {"typeOf", 51},
 };
+map<char, int> symbols = {
+    {'&', 23},
+    {'|', 24},
+    {'!', 25},
+    {'>', 26},
+    {'<', 27},
+    {'=', 28},
+    {',', 29},
+    {'.', 30},
+    {'(', 31},
+    {')', 32},
+    {'{', 33},
+    {'}', 34},
+    {'[', 35},
+    {']', 36}};
 string tokens[] = {
     "EXIT",
     "RETURN",
@@ -81,9 +104,14 @@ string tokens[] = {
     "X16",
     "X32",
     "X64",
+    "X128",
     "THIS",
     "STATIC",
-    "IDENTIFIER"};
+    "IDENTIFIER",
+    "OUT",
+    "INPUT",
+    "TYPEOF"};
+
 int findKeyword(string keyword)
 {
     return keywords.at(keyword);
@@ -126,4 +154,8 @@ void validateFormat(char *argv[])
 bool isKeyword(string src)
 {
     return keywords.count(src);
+}
+bool isSymbol(char src)
+{
+    return symbols.count(src);
 }

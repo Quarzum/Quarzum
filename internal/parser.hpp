@@ -36,6 +36,11 @@ public:
         return {};
     }
 
+    /* String parsing procedure */
+    experimental::optional<string> parse_string(unsigned short int d = 1)
+    {
+    }
+
     Root parse()
     {
         /* Converts tokens into an AST */

@@ -63,6 +63,12 @@ public:
                     s = c;
                     addToken(OPERATOR, s);
                 }
+                else if (isSymbol(c))
+                {
+                    string s;
+                    s = c;
+                    addToken(TokenType(symbols.at(c)), s);
+                }
             }
             else if (!isException() && !isspace(c))
             {
