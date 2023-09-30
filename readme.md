@@ -1,9 +1,15 @@
 # Quarzum
-<img src="./logo.png" width="250"/>
+<table>
+   <tr>
+      <th><img src="./quarzum.svg" width="800"/></th>
+      <th>Welcome to Quarzum, a compiled, statically typed, strong-typed programming language that redefines the standard for creating desktop applications and video games. Designed to provide an exceptional programming experience, Quarzum stands as the cutting-edge choice for both new programmers seeking comfort and experienced ones demanding high performance.</th>
+   </tr>
+</table>
+
 
 ## NOTE: This project is currently in developement, all this information is provisional and may change in the future
 
-Welcome to Quarzum, a compiled, statically typed, strong-typed programming language that redefines the standard for creating desktop applications and video games. Designed to provide an exceptional programming experience, Quarzum stands as the cutting-edge choice for both new programmers seeking comfort and experienced ones demanding high performance.
+
 
 ## Why Quarzum?
 

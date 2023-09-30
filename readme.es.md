@@ -1,9 +1,12 @@
 # Quarzum
-<img src="./logo.png" width="250"/>
+<table>
+   <tr>
+      <th><img src="./quarzum.svg" width="800"/></th>
+      <th>Bienvenido a Quarzum, un lenguaje de programación compilado de tipado fuerte y estático que redefine el estándar para la creación de aplicaciones de escritorio y videojuegos. Diseñado para proporcionar una experiencia de programación excepcional, Quarzum se erige como la elección vanguardista tanto para nuevos programadores en busca de comodidad como para los más experimentados que demandan alto rendimiento.</th>
+   </tr>
+</table>
 
 ## NOTA: Este proyecto está en desarrollo, y puede que esta información cambie en el futuro
-
-Bienvenido a Quarzum, un lenguaje de programación compilado de tipado fuerte y estático que redefine el estándar para la creación de aplicaciones de escritorio y videojuegos. Diseñado para proporcionar una experiencia de programación excepcional, Quarzum se erige como la elección vanguardista tanto para nuevos programadores en busca de comodidad como para los más experimentados que demandan alto rendimiento.
 
 ## ¿Por qué Quarzum?
 
