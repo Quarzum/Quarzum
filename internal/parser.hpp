@@ -19,7 +19,7 @@ public:
                 char op = next(d + 1).value[0];
                 Token arg2 = next(d + 2);
                 /* Check if the types match */
-                if (arg2.type == t)
+                if (arg2.type == t || arg2.type == IDENTIFIER)
                 {
                     /* Check if there is not a division by 0 */
                     if (op != '/' && arg2.value != "0")
@@ -53,7 +53,7 @@ public:
             switch (t.type)
             {
             case IMPORT:
-                if (next().type == IDENTIFIER && next(2).type == FROM && next(3).type == STRING_LITERAL)
+                if (followSyntax({IDENTIFIER, FROM, STRING_LITERAL}))
                 {
                     addImport({next(), next(3).value});
                 }
@@ -67,28 +67,39 @@ public:
                     break;
                 }
                 throwError(EXPECTED_EXPR);
-                break;
             case INT_KEYWORD:
-                if (next().type == IDENTIFIER)
+                if (followSyntax({IDENTIFIER, EQUAL}))
                 {
-                    if (next(2).type == EQUAL)
+                    if (auto expr = parse_expr(3))
                     {
-                        if (auto expr = parse_expr(3))
-                        {
-                            // Push-back an int assign with value
-                            debug("INT_INIT -> id: " + next().value + ", value: " + expr.value().literal.value);
-                            addStatement(Assign{INT_LITERAL, next(), expr.value()}, 4);
-                            break;
-                        }
-                        throwError(EXPECTED_EXPR);
+                        // Push-back an int assign with value
+                        debug("INT_INIT -> id: " + next().value + ", value: " + expr.value().literal.value);
+                        addStatement(Assign{INT_LITERAL, next(), expr.value()}, 4);
+                        break;
                     }
+                    throwError(EXPECTED_EXPR);
+                }
+                else if (followSyntax({IDENTIFIER}))
+                {
                     // Push-back an int assign without value
                     debug("INT_INIT -> id: " + next().value + ", value: null");
                     addStatement(Assign{INT_LITERAL, next(), {NULL_KEYWORD, "null"}}, 2);
                     break;
                 }
                 throwError(SYNTAX_ERROR);
-                break;
+            case IDENTIFIER:
+                if (followSyntax({EQUAL}))
+                {
+                    if (auto expr = parse_expr(2))
+                    {
+                        // Push-back an int assign with value
+                        debug("REASSIGN -> id: " + next(0).value + ", new value: " + expr.value().literal.value);
+                        addStatement(ReAssign{next(), expr.value()}, 3);
+                        break;
+                    }
+                    throwError(EXPECTED_EXPR);
+                }
+                throwError(SYNTAX_ERROR);
             default:
                 i++;
                 break;
@@ -121,5 +132,18 @@ private:
     void addImport(Import imp)
     {
         tree.imports.push_back(imp);
+    }
+    bool followSyntax(deque<TokenType> syntax)
+    {
+        /* Comproves that a sentence follows a defined syntax step by step */
+        bool result = true;
+        for (int n = 0; n < syntax.size(); n++)
+        {
+            if (next(1 + n).type != syntax.at(n))
+            {
+                result = false;
+            }
+        }
+        return result;
     }
 };

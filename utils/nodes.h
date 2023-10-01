@@ -44,6 +44,7 @@ struct Import
     string path;
 };
 
+// root -> {import, import,...},{child, child, child,...}
 struct Root
 {
     deque<any> childs;
