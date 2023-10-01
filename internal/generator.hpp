@@ -1,7 +1,7 @@
 class Generator
 {
 public:
-    Generator(Exit stat) : m_stat(move(stat)) {}
+    Generator(Root stat) : m_stat(move(stat)) {}
     string generate()
     {
         /* Generates assembly code from the values of the AST */
@@ -25,5 +25,5 @@ public:
     }
 
 private:
-    Exit m_stat;
+    Root m_stat;
 };

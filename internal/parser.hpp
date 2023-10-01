@@ -67,6 +67,15 @@ public:
                     break;
                 }
                 throwError(EXPECTED_EXPR);
+            case RETURN:
+                if (auto expr = parse_expr())
+                {
+                    // Push-back an int assign with value
+                    debug("RETURN -> value: " + expr.value().literal.value);
+                    addStatement(Return{expr.value()}, 2);
+                    break;
+                }
+                throwError(EXPECTED_EXPR);
             case INT_KEYWORD:
                 if (followSyntax({IDENTIFIER, EQUAL}))
                 {

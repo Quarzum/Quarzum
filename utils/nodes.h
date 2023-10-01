@@ -22,6 +22,11 @@ struct Exit
     Expr value;
 };
 
+struct Return
+{
+    Expr value;
+};
+
 // assign -> "static"? "const"? <size_modifier>* <type> <ident> = <expr>
 struct Assign
 {
