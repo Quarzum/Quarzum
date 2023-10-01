@@ -99,6 +99,17 @@ public:
                     }
                     throwError(EXPECTED_EXPR);
                 }
+                else if (followSyntax({OPERATOR, EQUAL}))
+                {
+                    if (auto expr = parse_expr(3))
+                    {
+                        // Push-back an int assign with value
+                        debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + next().value + expr.value().literal.value);
+                        addStatement(ReAssign{next(), expr.value()}, 4);
+                        break;
+                    }
+                    throwError(EXPECTED_EXPR);
+                }
                 throwError(SYNTAX_ERROR);
             default:
                 i++;
