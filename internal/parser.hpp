@@ -6,10 +6,11 @@ public:
     Parser(TokenList tokens) : m_tokens(move(tokens)) {}
 
     /* Expr parsing procedure */
-    experimental::optional<Expr> parse_expr(unsigned short int d = 1)
+    optional<Expr> parse_expr(unsigned short int d = 1)
     {
         if (isLiteral(next(d).type))
         {
+
             TokenType t = next(d).type;
             /* Check if is not a single literal, but a 2 literal operation */
             if (isOperator(next(d + 1).value[0]))
@@ -31,13 +32,13 @@ public:
                 }
                 throwError(EXPECTED_LITERAL);
             }
-            return Expr{next()};
+            return Expr{t, next(d).value};
         }
         return {};
     }
 
     /* String parsing procedure */
-    experimental::optional<string> parse_string(unsigned short int d = 1)
+    optional<string> parse_string(unsigned short int d = 1)
     {
     }
 
@@ -56,13 +57,7 @@ public:
                 }
                 break;
             case EXIT:
-                if (auto expr = parse_expr())
-                {
-                    debug("EXIT -> code: " + expr.value().literal.value);
-                    addStatement({expr.value()});
-                    break;
-                }
-                throwError(SYNTAX_ERROR);
+
                 break;
             case INT_KEYWORD:
                 if (next().type == IDENTIFIER)
@@ -73,6 +68,7 @@ public:
                         {
                             // Push-back an int assign with value
                             debug("INT_INIT -> id: " + next().value + ", value: " + expr.value().literal.value);
+                            tree.childs.push_back(Assign{INT_LITERAL, next(), expr.value()});
                             break;
                         }
                         throwError(EXPECTED_EXPR);
