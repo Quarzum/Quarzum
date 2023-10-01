@@ -44,6 +44,7 @@ public:
 
     Root parse()
     {
+        i = 0;
         /* Converts tokens into an AST */
         while (i < m_tokens.size())
         {
@@ -57,7 +58,14 @@ public:
                 }
                 break;
             case EXIT:
-
+                if (auto expr = parse_expr())
+                {
+                    // Push-back an int assign with value
+                    debug("EXIT -> code: " + expr.value().literal.value);
+                    tree.childs.push_back(Exit{expr.value()});
+                    break;
+                }
+                throwError(EXPECTED_EXPR);
                 break;
             case INT_KEYWORD:
                 if (next().type == IDENTIFIER)
@@ -68,7 +76,9 @@ public:
                         {
                             // Push-back an int assign with value
                             debug("INT_INIT -> id: " + next().value + ", value: " + expr.value().literal.value);
-                            tree.childs.push_back(Assign{INT_LITERAL, next(), expr.value()});
+
+                            addStatement(Assign{INT_LITERAL, next(), expr.value()}, 3);
+
                             break;
                         }
                         throwError(EXPECTED_EXPR);
@@ -94,7 +104,7 @@ public:
 private:
     TokenList m_tokens;
     Token t;
-    unsigned int i = 0;
+    unsigned int i;
     Root tree;
     Token next(short unsigned int distance = 1)
     {
@@ -107,9 +117,10 @@ private:
             cout << input << endl;
         }
     }
-    void addStatement(Exit stat)
+    void addStatement(any stat, short unsigned int size = 1)
     {
         tree.childs.push_back(stat);
+        i += size;
     }
     void addImport(Import imp)
     {

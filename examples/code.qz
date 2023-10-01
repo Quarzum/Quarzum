@@ -1,3 +1,2 @@
 int i = 32
-out(i)
-exit i
+exit 2
