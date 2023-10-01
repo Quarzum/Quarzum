@@ -140,7 +140,7 @@ void debugTokens(deque<Token> composed)
     {
         cout << tokens[composed.at(i).type] << " -> " << composed.at(i).value << endl;
     }
-    cout << "\n\n\n";
+    cout << "\n\n";
 }
 void validateFormat(char *argv[])
 {

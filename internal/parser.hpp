@@ -45,6 +45,7 @@ public:
     Root parse()
     {
         i = 0;
+        debug("Statements\n-------------");
         /* Converts tokens into an AST */
         while (i < m_tokens.size())
         {
@@ -62,7 +63,7 @@ public:
                 {
                     // Push-back an int assign with value
                     debug("EXIT -> code: " + expr.value().literal.value);
-                    tree.childs.push_back(Exit{expr.value()});
+                    addStatement(Exit{expr.value()}, 2);
                     break;
                 }
                 throwError(EXPECTED_EXPR);
@@ -76,27 +77,22 @@ public:
                         {
                             // Push-back an int assign with value
                             debug("INT_INIT -> id: " + next().value + ", value: " + expr.value().literal.value);
-
-                            addStatement(Assign{INT_LITERAL, next(), expr.value()}, 3);
-
+                            addStatement(Assign{INT_LITERAL, next(), expr.value()}, 4);
                             break;
                         }
                         throwError(EXPECTED_EXPR);
                     }
-                    else
-                    {
-                        // Push-back an int assign without value
-                        debug("INT_INIT -> id: " + next().value + ", value: null");
-                        break;
-                    }
+                    // Push-back an int assign without value
+                    debug("INT_INIT -> id: " + next().value + ", value: null");
+                    addStatement(Assign{INT_LITERAL, next(), {NULL_KEYWORD, "null"}}, 2);
                     break;
                 }
                 throwError(SYNTAX_ERROR);
                 break;
             default:
+                i++;
                 break;
             }
-            ++i;
         }
         return tree;
     }
