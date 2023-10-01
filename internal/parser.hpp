@@ -52,13 +52,17 @@ public:
             t = m_tokens.get(i);
             switch (t.type)
             {
+
             case IMPORT:
+
                 if (followSyntax({IDENTIFIER, FROM, STRING_LITERAL}))
                 {
                     addImport({next(), next(3).value});
                 }
                 break;
+
             case EXIT:
+
                 if (auto expr = parse_expr())
                 {
                     // Push-back an int assign with value
@@ -66,8 +70,11 @@ public:
                     addStatement(Exit{expr.value()}, 2);
                     break;
                 }
+
                 throwError(EXPECTED_EXPR);
+
             case RETURN:
+
                 if (auto expr = parse_expr())
                 {
                     // Push-back an int assign with value
@@ -75,51 +82,65 @@ public:
                     addStatement(Return{expr.value()}, 2);
                     break;
                 }
+
                 throwError(EXPECTED_EXPR);
+
             case INT_KEYWORD:
+
                 if (followSyntax({IDENTIFIER, EQUAL}))
                 {
                     if (auto expr = parse_expr(3))
                     {
-                        // Push-back an int assign with value
+                        // Add an int assign with value
                         debug("INT_INIT -> id: " + next().value + ", value: " + expr.value().literal.value);
                         addStatement(Assign{INT_LITERAL, next(), expr.value()}, 4);
                         break;
                     }
+
                     throwError(EXPECTED_EXPR);
                 }
+
                 else if (followSyntax({IDENTIFIER}))
                 {
-                    // Push-back an int assign without value
+                    // Add an int assign without value
                     debug("INT_INIT -> id: " + next().value + ", value: null");
                     addStatement(Assign{INT_LITERAL, next(), {NULL_KEYWORD, "null"}}, 2);
                     break;
                 }
+
                 throwError(SYNTAX_ERROR);
+
             case IDENTIFIER:
+
                 if (followSyntax({EQUAL}))
                 {
                     if (auto expr = parse_expr(2))
                     {
-                        // Push-back an int assign with value
+                        // Add an int assign with value
                         debug("REASSIGN -> id: " + next(0).value + ", new value: " + expr.value().literal.value);
                         addStatement(ReAssign{next(), expr.value()}, 3);
                         break;
                     }
+
                     throwError(EXPECTED_EXPR);
                 }
+
                 else if (followSyntax({OPERATOR, EQUAL}))
                 {
+
                     if (auto expr = parse_expr(3))
                     {
-                        // Push-back an int assign with value
+                        // Add an int assign with value
                         debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + next().value + expr.value().literal.value);
                         addStatement(ReAssign{next(), expr.value()}, 4);
                         break;
                     }
+
                     throwError(EXPECTED_EXPR);
                 }
+
                 throwError(SYNTAX_ERROR);
+
             default:
                 i++;
                 break;
@@ -146,11 +167,13 @@ private:
     }
     void addStatement(any stat, short unsigned int size = 1)
     {
+        /* Adds a new statement and increments i by the number of elements of the stat */
         tree.childs.push_back(stat);
         i += size;
     }
     void addImport(Import imp)
     {
+        /* Adds a new import statement */
         tree.imports.push_back(imp);
     }
     bool followSyntax(deque<TokenType> syntax)
