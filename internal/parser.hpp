@@ -1,5 +1,3 @@
-#pragma once
-using namespace std;
 class Parser
 {
 public:
@@ -58,8 +56,10 @@ public:
                 if (followSyntax({IDENTIFIER, FROM, STRING_LITERAL}))
                 {
                     addImport({next(), next(3).value});
+                    break;
                 }
-                break;
+
+                throwError(SYNTAX_ERROR);
 
             case EXIT:
 

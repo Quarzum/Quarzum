@@ -1,5 +1,3 @@
-#pragma once
-
 void applyConfig(const string path)
 {
     /* TODO: Applies a config rule */
