@@ -3,38 +3,6 @@ class Parser
 public:
     Parser(TokenList tokens) : m_tokens(move(tokens)) {}
 
-    /* Expr parsing procedure */
-    optional<Expr> parse_int_expr(unsigned short int d = 1)
-    {
-        if (isLiteral(next(d).type))
-        {
-
-            TokenType t = next(d).type;
-            /* Check if is not a single literal, but a 2 literal operation */
-            if (isOperator(next(d + 1).value[0]))
-            {
-                Token arg1 = next(d);
-                char op = next(d + 1).value[0];
-                Token arg2 = next(d + 2);
-                /* Check if the types match */
-                if (arg2.type == t || arg2.type == IDENTIFIER)
-                {
-                    /* Check if there is not a division by 0 */
-                    if (op != '/' && arg2.value != "0")
-                    {
-                        string s = arg1.value + " " + op + " " + arg2.value;
-                        /* Return an expr with the new value */
-                        return Expr{t, s};
-                    }
-                    throwError(DIVIDE_BY_ZERO);
-                }
-                throwError(EXPECTED_LITERAL);
-            }
-            return Expr{t, next(d).value};
-        }
-        return {};
-    }
-
     /* String parsing procedure */
     optional<string> parse_string(unsigned short int d = 1)
     {
@@ -50,16 +18,6 @@ public:
             t = m_tokens.get(i);
             switch (t.type)
             {
-
-            case IMPORT:
-
-                if (followSyntax({IDENTIFIER, FROM, STRING_LITERAL}))
-                {
-                    addImport({next(), next(3).value});
-                    break;
-                }
-
-                throwError(SYNTAX_ERROR);
 
             case EXIT:
 
@@ -171,11 +129,6 @@ private:
         tree.childs.push_back(stat);
         i += size;
     }
-    void addImport(Import imp)
-    {
-        /* Adds a new import statement */
-        tree.imports.push_back(imp);
-    }
     bool followSyntax(deque<TokenType> syntax)
     {
         /* Comproves that a sentence follows a defined syntax step by step */
@@ -188,5 +141,43 @@ private:
             }
         }
         return result;
+    }
+
+    /* Expr parsing procedure */
+    optional<Expr> parse_int_expr(unsigned short int d = 1)
+    {
+        if (isLiteral(next(d).type) || next(d).type == IDENTIFIER)
+        {
+
+            TokenType t = next(d).type;
+
+            /* Check if is not a single literal, but a 2 literal operation */
+            if (isOperator(next(d + 1).value[0]))
+            {
+
+                Token arg1 = next(d);
+                char op = next(d + 1).value[0];
+                Token arg2 = next(d + 2);
+
+                /* Check if the types match */
+                if (arg2.type == t || arg2.type == IDENTIFIER)
+                {
+                    /* Check if there is not a division by 0 */
+                    if (op != '/' && arg2.value != "0")
+                    {
+                        string s = arg1.value + " " + op + " " + arg2.value;
+                        /* Return an expr with the new value */
+                        return Expr{t, s};
+                    }
+
+                    throwError(DIVIDE_BY_ZERO);
+                }
+
+                throwError(EXPECTED_LITERAL);
+            }
+
+            return Expr{t, next(d).value};
+        }
+        return {};
     }
 };

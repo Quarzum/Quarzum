@@ -1,4 +1,4 @@
 int i = 32
 int j
-j = 4
+j = i
 exit 2
