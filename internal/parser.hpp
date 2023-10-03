@@ -21,7 +21,7 @@ public:
 
             case EXIT:
 
-                if (auto expr = parse_int_expr())
+                if (auto expr = parse_expr())
                 {
                     // Push-back an int assign with value
                     debug("EXIT -> code: " + expr.value().literal.value);
@@ -33,7 +33,7 @@ public:
 
             case RETURN:
 
-                if (auto expr = parse_int_expr())
+                if (auto expr = parse_expr())
                 {
                     // Push-back an int assign with value
                     debug("RETURN -> value: " + expr.value().literal.value);
@@ -47,7 +47,7 @@ public:
 
                 if (followSyntax({IDENTIFIER, EQUAL}))
                 {
-                    if (auto expr = parse_int_expr(3))
+                    if (auto expr = parse_expr(3))
                     {
                         // Add an int assign with value
                         debug("INT_INIT -> id: " + next().value + ", value: " + expr.value().literal.value);
@@ -72,7 +72,7 @@ public:
 
                 if (followSyntax({EQUAL}))
                 {
-                    if (auto expr = parse_int_expr(2))
+                    if (auto expr = parse_expr(2))
                     {
                         // Add an int assign with value
                         debug("REASSIGN -> id: " + next(0).value + ", new value: " + expr.value().literal.value);
@@ -86,7 +86,7 @@ public:
                 else if (followSyntax({OPERATOR, EQUAL}))
                 {
 
-                    if (auto expr = parse_int_expr(3))
+                    if (auto expr = parse_expr(3))
                     {
                         // Add an int assign with value
                         debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + next().value + expr.value().literal.value);
@@ -114,10 +114,12 @@ private:
     Root tree;
     Token next(short unsigned int distance = 1)
     {
+        /* Returns the next token in the TokenList */
         return m_tokens.get(i + distance);
     }
     void debug(string input)
     {
+        /* If is enabled, show as output the prodedure*/
         if (SHOW_COMPILER_DEBUG)
         {
             cout << input << endl;
@@ -144,7 +146,7 @@ private:
     }
 
     /* Expr parsing procedure */
-    optional<Expr> parse_int_expr(unsigned short int d = 1)
+    optional<Expr> parse_expr(unsigned short int d = 1)
     {
         if (isLiteral(next(d).type) || next(d).type == IDENTIFIER)
         {
