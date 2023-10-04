@@ -15,7 +15,7 @@ public:
             }
             else if (c == '"')
             {
-                buffer += c;
+                addToBuffer();
                 if (isException() && buffer.length() > 1)
                 {
                     addToken(STRING_LITERAL, buffer);
@@ -23,7 +23,7 @@ public:
             }
             else if (isalpha(c))
             {
-                buffer += c;
+                addToBuffer();
                 if (!isException() && !isalnum(next()))
                 {
                     if (isKeyword(buffer))
@@ -40,7 +40,7 @@ public:
             }
             else if (isdigit(c))
             {
-                buffer += c;
+                addToBuffer();
                 if (!isException() && !isdigit(next()))
                 {
                     addToken(INT_LITERAL, buffer);
@@ -51,7 +51,7 @@ public:
                 // in developement
                 if (isException())
                 {
-                    buffer += c;
+                    addToBuffer();
                 }
                 else if (c == '=')
                 {
@@ -59,15 +59,11 @@ public:
                 }
                 else if (isOperator(c))
                 {
-                    string s;
-                    s = c;
-                    addToken(OPERATOR, s);
+                    addToken(OPERATOR, toString(c));
                 }
                 else if (isSymbol(c))
                 {
-                    string s;
-                    s = c;
-                    addToken(TokenType(symbols.at(c)), s);
+                    addToken(TokenType(symbols.at(c)), toString(c));
                 }
             }
             else if (!isException() && !isspace(c))
@@ -108,5 +104,9 @@ private:
     {
         /* Returns if the begin of the buffer is a quote */
         return buffer[0] == '"';
+    }
+    void addToBuffer()
+    {
+        buffer += c;
     }
 };

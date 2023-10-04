@@ -1,16 +1,16 @@
-bool isOperator(char value)
+const bool isOperator(char value)
 {
     return (value == '+' || value == '-' || value == '*' || value == '/' || value == '%' || value == '^');
 };
-bool isSizeModifier(string value)
+const bool isSizeModifier(string value)
 {
     return (value == "x8" || value == "x16" || value == "x32" || value == "x64");
 };
-bool isLiteral(TokenType type)
+const bool isLiteral(TokenType type)
 {
     return (type == INT_LITERAL || type == NUMBER_LITERAL || type == STRING_LITERAL);
 }
-map<string, int> keywords = {
+const map<string, int> keywords = {
     {"exit", 0},
     {"return", 1},
     {"import", 2},
@@ -43,7 +43,7 @@ map<string, int> keywords = {
     {"input", 50},
     {"typeOf", 51},
 };
-map<char, int> symbols = {
+const map<char, int> symbols = {
     {'&', 23},
     {'|', 24},
     {'!', 25},
@@ -58,7 +58,7 @@ map<char, int> symbols = {
     {'}', 34},
     {'[', 35},
     {']', 36}};
-string tokens[] = {
+const string tokens[] = {
     "EXIT",
     "RETURN",
     "IMPORT",
@@ -112,12 +112,12 @@ string tokens[] = {
     "INPUT",
     "TYPEOF"};
 
-int findKeyword(string keyword)
+const int findKeyword(string keyword)
 {
     return keywords.at(keyword);
 }
 
-string getSource(const string path)
+const string getSource(const string path)
 {
     /* Reads the file and returns its content */
     ifstream input(path);
@@ -151,11 +151,17 @@ void validateFormat(char *argv[])
         throwError(INVALID_FORMAT);
     }
 }
-bool isKeyword(string src)
+const bool isKeyword(string src)
 {
     return keywords.count(src);
 }
-bool isSymbol(char src)
+const bool isSymbol(char src)
 {
     return symbols.count(src);
+}
+string toString(char c)
+{
+    string s;
+    s = c;
+    return s;
 }
