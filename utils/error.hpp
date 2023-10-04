@@ -6,7 +6,8 @@ string errors[] = {
     "Expected expression",
     "Out of range",
     "Divide by zero",
-    "Expected literal"};
+    "Expected literal",
+    "Expected string"};
 
 void throwError(int code)
 {

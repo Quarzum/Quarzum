@@ -19,23 +19,32 @@ public:
             switch (t.type)
             {
 
+            case OUT:
+
+                if (followSyntax({PAR_OPEN, STRING_LITERAL, PAR_CLOSE}))
+                {
+                    // Add a print instruction
+                    debug("OUT -> content: " + next(2).value);
+                    addStatement(Exit{}, 4);
+                    break;
+                }
+                throwError(EXPECTED_EXPR);
+
             case EXIT:
 
                 if (auto expr = parse_expr())
                 {
-                    // Push-back an int assign with value
+                    // Add an int assign with value
                     debug("EXIT -> code: " + expr.value().literal.value);
                     addStatement(Exit{expr.value()}, 2);
                     break;
                 }
-
                 throwError(EXPECTED_EXPR);
-
             case RETURN:
 
                 if (auto expr = parse_expr())
                 {
-                    // Push-back an int assign with value
+                    // Add an int assign with value
                     debug("RETURN -> value: " + expr.value().literal.value);
                     addStatement(Return{expr.value()}, 2);
                     break;

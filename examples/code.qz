@@ -1,4 +1,3 @@
 int i = 32
-int j
-j = i
+out("hola")
 exit 2
