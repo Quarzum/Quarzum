@@ -116,6 +116,8 @@ public:
             default:
                 i++;
                 break;
+                Exit exit{};
+                ast.statements.push_back(exit);
             }
         }
         return ast;
@@ -141,10 +143,11 @@ private:
             cout << input << endl;
         }
     }
-    void addStatement(any stat, short unsigned int size = 1)
+    void addStatement(Statement stat, short unsigned int size = 1)
     {
         /* Adds a new statement and increments i by the number of elements of the stat */
         // tree.childs.push_back(stat);
+        ast.statements.push_back(stat);
         i += size;
     }
     bool followSyntax(deque<TokenType> syntax)
