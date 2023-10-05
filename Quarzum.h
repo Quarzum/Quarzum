@@ -22,6 +22,7 @@ using namespace experimental;
 #include "utils/tokentype.h"
 #include "utils/tokenlist.hpp"
 #include "utils/nodes.h"
+#include "utils/statement.hpp"
 #include "utils/utilities.hpp"
 #include "utils/config.h"
 #include "utils/configfile.hpp"

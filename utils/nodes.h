@@ -74,8 +74,3 @@ struct Root
 //     Statement(Assign content) : type(Type::ASSIGN), assignContent(content) {}
 //     Statement(Exit content) : type(Type::EXIT), exitContent(content) {}
 // };
-
-struct AST
-{
-    vector<Statement> statements;
-};

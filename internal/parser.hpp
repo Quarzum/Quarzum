@@ -1,3 +1,8 @@
+struct AST
+{
+    vector<Statement> statements;
+};
+
 class Parser
 {
 public:
