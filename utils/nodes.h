@@ -55,3 +55,27 @@ struct Root
     deque<any> childs;
     deque<Import> imports;
 };
+
+// struct Statement
+// {
+//     enum class Type
+//     {
+//         ASSIGN,
+//         EXIT
+//     };
+
+//     Type type;
+//     union
+//     {
+//         Assign assignContent;
+//         Exit exitContent;
+//     };
+
+//     Statement(Assign content) : type(Type::ASSIGN), assignContent(content) {}
+//     Statement(Exit content) : type(Type::EXIT), exitContent(content) {}
+// };
+
+struct AST
+{
+    vector<Statement> statements;
+};

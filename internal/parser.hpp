@@ -8,7 +8,7 @@ public:
     {
     }
 
-    Root parse()
+    AST parse()
     {
         i = 0;
         debug("Statements\n-------------");
@@ -113,7 +113,7 @@ public:
                 break;
             }
         }
-        return tree;
+        return ast;
     }
 
 private:
@@ -121,6 +121,8 @@ private:
     Token t;
     unsigned int i;
     Root tree;
+    AST ast;
+
     Token next(short unsigned int distance = 1)
     {
         /* Returns the next token in the TokenList */
@@ -137,7 +139,7 @@ private:
     void addStatement(any stat, short unsigned int size = 1)
     {
         /* Adds a new statement and increments i by the number of elements of the stat */
-        tree.childs.push_back(stat);
+        // tree.childs.push_back(stat);
         i += size;
     }
     bool followSyntax(deque<TokenType> syntax)

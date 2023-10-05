@@ -10,8 +10,5 @@ void compile(string source)
     }
     /* Pass from tokens to AST */
     Parser parser = Parser(tokens);
-    Root root = parser.parse();
-    /* From AST to LLVM intermediate representation */
-    Generator generator = Generator(root);
-    string ir = generator.generate();
+    AST root = parser.parse();
 }
