@@ -1,6 +1,6 @@
 struct AST
 {
-    vector<Statement> statements;
+    deque<Statement> statements;
 };
 
 class Parser
@@ -9,9 +9,7 @@ public:
     Parser(TokenList tokens) : m_tokens(move(tokens)) {}
 
     /* String parsing procedure */
-    optional<string> parse_string(unsigned short int d = 1)
-    {
-    }
+    optional<string> parse_string(unsigned short int d = 1) {}
 
     AST parse()
     {
@@ -23,14 +21,13 @@ public:
             t = m_tokens.get(i);
             switch (t.type)
             {
-
             case OUT:
-
                 if (followSyntax({PAR_OPEN, STRING_LITERAL, PAR_CLOSE}))
                 {
                     // Add a print instruction
                     debug("OUT -> content: " + next(2).value);
-                    addStatement(Exit{}, 4);
+                    i += 4;
+                    // addStatement(Exit{}, 4);
                     break;
                 }
                 throwError(EXPECTED_EXPR);
@@ -65,7 +62,8 @@ public:
                     {
                         // Add an int assign with value
                         debug("INT_INIT -> id: " + next().value + ", value: " + expr.value().literal.value);
-                        addStatement(Assign{INT_LITERAL, next(), expr.value()}, 4);
+                        addStatement(Assign{INT_LITERAL, next(), expr.value()});
+
                         break;
                     }
 
@@ -116,8 +114,6 @@ public:
             default:
                 i++;
                 break;
-                Exit exit{};
-                ast.statements.push_back(exit);
             }
         }
         return ast;
@@ -127,7 +123,6 @@ private:
     TokenList m_tokens;
     Token t;
     unsigned int i;
-    Root tree;
     AST ast;
 
     Token next(short unsigned int distance = 1)
@@ -135,18 +130,9 @@ private:
         /* Returns the next token in the TokenList */
         return m_tokens.get(i + distance);
     }
-    void debug(string input)
-    {
-        /* If is enabled, show as output the prodedure*/
-        if (SHOW_COMPILER_DEBUG)
-        {
-            cout << input << endl;
-        }
-    }
     void addStatement(Statement stat, short unsigned int size = 1)
     {
         /* Adds a new statement and increments i by the number of elements of the stat */
-        // tree.childs.push_back(stat);
         ast.statements.push_back(stat);
         i += size;
     }

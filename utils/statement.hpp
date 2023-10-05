@@ -26,6 +26,8 @@ public:
             exitContent = other.exitContent; // Asumiendo que Exit tiene un operador de copia adecuado
         else if (m_type == StatementType::RETURN)
             returnContent = other.returnContent;
+        else if (m_type == StatementType::REASSIGN)
+            reassignContent = other.reassignContent;
     }
     ~Statement() {}
 

@@ -165,3 +165,11 @@ string toString(char c)
     s = c;
     return s;
 }
+void debug(string input)
+{
+    /* If is enabled, show as output the prodedure*/
+    if (SHOW_COMPILER_DEBUG)
+    {
+        cout << input << endl;
+    }
+}
