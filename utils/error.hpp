@@ -9,7 +9,7 @@ string errors[] = {
     "Expected literal",
     "Expected string"};
 
-void throwError(int code)
+void throwError(unsigned short int code)
 {
     cerr << "[ ERROR ] - " << errors[code] << " - Error code: " << code << endl;
     exit(EXIT_FAILURE);

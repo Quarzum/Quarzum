@@ -1,5 +1,5 @@
 
-const map<string, int> keywords = {
+const map<string, __int8> keywords = {
     {"exit", 0},
     {"return", 1},
     {"import", 2},
@@ -32,7 +32,7 @@ const map<string, int> keywords = {
     {"input", 50},
     {"typeOf", 51},
 };
-const map<char, int> symbols = {
+const map<char, __int8> symbols = {
     {'&', 23},
     {'|', 24},
     {'!', 25},
@@ -101,7 +101,7 @@ const string tokens[] = {
     "INPUT",
     "TYPEOF"};
 
-const int findKeyword(string keyword) { return keywords.at(keyword); }
+const __int8 findKeyword(string keyword) { return keywords.at(keyword); }
 const bool isOperator(char value) { return (value == '+' || value == '-' || value == '*' || value == '/' || value == '%' || value == '^'); };
 const bool isSizeModifier(string value) { return (value == "x8" || value == "x16" || value == "x32" || value == "x64"); };
 const bool isLiteral(TokenType type) { return (type == INT_LITERAL || type == NUMBER_LITERAL || type == STRING_LITERAL); }

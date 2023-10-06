@@ -1,14 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <deque>
 #include <experimental/optional>
-#include <stdio.h>
-#include <time.h>
 #include <map>
-#include <experimental/any>
-#include <vector>
 #include <cmath>
 using namespace std;
 using namespace experimental;

@@ -1,9 +1,3 @@
-// operator -> "+" || "-" || "*" || "/" || "%" || "^"
-struct Operator
-{
-    TokenType op;
-};
-
 // size_modifier -> "x8" || "x16" || "x32" || "x64" || "x128" || "short" || "long" || "unsigned"
 struct SizeModifier
 {
