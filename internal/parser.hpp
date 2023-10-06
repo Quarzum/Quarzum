@@ -18,7 +18,7 @@ public:
         /* Converts tokens into an AST */
         while (i < m_tokens.size())
         {
-            t = m_tokens.get(i);
+            Token t = m_tokens.get(i);
             switch (t.type)
             {
             case OUT:
@@ -62,7 +62,7 @@ public:
                     {
                         // Add an int assign with value
                         debug("INT_INIT -> id: " + next().value + ", value: " + expr.value().literal.value);
-                        addStatement(Assign{INT_LITERAL, next(), expr.value()});
+                        addStatement(Assign{INT_LITERAL, next(), expr.value()}, 4);
 
                         break;
                     }
@@ -121,7 +121,6 @@ public:
 
 private:
     TokenList m_tokens;
-    Token t;
     unsigned int i;
     AST ast;
 

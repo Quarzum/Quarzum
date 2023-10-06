@@ -1,15 +1,4 @@
-const bool isOperator(char value)
-{
-    return (value == '+' || value == '-' || value == '*' || value == '/' || value == '%' || value == '^');
-};
-const bool isSizeModifier(string value)
-{
-    return (value == "x8" || value == "x16" || value == "x32" || value == "x64");
-};
-const bool isLiteral(TokenType type)
-{
-    return (type == INT_LITERAL || type == NUMBER_LITERAL || type == STRING_LITERAL);
-}
+
 const map<string, int> keywords = {
     {"exit", 0},
     {"return", 1},
@@ -112,11 +101,10 @@ const string tokens[] = {
     "INPUT",
     "TYPEOF"};
 
-const int findKeyword(string keyword)
-{
-    return keywords.at(keyword);
-}
-
+const int findKeyword(string keyword) { return keywords.at(keyword); }
+const bool isOperator(char value) { return (value == '+' || value == '-' || value == '*' || value == '/' || value == '%' || value == '^'); };
+const bool isSizeModifier(string value) { return (value == "x8" || value == "x16" || value == "x32" || value == "x64"); };
+const bool isLiteral(TokenType type) { return (type == INT_LITERAL || type == NUMBER_LITERAL || type == STRING_LITERAL); }
 const string getSource(const string path)
 {
     /* Reads the file and returns its content */
@@ -151,14 +139,8 @@ void validateFormat(char *argv[])
         throwError(INVALID_FORMAT);
     }
 }
-const bool isKeyword(string src)
-{
-    return keywords.count(src);
-}
-const bool isSymbol(char src)
-{
-    return symbols.count(src);
-}
+const bool isKeyword(string src) { return keywords.count(src); }
+const bool isSymbol(char src) { return symbols.count(src); }
 string toString(char c)
 {
     string s;
