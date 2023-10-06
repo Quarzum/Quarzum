@@ -1,7 +1,20 @@
 void applyConfig(const string path)
 {
     /* TODO: Applies a config rule */
-    AUTO_RESIZE = true;
+    unsigned int i = 0;
+    string buffer;
+    while(i < path.size()){
+        buffer += path.at(i);
+        if(buffer == "#auto-resize(true)" || buffer == " #auto-resize"){
+            AUTO_RESIZE = true;
+            buffer.clear();
+        }
+        if(buffer == "#auto-resize(false)"){
+            AUTO_RESIZE = false;
+            buffer.clear();
+        }
+    }
+
 }
 
 void chechForConfigFile(string path)
