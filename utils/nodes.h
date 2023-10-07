@@ -1,3 +1,17 @@
+/*
+
+    Pre-initialize structs for recursion
+
+*/
+struct Expr;
+
+// add -> t "+" expr
+struct Add
+{
+    Token t;
+    Expr *expr;
+};
+
 // size_modifier -> "x8" || "x16" || "x32" || "x64" || "x128" || "short" || "long" || "unsigned"
 struct SizeModifier
 {

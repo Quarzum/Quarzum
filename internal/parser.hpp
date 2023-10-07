@@ -148,41 +148,16 @@ private:
         }
         return result;
     }
-
+    bool isTerm(unsigned short int d = 1)
+    {
+        return isLiteral(next(d).type) || next(d).type == IDENTIFIER;
+    }
     /* Expr parsing procedure */
     optional<Expr> parse_expr(unsigned short int d = 1)
     {
-        if (isLiteral(next(d).type) || next(d).type == IDENTIFIER)
+        if (isTerm(d))
         {
-
-            TokenType t = next(d).type;
-
-            /* Check if is not a single literal, but a 2 literal operation */
-            if (isOperator(next(d + 1).value[0]))
-            {
-
-                Token arg1 = next(d);
-                char op = next(d + 1).value[0];
-                Token arg2 = next(d + 2);
-
-                /* Check if the types match */
-                if (arg2.type == t || arg2.type == IDENTIFIER)
-                {
-                    /* Check if there is not a division by 0 */
-                    if (op != '/' && arg2.value != "0")
-                    {
-                        string s = arg1.value + " " + op + " " + arg2.value;
-                        /* Return an expr with the new value */
-                        return Expr{t, s};
-                    }
-
-                    throwError(DIVIDE_BY_ZERO);
-                }
-
-                throwError(EXPECTED_LITERAL);
-            }
-
-            return Expr{t, next(d).value};
+            return Expr{next(d).type, next(d).value};
         }
         return {};
     }
