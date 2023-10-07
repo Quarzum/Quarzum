@@ -23,13 +23,17 @@ public:
             switch (t.type)
             {
             case OUT:
-                if (followSyntax({PAR_OPEN, STRING_LITERAL, PAR_CLOSE}))
+                if (followSyntax({PAR_OPEN}))
                 {
+                    expr = parse_expr(2);
                     // Add a print instruction
-                    debug("OUT -> content: " + next(2).value);
-                    i += 4;
-                    // addStatement(Exit{}, 4);
-                    break;
+                    if (next(3).type == PAR_CLOSE)
+                    {
+                        debug("OUT -> content: " + expr.literal.value);
+                        i += expr.size;
+                        // addStatement(Exit{}, 4);
+                        break;
+                    }
                 }
                 throwError(EXPECTED_EXPR);
 
@@ -37,14 +41,14 @@ public:
                 expr = parse_expr();
                 // Add an int assign with value
                 debug("EXIT -> code: " + expr.literal.value);
-                addStatement(Exit{expr}, 2);
+                addStatement(Exit{expr}, 1 + expr.size);
                 break;
 
             case RETURN:
                 expr = parse_expr();
                 // Add an int assign with value
                 debug("RETURN -> value: " + expr.literal.value);
-                addStatement(Return{expr}, 2);
+                addStatement(Return{expr}, 1 + expr.size);
                 break;
 
             case INT_KEYWORD:
@@ -55,7 +59,7 @@ public:
 
                     // Add an int assign with value
                     debug("INT_INIT -> id: " + next().value + ", value: " + expr.literal.value);
-                    addStatement(Assign{INT_LITERAL, next(), expr}, 4);
+                    addStatement(Assign{INT_LITERAL, next(), expr}, 3 + expr.size);
                     break;
                 }
 
@@ -69,6 +73,28 @@ public:
 
                 throwError(SYNTAX_ERROR);
 
+            case STRING_KEYWORD:
+
+                if (followSyntax({IDENTIFIER, EQUAL}))
+                {
+                    expr = parse_expr(3);
+
+                    // Add an int assign with value
+                    debug("STR_INIT -> id: " + next().value + ", value: " + expr.literal.value);
+                    addStatement(Assign{STRING_LITERAL, next(), expr}, 3 + expr.size);
+                    break;
+                }
+
+                else if (followSyntax({IDENTIFIER}))
+                {
+                    // Add an int assign without value
+                    debug("STR_INIT -> id: " + next().value + ", value: null");
+                    addStatement(Assign{STRING_LITERAL, next(), {NULL_KEYWORD, "null"}}, 2);
+                    break;
+                }
+
+                throwError(SYNTAX_ERROR);
+
             case IDENTIFIER:
 
                 if (followSyntax({EQUAL}))
@@ -77,7 +103,7 @@ public:
 
                     // Add an int assign with value
                     debug("REASSIGN -> id: " + next(0).value + ", new value: " + expr.literal.value);
-                    addStatement(ReAssign{next(), expr}, 3);
+                    addStatement(ReAssign{next(), expr}, 2 + expr.size);
                     break;
                 }
 
@@ -87,7 +113,7 @@ public:
                     expr = parse_expr(3);
                     // Add an int assign with value
                     debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + next().value + expr.literal.value);
-                    addStatement(ReAssign{next(), expr}, 4);
+                    addStatement(ReAssign{next(), expr}, 3 + expr.size);
                     break;
                 }
 
@@ -137,15 +163,16 @@ private:
     /* Expr parsing procedure */
     Expr parse_expr(unsigned short int d = 1)
     {
-        if (isTerm(next(d).type))
+        TokenType t = next(d).type;
+        if (isTerm(t))
         {
             if (isOperator(next(d + 1).value[0]))
             {
                 Expr expr = parse_expr(d + 2);
                 // If the expression exists, it is (actually) a sum
-                return Expr{next(d).type, next(d).value + " " + next(d + 1).value[0] + " " + expr.literal.value};
+                return Expr{{t, next(d).value + " " + next(d + 1).value[0] + " " + expr.literal.value}, 1 + expr.size};
             }
-            return Expr{next(d).type, next(d).value};
+            return Expr{{t, next(d).value}, 1};
         }
         throwError(EXPECTED_EXPR);
     }

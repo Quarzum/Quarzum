@@ -22,6 +22,7 @@ struct SizeModifier
 struct Expr
 {
     Token literal;
+    int size;
 };
 
 // exit -> "exit" <expr>
