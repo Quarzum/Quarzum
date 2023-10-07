@@ -139,6 +139,12 @@ private:
     {
         if (isTerm(next(d).type))
         {
+            if (isOperator(next(d + 1).value[0]))
+            {
+                Expr expr = parse_expr(d + 2);
+                // If the expression exists, it is (actually) a sum
+                return Expr{next(d).type, next(d).value + " " + next(d + 1).value[0] + " " + expr.literal.value};
+            }
             return Expr{next(d).type, next(d).value};
         }
         throwError(EXPECTED_EXPR);
