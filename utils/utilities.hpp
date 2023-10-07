@@ -155,3 +155,9 @@ void debug(string input)
         cout << input << endl;
     }
 }
+long int pow(int base, int exp){
+    for(unsigned short int i = 1; i <= exp; i++){
+        base *= base;
+    }
+    return base;
+}

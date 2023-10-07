@@ -29,7 +29,7 @@ public:
                     if (isKeyword(buffer))
                     {
                         /* If the buffer is a keyword, store the correspondant token */
-                        addToken(TokenType(keywords.at(buffer)), buffer);
+                        addToken(TokenType(findKeyword(buffer)), buffer);
                     }
                     else
                     {

@@ -1,1 +1,6 @@
-AUTO_RESIZE(true)
+#auto-resize()
+#compiler-version(1.0)
+#show-compiler-debug()
+#case-sensitive()
+#executable-program("program")
+#infinity-limit(10^200)
