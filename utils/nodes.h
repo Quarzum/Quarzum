@@ -4,6 +4,7 @@
 
 */
 struct Expr;
+struct Compare;
 
 // add -> t "+" expr
 struct Add
@@ -23,6 +24,11 @@ struct Expr
 {
     Token literal;
     int size;
+};
+
+struct Compare
+{
+    Expr expr;
 };
 
 // exit -> "exit" <expr>

@@ -176,4 +176,8 @@ private:
         }
         throwError(EXPECTED_EXPR);
     }
+
+    Compare parse_compare(unsigned short int d = 1)
+    {
+    }
 };

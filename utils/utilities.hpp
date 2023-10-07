@@ -103,6 +103,7 @@ const string tokens[] = {
 
 const __int8 findKeyword(string keyword) { return keywords.at(keyword); }
 const bool isOperator(char value) { return (value == '+' || value == '-' || value == '*' || value == '/' || value == '%' || value == '^'); };
+const bool isComparator(char value) { return (value == '<' || value == '>'); }
 const bool isSizeModifier(string value) { return (value == "x8" || value == "x16" || value == "x32" || value == "x64"); };
 const bool isLiteral(TokenType type) { return (type == INT_LITERAL || type == NUMBER_LITERAL || type == STRING_LITERAL); }
 const string getSource(const string path)
@@ -155,8 +156,10 @@ void debug(string input)
         cout << input << endl;
     }
 }
-long int pow(int base, int exp){
-    for(unsigned short int i = 1; i <= exp; i++){
+long int pow(int base, int exp)
+{
+    for (unsigned short int i = 1; i <= exp; i++)
+    {
         base *= base;
     }
     return base;
