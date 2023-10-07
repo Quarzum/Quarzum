@@ -18,6 +18,7 @@ public:
         /* Converts tokens into an AST */
         while (i < m_tokens.size())
         {
+            Expr expr;
             Token t = m_tokens.get(i);
             switch (t.type)
             {
@@ -33,41 +34,29 @@ public:
                 throwError(EXPECTED_EXPR);
 
             case EXIT:
+                expr = parse_expr();
+                // Add an int assign with value
+                debug("EXIT -> code: " + expr.literal.value);
+                addStatement(Exit{expr}, 2);
+                break;
 
-                if (auto expr = parse_expr())
-                {
-                    // Add an int assign with value
-                    debug("EXIT -> code: " + expr.value().literal.value);
-                    addStatement(Exit{expr.value()}, 2);
-                    break;
-                }
-                throwError(EXPECTED_EXPR);
             case RETURN:
-
-                if (auto expr = parse_expr())
-                {
-                    // Add an int assign with value
-                    debug("RETURN -> value: " + expr.value().literal.value);
-                    addStatement(Return{expr.value()}, 2);
-                    break;
-                }
-
-                throwError(EXPECTED_EXPR);
+                expr = parse_expr();
+                // Add an int assign with value
+                debug("RETURN -> value: " + expr.literal.value);
+                addStatement(Return{expr}, 2);
+                break;
 
             case INT_KEYWORD:
 
                 if (followSyntax({IDENTIFIER, EQUAL}))
                 {
-                    if (auto expr = parse_expr(3))
-                    {
-                        // Add an int assign with value
-                        debug("INT_INIT -> id: " + next().value + ", value: " + expr.value().literal.value);
-                        addStatement(Assign{INT_LITERAL, next(), expr.value()}, 4);
+                    expr = parse_expr(3);
 
-                        break;
-                    }
-
-                    throwError(EXPECTED_EXPR);
+                    // Add an int assign with value
+                    debug("INT_INIT -> id: " + next().value + ", value: " + expr.literal.value);
+                    addStatement(Assign{INT_LITERAL, next(), expr}, 4);
+                    break;
                 }
 
                 else if (followSyntax({IDENTIFIER}))
@@ -84,29 +73,22 @@ public:
 
                 if (followSyntax({EQUAL}))
                 {
-                    if (auto expr = parse_expr(2))
-                    {
-                        // Add an int assign with value
-                        debug("REASSIGN -> id: " + next(0).value + ", new value: " + expr.value().literal.value);
-                        addStatement(ReAssign{next(), expr.value()}, 3);
-                        break;
-                    }
+                    expr = parse_expr(2);
 
-                    throwError(EXPECTED_EXPR);
+                    // Add an int assign with value
+                    debug("REASSIGN -> id: " + next(0).value + ", new value: " + expr.literal.value);
+                    addStatement(ReAssign{next(), expr}, 3);
+                    break;
                 }
 
                 else if (followSyntax({OPERATOR, EQUAL}))
                 {
 
-                    if (auto expr = parse_expr(3))
-                    {
-                        // Add an int assign with value
-                        debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + next().value + expr.value().literal.value);
-                        addStatement(ReAssign{next(), expr.value()}, 4);
-                        break;
-                    }
-
-                    throwError(EXPECTED_EXPR);
+                    expr = parse_expr(3);
+                    // Add an int assign with value
+                    debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + next().value + expr.literal.value);
+                    addStatement(ReAssign{next(), expr}, 4);
+                    break;
                 }
 
                 throwError(SYNTAX_ERROR);
@@ -148,17 +130,17 @@ private:
         }
         return result;
     }
-    bool isTerm(unsigned short int d = 1)
+    bool isTerm(TokenType t)
     {
-        return isLiteral(next(d).type) || next(d).type == IDENTIFIER;
+        return isLiteral(t) || t == IDENTIFIER;
     }
     /* Expr parsing procedure */
-    optional<Expr> parse_expr(unsigned short int d = 1)
+    Expr parse_expr(unsigned short int d = 1)
     {
-        if (isTerm(d))
+        if (isTerm(next(d).type))
         {
             return Expr{next(d).type, next(d).value};
         }
-        return {};
+        throwError(EXPECTED_EXPR);
     }
 };
