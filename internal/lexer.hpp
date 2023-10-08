@@ -38,12 +38,24 @@ public:
                     }
                 }
             }
-            else if (isdigit(c))
+            else if (isdigit(c) || c == '.')
             {
                 addToBuffer();
-                if (!isException() && !isdigit(next()))
+                if (c == '.')
                 {
-                    addToken(INT_LITERAL, buffer);
+                    isNum = true;
+                }
+                if (!isException() && !(isdigit(next()) || next() == '.'))
+                {
+                    if (isNum)
+                    {
+                        addToken(NUMBER_LITERAL, buffer);
+                    }
+                    else
+                    {
+                        addToken(INT_LITERAL, buffer);
+                    }
+                    isNum = false;
                 }
             }
             else if (ispunct(c))
@@ -68,7 +80,7 @@ public:
             }
             else if (!isException() && !isspace(c))
             {
-                throwError(LEXICAL_ERROR, "Unexpected token " + toString(c) + " at line " + to_string(line) );
+                throwError(LEXICAL_ERROR, "Unexpected token " + toString(c) + " at line " + to_string(line));
             }
             i++;
         }
@@ -80,6 +92,7 @@ private:
     TokenList tokens;
     unsigned int size, line, i = 0;
     char c;
+    bool isNum;
     bool isEOF()
     {
         /* Returns true if m_src[i] is the final character */

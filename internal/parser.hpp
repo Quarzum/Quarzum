@@ -85,6 +85,30 @@ public:
 
                 throwError(SYNTAX_ERROR, "Expected an initializer");
 
+            case NUMBER_KEYWORD:
+
+                if (followSyntax({IDENTIFIER, EQUAL}))
+                {
+                    expr = parse_expr(3);
+
+                    // Add an int assign with value
+                    addVar(next().value);
+                    debug("NUMBER_INIT -> id: " + next().value + ", value: " + expr.literal.value);
+                    addStatement(Assign{NUMBER_LITERAL, next(), expr}, 3 + expr.size);
+                    break;
+                }
+
+                else if (followSyntax({IDENTIFIER}))
+                {
+                    // Add an int assign without value
+                    addVar(next().value);
+                    debug("NUMBER_INIT -> id: " + next().value + ", value: null");
+                    addStatement(Assign{NUMBER_LITERAL, next(), {NULL_KEYWORD, "null"}}, 2);
+                    break;
+                }
+
+                throwError(SYNTAX_ERROR, "Expected an initializer");
+
             case STRING_KEYWORD:
 
                 if (followSyntax({IDENTIFIER, EQUAL}))
