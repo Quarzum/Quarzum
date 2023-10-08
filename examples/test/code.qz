@@ -1,3 +1,5 @@
 int i = 32 + 3 * 4
 string s = "Marcos"
+delete s
+string s = "Hola"
 exit 2

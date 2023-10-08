@@ -51,6 +51,15 @@ public:
                 addStatement(Return{expr}, 1 + expr.size);
                 break;
 
+            case DELETE:
+                if (followSyntax({IDENTIFIER}))
+                {
+                    removeVar(next().value);
+                    debug("DELETE -> id: " + next().value);
+                    i += 2;
+                    break;
+                }
+                throwError(SYNTAX_ERROR);
             case INT_KEYWORD:
 
                 if (followSyntax({IDENTIFIER, EQUAL}))
