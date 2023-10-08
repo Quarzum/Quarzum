@@ -54,6 +54,7 @@ public:
             case DELETE:
                 if (followSyntax({IDENTIFIER}))
                 {
+                    // Removes an existing variable
                     removeVar(next().value);
                     debug("DELETE -> id: " + next().value);
                     i += 2;
