@@ -35,7 +35,7 @@ public:
                         break;
                     }
                 }
-                throwError(EXPECTED_EXPR);
+                throwError(SYNTAX_ERROR, "Expected string");
 
             case EXIT:
                 expr = parse_expr();
@@ -71,7 +71,7 @@ public:
                     break;
                 }
 
-                throwError(SYNTAX_ERROR);
+                throwError(SYNTAX_ERROR, "Expected an initializer");
 
             case STRING_KEYWORD:
 
@@ -93,7 +93,7 @@ public:
                     break;
                 }
 
-                throwError(SYNTAX_ERROR);
+                throwError(SYNTAX_ERROR, "Expected an initializer");
 
             case IDENTIFIER:
 
@@ -117,7 +117,7 @@ public:
                     break;
                 }
 
-                throwError(SYNTAX_ERROR);
+                throwError(SYNTAX_ERROR, "Expected assignation");
 
             default:
                 i++;
@@ -174,7 +174,7 @@ private:
             }
             return Expr{{t, next(d).value}, 1};
         }
-        throwError(EXPECTED_EXPR);
+        throwError(SYNTAX_ERROR, "Invalid expression");
     }
 
     Compare parse_compare(unsigned short int d = 1)

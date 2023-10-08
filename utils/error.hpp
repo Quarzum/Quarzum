@@ -4,16 +4,13 @@ string errors[] = {
     "RuntimeError",
     "LexicalError",
     "SyntaxError",
-    "Expected expression",
     "Out of range",
     "ArithmeticError",
-    "Expected literal",
-    "Expected string"
 
 };
 
 void throwError(unsigned short int code, string description = "")
 {
-    cerr << errors[code] << ": " << description << " - Error code: " << code << endl;
+    cerr << errors[code] << ":\n    " << description << " - Error code: " << code << endl;
     exit(EXIT_FAILURE);
 }

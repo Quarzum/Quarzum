@@ -68,7 +68,7 @@ public:
             }
             else if (!isException() && !isspace(c))
             {
-                throwError(LEXICAL_ERROR, "Unexpected token");
+                throwError(LEXICAL_ERROR, "Unexpected token " + toString(c) + " at line " + to_string(line) );
             }
             i++;
         }
