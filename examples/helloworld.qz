@@ -1,0 +1,8 @@
+/*
+
+    Example program: display "Hello " + your name
+
+*/
+
+string name = input("What is your name?")
+out("Hello, @{name}!")
