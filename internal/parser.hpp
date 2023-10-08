@@ -128,6 +128,7 @@ public:
                 break;
             }
         }
+        debugVariables();
         return ast;
     }
 

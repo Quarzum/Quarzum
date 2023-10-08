@@ -53,6 +53,7 @@ enum TokenType
     X128,
     THIS,
     STATIC,
+    DELETE,
     // Others
     IDENTIFIER,
     // Built-in functions

@@ -27,9 +27,10 @@ const map<string, __int8> keywords = {
     {"long", 40},
     {"this", 46},
     {"static", 47},
-    {"out", 49},
-    {"input", 50},
-    {"typeOf", 51},
+    {"delete", 48},
+    {"out", 50},
+    {"input", 51},
+    {"typeOf", 52},
 };
 const map<char, __int8> symbols = {
     {'&', 23},
@@ -95,6 +96,7 @@ const string tokens[] = {
     "X128",
     "THIS",
     "STATIC",
+    "DELETE",
     "IDENTIFIER",
     "OUT",
     "INPUT",
@@ -162,18 +164,4 @@ long int pow(int base, int exp)
         base *= base;
     }
     return base;
-}
-
-deque<string> variableNames;
-
-void addVar(string name)
-{
-    for (int i = 0; i < variableNames.size(); i++)
-    {
-        if (variableNames[i] == name)
-        {
-            throwError(REFERENCE_ERROR, "Variable re-initialization");
-        }
-    }
-    variableNames.push_back(name);
 }

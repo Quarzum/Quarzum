@@ -11,7 +11,6 @@ using namespace experimental;
     Including utility-type headers
 
 */
-
 #include "utils/errorcodes.h"
 #include "utils/error.hpp"
 #include "utils/tokentype.h"
@@ -19,8 +18,8 @@ using namespace experimental;
 #include "utils/nodes.h"
 #include "utils/statement.hpp"
 #include "utils/config.h"
+#include "utils/variables.hpp"
 #include "utils/utilities.hpp"
-
 #include "utils/configfile.hpp"
 /*
 
