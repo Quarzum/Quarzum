@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     */
     if (argc < 2)
     {
-        throwError(FILE_NOT_FOUND);
+        throwError(FILE_NOT_FOUND_ERROR, "No such file or directory");
     }
     validateFormat(argv);
     chechForConfigFile(argv[1]);

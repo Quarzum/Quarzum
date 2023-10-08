@@ -68,7 +68,7 @@ public:
             }
             else if (!isException() && !isspace(c))
             {
-                throwError(UNEXPECTED_TOKEN);
+                throwError(LEXICAL_ERROR, "Unexpected token");
             }
             i++;
         }

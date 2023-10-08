@@ -1,16 +1,19 @@
 string errors[] = {
-    "File not found",
-    "Format not supported",
-    "Unexpected token",
-    "Syntax error",
+    "FileNotFoundError",
+    "ReferenceError",
+    "RuntimeError",
+    "LexicalError",
+    "SyntaxError",
     "Expected expression",
     "Out of range",
-    "Divide by zero",
+    "ArithmeticError",
     "Expected literal",
-    "Expected string"};
+    "Expected string"
 
-void throwError(unsigned short int code)
+};
+
+void throwError(unsigned short int code, string description = "")
 {
-    cerr << "[ ERROR ] - " << errors[code] << " - Error code: " << code << endl;
+    cerr << errors[code] << ": " << description << " - Error code: " << code << endl;
     exit(EXIT_FAILURE);
 }

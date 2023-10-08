@@ -112,7 +112,7 @@ const string getSource(const string path)
     ifstream input(path);
     if (input.fail())
     {
-        throwError(FILE_NOT_FOUND);
+        throwError(FILE_NOT_FOUND_ERROR, "No such file or directory");
     }
     string source, line;
     while (getline(input, line))
@@ -137,7 +137,7 @@ void validateFormat(char *argv[])
     path = argv[1];
     if (path.substr(path.size() - 3) != ".qz")
     {
-        throwError(INVALID_FORMAT);
+        throwError(REFERENCE_ERROR, "Invalid file format");
     }
 }
 const bool isKeyword(string src) { return keywords.count(src); }
