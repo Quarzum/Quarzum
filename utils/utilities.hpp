@@ -1,4 +1,3 @@
-
 const map<string, __int8> keywords = {
     {"exit", 0},
     {"return", 1},
@@ -163,4 +162,18 @@ long int pow(int base, int exp)
         base *= base;
     }
     return base;
+}
+
+deque<string> variableNames;
+
+void addVar(string name)
+{
+    for (int i = 0; i < variableNames.size(); i++)
+    {
+        if (variableNames[i] == name)
+        {
+            throwError(REFERENCE_ERROR, "Variable re-initialization");
+        }
+    }
+    variableNames.push_back(name);
 }

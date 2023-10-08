@@ -55,9 +55,14 @@ enum TokenType
     STATIC,
     // Others
     IDENTIFIER,
+    // Built-in functions
     OUT,
     INPUT,
-    TYPEOF
+    TYPEOF,
+    TO_INT,
+    TO_STR,
+    TO_NUM,
+
 };
 struct Token
 {

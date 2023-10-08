@@ -58,6 +58,7 @@ public:
                     expr = parse_expr(3);
 
                     // Add an int assign with value
+                    addVar(next().value);
                     debug("INT_INIT -> id: " + next().value + ", value: " + expr.literal.value);
                     addStatement(Assign{INT_LITERAL, next(), expr}, 3 + expr.size);
                     break;
@@ -66,6 +67,7 @@ public:
                 else if (followSyntax({IDENTIFIER}))
                 {
                     // Add an int assign without value
+                    addVar(next().value);
                     debug("INT_INIT -> id: " + next().value + ", value: null");
                     addStatement(Assign{INT_LITERAL, next(), {NULL_KEYWORD, "null"}}, 2);
                     break;
@@ -80,6 +82,7 @@ public:
                     expr = parse_expr(3);
 
                     // Add an int assign with value
+                    addVar(next().value);
                     debug("STR_INIT -> id: " + next().value + ", value: " + expr.literal.value);
                     addStatement(Assign{STRING_LITERAL, next(), expr}, 3 + expr.size);
                     break;
@@ -88,6 +91,7 @@ public:
                 else if (followSyntax({IDENTIFIER}))
                 {
                     // Add an int assign without value
+                    addVar(next().value);
                     debug("STR_INIT -> id: " + next().value + ", value: null");
                     addStatement(Assign{STRING_LITERAL, next(), {NULL_KEYWORD, "null"}}, 2);
                     break;

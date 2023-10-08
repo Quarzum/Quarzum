@@ -1,3 +1,4 @@
 int i = 32 + 3 * 4
 string s = "Marcos"
+int i = 5
 exit 2
