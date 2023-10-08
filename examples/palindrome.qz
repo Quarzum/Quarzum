@@ -1,0 +1,26 @@
+/*
+
+    Example program: check if a number is palindrome
+
+*/
+
+int num = toInt(input("Enter a number: "))
+
+string s = toString(num)
+
+string reverse(string s){
+    string r
+    for(int i = 0; i < s.length; i++){
+        r += s[i]
+    }
+    return r
+}
+
+string r = reverse(s)
+
+if(s == r){
+    out("It's a palindrome number")
+}
+else{
+    out("It isn't a palindrome number")
+}
