@@ -9,7 +9,7 @@ public:
     Parser(TokenList tokens) : m_tokens(move(tokens)) {}
 
     /* String parsing procedure */
-    optional<string> parse_string(unsigned short int d = 1) {}
+    optional<string> parse_string(__int8 d = 1) {}
 
     AST parse()
     {
@@ -114,12 +114,12 @@ private:
     unsigned int i;
     AST ast;
 
-    Token next(short unsigned int distance = 1)
+    Token next(__int8 distance = 1)
     {
         /* Returns the next token in the TokenList */
         return m_tokens.get(i + distance);
     }
-    void addStatement(Statement stat, short unsigned int size = 1)
+    void addStatement(Statement stat, __int8 size = 1)
     {
         /* Adds a new statement and increments i by the number of elements of the stat */
         ast.statements.push_back(stat);
@@ -129,7 +129,7 @@ private:
     {
         /* Comproves that a sentence follows a defined syntax step by step */
         bool result = true;
-        for (int n = 0; n < syntax.size(); n++)
+        for (short n = 0; n < syntax.size(); n++)
         {
             if (next(1 + n).type != syntax.at(n))
             {
@@ -144,7 +144,7 @@ private:
         return isLiteral(t) || t == IDENTIFIER || t == NULL_KEYWORD || isBoolean(t);
     }
     /* Expr parsing procedure */
-    Expr parse_expr(unsigned short int d = 1)
+    Expr parse_expr(__int8 d = 1)
     {
         TokenType t = next(d).type;
         if (isTerm(t))
@@ -160,10 +160,10 @@ private:
         throwError(SYNTAX_ERROR, "Invalid expression");
     }
 
-    Compare parse_compare(unsigned short int d = 1)
+    Compare parse_compare(__int8 d = 1)
     {
     }
-    void checkEndOfStatement(unsigned short int d)
+    void checkEndOfStatement(__int8 d)
     {
         if (next(d).type != SEMICOLON && next(d).type != EOL)
         {
@@ -175,9 +175,8 @@ private:
         /* Adds a new assignation depending on the type */
         if (followSyntax({IDENTIFIER, EQUAL}))
         {
-            Expr expr = parse_expr(3);
-
             // Add an assign with value
+            Expr expr = parse_expr(3);
             addVar(next().value);
             debug(name + "_INIT -> id: " + next().value + ", value: " + expr.literal.value);
             checkEndOfStatement(3 + expr.size);

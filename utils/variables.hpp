@@ -3,7 +3,7 @@ deque<string> variableNames;
 void addVar(string name)
 {
     /* Adds a new variable to the list. If the variable already exists, throw an error. */
-    for (int i = 0; i < variableNames.size(); i++)
+    for (unsigned int i = 0; i < variableNames.size(); i++)
     {
         if (variableNames[i] == name)
         {
@@ -16,7 +16,7 @@ void addVar(string name)
 void removeVar(string name)
 {
     /* Remove an existing variable in the list. If the variable doesn't exists, throw an error. */
-    for (int i = 0; i < variableNames.size(); i++)
+    for (unsigned int i = 0; i < variableNames.size(); i++)
     {
         if (variableNames[i] == name)
         {

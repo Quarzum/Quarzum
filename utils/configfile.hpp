@@ -1,7 +1,7 @@
 void applyConfig(const string path)
 {
     /* TODO: Applies a config rule */
-    unsigned int i = 0;
+    unsigned short i = 0;
     string buffer;
     while (i < path.size())
     {

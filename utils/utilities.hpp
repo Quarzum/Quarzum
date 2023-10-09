@@ -135,7 +135,7 @@ void debugTokens(deque<Token> composed)
 {
     cout << "\nTokens\n-----------\n";
     /* Shows in console a list of tokens */
-    for (unsigned short int i = 0; i < composed.size(); i++)
+    for (unsigned short i = 0; i < composed.size(); i++)
     {
         cout << tokens[composed.at(i).type] << " -> " << composed.at(i).value << endl;
     }
@@ -166,9 +166,9 @@ void debug(string input)
         cout << input << endl;
     }
 }
-long int pow(int base, int exp)
+long pow(short base, short exp)
 {
-    for (unsigned short int i = 1; i <= exp; i++)
+    for (unsigned short i = 1; i <= exp; i++)
     {
         base *= base;
     }
