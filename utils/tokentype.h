@@ -14,6 +14,7 @@ enum TokenType
     NUMBER_KEYWORD,
     TRUE,
     FALSE,
+    BOOL_LITERAL,
     BOOL_KEYWORD,
     ANY_LITERAL,
     ANY_KEYWORD,

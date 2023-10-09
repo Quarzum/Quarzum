@@ -61,7 +61,9 @@ public:
                     break;
                 }
                 throwError(SYNTAX_ERROR);
-
+            case BOOL_KEYWORD:
+                addAssignation(BOOL_LITERAL, "BOOL");
+                break;
             case INT_KEYWORD:
                 addAssignation(INT_LITERAL, "INT");
                 break;
@@ -139,7 +141,7 @@ private:
     bool isTerm(TokenType t)
     {
         /* Checks if the TokenType is a valid expression term */
-        return isLiteral(t) || t == IDENTIFIER || t == NULL_KEYWORD;
+        return isLiteral(t) || t == IDENTIFIER || t == NULL_KEYWORD || isBoolean(t);
     }
     /* Expr parsing procedure */
     Expr parse_expr(unsigned short int d = 1)

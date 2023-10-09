@@ -60,7 +60,6 @@ public:
             }
             else if (ispunct(c))
             {
-                // in developement
                 if (isException())
                 {
                     addToBuffer();

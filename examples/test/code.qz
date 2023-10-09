@@ -1,7 +1,9 @@
-number i = 32.1
-int h = i - 0.1
-string s = "Marcos"
-any random = null
-delete s
-string s = "Hola"
-exit 2
+int index = 4
+
+number pi = 3.1415926535
+
+bool isTrue = true
+
+string name = "Marcos"
+
+any variable = null
