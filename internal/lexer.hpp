@@ -11,6 +11,7 @@ public:
             c = m_src.at(i);
             if (c == '\n')
             {
+                addToken(EOL, "");
                 line++;
             }
             else if (c == '"')

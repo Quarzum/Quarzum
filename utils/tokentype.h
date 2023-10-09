@@ -58,6 +58,8 @@ enum TokenType
     DELETE,
     // Others
     IDENTIFIER,
+    EOL,
+    SEMICOLON,
     // Built-in functions
     OUT,
     INPUT,

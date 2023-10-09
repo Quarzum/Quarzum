@@ -1,9 +1,6 @@
 int index = 4
-
 number pi = 3.1415926535
-
 bool isTrue = true
-
 string name = "Marcos"
-
 any variable = null
+variable = 3

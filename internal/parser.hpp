@@ -163,7 +163,13 @@ private:
     Compare parse_compare(unsigned short int d = 1)
     {
     }
-
+    void checkEndOfStatement(unsigned short int d)
+    {
+        if (next(d).type != SEMICOLON && next(d).type != EOL)
+        {
+            throwError(SYNTAX_ERROR, "Expected end of statement");
+        }
+    }
     void addAssignation(TokenType type, string name)
     {
         /* Adds a new assignation depending on the type */
@@ -174,6 +180,7 @@ private:
             // Add an assign with value
             addVar(next().value);
             debug(name + "_INIT -> id: " + next().value + ", value: " + expr.literal.value);
+            checkEndOfStatement(3 + expr.size);
             addStatement(Assign{type, next(), expr}, 3 + expr.size);
         }
         else if (followSyntax({IDENTIFIER}))
@@ -181,6 +188,7 @@ private:
             // Add an assign without value
             addVar(next().value);
             debug(name + "_INIT -> id: " + next().value + ", value: null");
+            checkEndOfStatement(3);
             addStatement(Assign{type, next(), {NULL_KEYWORD, "null"}}, 2);
         }
         else
