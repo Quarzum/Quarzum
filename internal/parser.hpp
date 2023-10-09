@@ -71,7 +71,9 @@ public:
             case STRING_KEYWORD:
                 addAssignation(STRING_LITERAL, "STR");
                 break;
-
+            case ANY_KEYWORD:
+                addAssignation(ANY_LITERAL, "ANY");
+                break;
             case IDENTIFIER:
 
                 if (followSyntax({EQUAL}))
@@ -136,7 +138,8 @@ private:
     }
     bool isTerm(TokenType t)
     {
-        return isLiteral(t) || t == IDENTIFIER;
+        /* Checks if the TokenType is a valid expression term */
+        return isLiteral(t) || t == IDENTIFIER || t == NULL_KEYWORD;
     }
     /* Expr parsing procedure */
     Expr parse_expr(unsigned short int d = 1)
@@ -161,6 +164,7 @@ private:
 
     void addAssignation(TokenType type, string name)
     {
+        /* Adds a new assignation depending on the type */
         if (followSyntax({IDENTIFIER, EQUAL}))
         {
             Expr expr = parse_expr(3);

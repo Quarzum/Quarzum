@@ -1,6 +1,7 @@
 number i = 32.1
 int h = i - 0.1
 string s = "Marcos"
+any random = null
 delete s
 string s = "Hola"
 exit 2
