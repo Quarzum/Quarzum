@@ -1,5 +1,5 @@
 number i = 32.1
-int h = 12
+int h = i - 0.1
 string s = "Marcos"
 delete s
 string s = "Hola"

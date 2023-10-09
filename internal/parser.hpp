@@ -61,77 +61,16 @@ public:
                     break;
                 }
                 throwError(SYNTAX_ERROR);
+
             case INT_KEYWORD:
-
-                if (followSyntax({IDENTIFIER, EQUAL}))
-                {
-                    expr = parse_expr(3);
-
-                    // Add an int assign with value
-                    addVar(next().value);
-                    debug("INT_INIT -> id: " + next().value + ", value: " + expr.literal.value);
-                    addStatement(Assign{INT_LITERAL, next(), expr}, 3 + expr.size);
-                    break;
-                }
-
-                else if (followSyntax({IDENTIFIER}))
-                {
-                    // Add an int assign without value
-                    addVar(next().value);
-                    debug("INT_INIT -> id: " + next().value + ", value: null");
-                    addStatement(Assign{INT_LITERAL, next(), {NULL_KEYWORD, "null"}}, 2);
-                    break;
-                }
-
-                throwError(SYNTAX_ERROR, "Expected an initializer");
-
+                addAssignation(INT_LITERAL, "INT");
+                break;
             case NUMBER_KEYWORD:
-
-                if (followSyntax({IDENTIFIER, EQUAL}))
-                {
-                    expr = parse_expr(3);
-
-                    // Add an int assign with value
-                    addVar(next().value);
-                    debug("NUMBER_INIT -> id: " + next().value + ", value: " + expr.literal.value);
-                    addStatement(Assign{NUMBER_LITERAL, next(), expr}, 3 + expr.size);
-                    break;
-                }
-
-                else if (followSyntax({IDENTIFIER}))
-                {
-                    // Add an int assign without value
-                    addVar(next().value);
-                    debug("NUMBER_INIT -> id: " + next().value + ", value: null");
-                    addStatement(Assign{NUMBER_LITERAL, next(), {NULL_KEYWORD, "null"}}, 2);
-                    break;
-                }
-
-                throwError(SYNTAX_ERROR, "Expected an initializer");
-
+                addAssignation(NUMBER_LITERAL, "NUM");
+                break;
             case STRING_KEYWORD:
-
-                if (followSyntax({IDENTIFIER, EQUAL}))
-                {
-                    expr = parse_expr(3);
-
-                    // Add an int assign with value
-                    addVar(next().value);
-                    debug("STR_INIT -> id: " + next().value + ", value: " + expr.literal.value);
-                    addStatement(Assign{STRING_LITERAL, next(), expr}, 3 + expr.size);
-                    break;
-                }
-
-                else if (followSyntax({IDENTIFIER}))
-                {
-                    // Add an int assign without value
-                    addVar(next().value);
-                    debug("STR_INIT -> id: " + next().value + ", value: null");
-                    addStatement(Assign{STRING_LITERAL, next(), {NULL_KEYWORD, "null"}}, 2);
-                    break;
-                }
-
-                throwError(SYNTAX_ERROR, "Expected an initializer");
+                addAssignation(STRING_LITERAL, "STR");
+                break;
 
             case IDENTIFIER:
 
@@ -218,5 +157,29 @@ private:
 
     Compare parse_compare(unsigned short int d = 1)
     {
+    }
+
+    void addAssignation(TokenType type, string name)
+    {
+        if (followSyntax({IDENTIFIER, EQUAL}))
+        {
+            Expr expr = parse_expr(3);
+
+            // Add an assign with value
+            addVar(next().value);
+            debug(name + "_INIT -> id: " + next().value + ", value: " + expr.literal.value);
+            addStatement(Assign{type, next(), expr}, 3 + expr.size);
+        }
+        else if (followSyntax({IDENTIFIER}))
+        {
+            // Add an assign without value
+            addVar(next().value);
+            debug(name + "_INIT -> id: " + next().value + ", value: null");
+            addStatement(Assign{type, next(), {NULL_KEYWORD, "null"}}, 2);
+        }
+        else
+        {
+            throwError(SYNTAX_ERROR, "Expected an initializer");
+        }
     }
 };
