@@ -48,6 +48,10 @@ public:
                 }
                 if (!isException() && !(isdigit(next()) || next() == '.'))
                 {
+                    if (isNum && buffer[buffer.length() - 1] == '.')
+                    {
+                        buffer += '0';
+                    }
                     addToken(isNum ? NUMBER_LITERAL : INT_LITERAL, buffer);
                     isNum = false;
                 }

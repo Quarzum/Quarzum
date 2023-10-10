@@ -11,4 +11,7 @@ void compile(string source)
     /* Pass from tokens to AST */
     Parser parser = Parser(tokens);
     AST root = parser.parse();
+    /* Optimizes AST and checks for types */
+    Analyzer analyzer = Analyzer(root);
+    AST optimized = analyzer.analyze();
 }

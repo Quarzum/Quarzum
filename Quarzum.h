@@ -4,6 +4,7 @@
 #include <deque>
 #include <experimental/optional>
 #include <map>
+#include <experimental/any>
 using namespace std;
 using namespace experimental;
 /*
@@ -30,5 +31,6 @@ using namespace experimental;
 #include "internal/lexer.hpp"
 #include "internal/parser.hpp"
 #include "internal/linker.hpp"
+#include "internal/analyzer.hpp"
 #include "internal/generator.hpp"
 #include "internal/compile.hpp"
