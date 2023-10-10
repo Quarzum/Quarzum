@@ -165,10 +165,10 @@ private:
     }
     void checkEndOfStatement(__int8 d)
     {
-        if (next(d).type != SEMICOLON && next(d).type != EOL)
-        {
-            throwError(SYNTAX_ERROR, "Expected end of statement");
-        }
+        // if (next(d).type != SEMICOLON && next(d).type != EOL)
+        // {
+        //     throwError(SYNTAX_ERROR, "Expected end of statement");
+        // }
     }
     void addAssignation(TokenType type, string name)
     {

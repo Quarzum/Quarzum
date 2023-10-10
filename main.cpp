@@ -15,7 +15,6 @@ int main(int argc, char *argv[])
     }
     validateFormat(argv);
     chechForConfigFile(argv[1]);
-    string a;
     // If all is correct, compile the source code
     compile(getSource(argv[1]));
 

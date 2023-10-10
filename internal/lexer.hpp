@@ -48,14 +48,7 @@ public:
                 }
                 if (!isException() && !(isdigit(next()) || next() == '.'))
                 {
-                    if (isNum)
-                    {
-                        addToken(NUMBER_LITERAL, buffer);
-                    }
-                    else
-                    {
-                        addToken(INT_LITERAL, buffer);
-                    }
+                    addToken(isNum ? NUMBER_LITERAL : INT_LITERAL, buffer);
                     isNum = false;
                 }
             }
