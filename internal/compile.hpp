@@ -9,8 +9,11 @@ void compile(string source)
         debugTokens(tokens.getItems());
     }
     /* Pass from tokens to AST */
+
     Parser parser = Parser(tokens);
     AST root = parser.parse();
+    cout << "HOLa" << endl;
+
     /* Optimizes AST and checks for types */
     Analyzer analyzer = Analyzer(root);
     AST optimized = analyzer.analyze();

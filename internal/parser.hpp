@@ -105,7 +105,7 @@ public:
                 break;
             }
         }
-        debugVariables();
+        // debugVariables();
         return ast;
     }
 

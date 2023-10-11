@@ -4,6 +4,7 @@ public:
     Analyzer(AST ast) : root(move(ast)) {}
     AST analyze()
     {
+        debug("\nSemantic analyzer\n----------");
         i = 0;
         while (i < size)
         {
