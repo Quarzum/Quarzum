@@ -31,7 +31,6 @@ public:
                     {
                         debug("OUT -> content: " + expr.literal.value);
                         i += expr.size;
-                        // addStatement(Exit{}, 4);
                         break;
                     }
                 }
@@ -137,11 +136,6 @@ private:
             }
         }
         return result;
-    }
-    bool isTerm(TokenType t)
-    {
-        /* Checks if the TokenType is a valid expression term */
-        return isLiteral(t) || t == IDENTIFIER || t == NULL_KEYWORD || isBoolean(t);
     }
     /* Expr parsing procedure */
     Expr parse_expr(__int8 d = 1)

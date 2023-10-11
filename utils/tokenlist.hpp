@@ -10,7 +10,7 @@ public:
     {
         return getItems().size();
     }
-    Token get(unsigned short int index)
+    Token get(short index = 1)
     {
         if (index < size())
         {

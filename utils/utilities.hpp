@@ -35,3 +35,8 @@ void debug(string input)
         cout << input << endl;
     }
 }
+bool isTerm(TokenType t)
+{
+    /* Checks if the TokenType is a valid expression term */
+    return isLiteral(t) || t == IDENTIFIER || t == NULL_KEYWORD || isBoolean(t);
+}

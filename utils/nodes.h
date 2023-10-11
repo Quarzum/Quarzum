@@ -4,7 +4,6 @@
 
 */
 struct Expr;
-struct Compare;
 
 // add -> t "+" expr
 struct Add
@@ -13,24 +12,12 @@ struct Add
     Expr *expr;
 };
 
-// size_modifier -> "x8" || "x16" || "x32" || "x64" || "x128" || "short" || "long" || "unsigned"
-struct SizeModifier
-{
-    TokenType size;
-};
-
 // expr -> <literal> || <literal> <op> <literal>
 struct Expr
 {
     Token literal;
     int size;
 };
-
-struct Compare
-{
-    Expr expr;
-};
-
 // exit -> "exit" <expr>
 struct Exit
 {

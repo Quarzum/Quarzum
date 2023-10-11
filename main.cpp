@@ -15,7 +15,6 @@ int main(int argc, char *argv[])
     }
     Source source = Source(argv[1]);
     source.validate();
-    // validateFormat(argv);
     chechForConfigFile(argv[1]);
     // If all is correct, compile the source code
     compile(source.get());

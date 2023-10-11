@@ -80,15 +80,15 @@ private:
     unsigned int size, line, i = 0;
     char c;
     bool isNum;
-    bool isEOF()
+    bool isEOF(__int8 d)
     {
         /* Returns true if m_src[i] is the final character */
-        return i + 1 > size;
+        return i + d > size;
     };
-    char next(short unsigned int distance = 1)
+    char next(__int8 distance = 1)
     {
         /* Returns the next character if it exists*/
-        if (i + distance < size)
+        if (!isEOF(distance))
         {
             return m_src.at(i + distance);
         }

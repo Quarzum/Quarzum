@@ -35,7 +35,7 @@ void debugVariables()
     if (SHOW_COMPILER_DEBUG)
     {
         cout << "\nVariables\n------------\n";
-        for (int i = 0; i < variableNames.size(); i++)
+        for (unsigned int i = 0; i < variableNames.size(); i++)
         {
             cout << variableNames[i] << endl;
         }
