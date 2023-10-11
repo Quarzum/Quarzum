@@ -13,10 +13,12 @@ int main(int argc, char *argv[])
     {
         throwError(FILE_NOT_FOUND_ERROR, "No such file or directory");
     }
-    validateFormat(argv);
+    Source source = Source(argv[1]);
+    source.validate();
+    // validateFormat(argv);
     chechForConfigFile(argv[1]);
     // If all is correct, compile the source code
-    compile(getSource(argv[1]));
+    compile(source.get());
 
     return 0;
 }

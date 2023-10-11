@@ -1,25 +1,30 @@
-const string getSource(const string path)
+class Source
 {
-    /* Reads the file and returns its content */
-    ifstream input(path);
-    if (input.fail())
+public:
+    Source(const string path) : route(move(path)) {}
+    const string get()
     {
-        throwError(FILE_NOT_FOUND_ERROR, "No such file or directory");
+        /* Reads the file and returns its content */
+        ifstream input(route);
+        if (input.fail())
+        {
+            throwError(FILE_NOT_FOUND_ERROR, "No such file or directory");
+        }
+        string source, line;
+        while (getline(input, line))
+        {
+            source += line + '\n';
+        }
+        return source;
     }
-    string source, line;
-    while (getline(input, line))
+    void validate()
     {
-        source += line + '\n';
+        if (route.substr(route.size() - 3) != ".qz")
+        {
+            throwError(REFERENCE_ERROR, "Invalid file format");
+        }
     }
-    return source;
-}
 
-void validateFormat(char *argv[])
-{
-    string path;
-    path = argv[1];
-    if (path.substr(path.size() - 3) != ".qz")
-    {
-        throwError(REFERENCE_ERROR, "Invalid file format");
-    }
-}
+private:
+    string route;
+};
