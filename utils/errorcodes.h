@@ -7,4 +7,5 @@ enum Errorcode
     SYNTAX_ERROR,
     OUT_OF_RANGE,
     ARITHMETIC_ERROR,
+    TYPE_ERROR
 };

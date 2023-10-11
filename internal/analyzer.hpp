@@ -13,17 +13,21 @@ public:
             {
                 debug("ASSIGN");
                 TokenType assignType = stat.assignContent.type;
+                TokenType exprType;
+
                 if (stat.assignContent.value.size == 1)
                 {
-                    TokenType exprType = stat.assignContent.value.literal.type;
-                    cout << tokens[assignType] << " - " << tokens[exprType] << endl;
-                    if (assignType == NUMBER_LITERAL)
+                    exprType = stat.assignContent.value.literal.type;
+                }
+
+                if (assignType == NUMBER_LITERAL)
+                {
+                    if (exprType != NUMBER_LITERAL &&
+                        exprType != INT_LITERAL &&
+                        exprType != NULL_KEYWORD)
                     {
-                        if (exprType == NUMBER_LITERAL || exprType == INT_LITERAL || exprType == NULL_KEYWORD)
-                        {
-                            cout << "NUM - " << tokens[exprType] << endl;
-                        }
-                                        }
+                        throwError(TYPE_ERROR);
+                    }
                 }
             }
             i++;

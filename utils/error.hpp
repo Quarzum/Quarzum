@@ -6,8 +6,7 @@ string errors[] = {
     "SyntaxError",
     "Out of range",
     "ArithmeticError",
-
-};
+    "TypeError"};
 
 void throwError(unsigned short int code, string description = "")
 {
