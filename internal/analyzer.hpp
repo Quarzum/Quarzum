@@ -29,6 +29,14 @@ public:
                         throwError(TYPE_ERROR);
                     }
                 }
+                if (assignType == INT_LITERAL)
+                {
+                    if (exprType != INT_LITERAL &&
+                        exprType != NULL_KEYWORD)
+                    {
+                        throwError(TYPE_ERROR);
+                    }
+                }
             }
             i++;
         }
