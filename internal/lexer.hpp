@@ -26,16 +26,7 @@ public:
                 addToBuffer();
                 if (!isException() && !isalnum(next()))
                 {
-                    if (isKeyword(buffer))
-                    {
-                        /* If the buffer is a keyword, store the correspondant token */
-                        addToken(TokenType(findKeyword(buffer)), buffer);
-                    }
-                    else
-                    {
-                        /* If it isn't, then it is an IDENTIFIER */
-                        addToken(IDENTIFIER, buffer);
-                    }
+                    addToken(isKeyword(buffer) ? TokenType(findKeyword(buffer)) : IDENTIFIER, buffer);
                 }
             }
             else if (isdigit(c) || c == '.')
@@ -61,10 +52,6 @@ public:
                 {
                     addToBuffer();
                 }
-                else if (c == '=')
-                {
-                    addToken(EQUAL, "=");
-                }
                 else if (isOperator(c))
                 {
                     addToken(OPERATOR, toString(c));
@@ -72,6 +59,10 @@ public:
                 else if (isSymbol(c))
                 {
                     addToken(TokenType(symbols.at(c)), toString(c));
+                }
+                else
+                {
+                    throwError(LEXICAL_ERROR, "Unexpected token " + c);
                 }
             }
             else if (!isException() && !isspace(c))
