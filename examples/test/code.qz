@@ -1,5 +1,1 @@
-int i = 4 * 23
-number pi = 3.
-bool hola = true
-string name = "Marcos"
-any gazpacho = null
+num pi = 3

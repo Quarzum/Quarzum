@@ -12,7 +12,6 @@ void compile(string source)
 
     Parser parser = Parser(tokens);
     AST root = parser.parse();
-    cout << "HOLa" << endl;
 
     /* Optimizes AST and checks for types */
     Analyzer analyzer = Analyzer(root);

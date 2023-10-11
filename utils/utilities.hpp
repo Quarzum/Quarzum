@@ -5,7 +5,7 @@ const map<string, __int8> keywords = {
     {"from", 3},
     {"int", 5},
     {"string", 7},
-    {"number", 9},
+    {"num", 9},
     {"true", 10},
     {"false", 11},
     {"bool", 13},
