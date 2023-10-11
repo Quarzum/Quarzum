@@ -159,25 +159,20 @@ private:
         }
         throwError(SYNTAX_ERROR, "Invalid expression");
     }
-
-    Compare parse_compare(__int8 d = 1)
-    {
-    }
     void addAssignation(TokenType type, string name)
     {
+        addVar(next().value);
         /* Adds a new assignation depending on the type */
         if (followSyntax({IDENTIFIER, EQUAL}))
         {
             // Add an assign with value
             Expr expr = parse_expr(3);
-            addVar(next().value);
             debug(name + "_INIT -> id: " + next().value + ", value: " + expr.literal.value);
             addStatement(Assign{type, next(), expr}, 3 + expr.size);
         }
         else if (followSyntax({IDENTIFIER}))
         {
             // Add an assign without value
-            addVar(next().value);
             debug(name + "_INIT -> id: " + next().value + ", value: null");
             addStatement(Assign{type, next(), {NULL_KEYWORD, "null"}}, 2);
         }

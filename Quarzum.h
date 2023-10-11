@@ -20,6 +20,9 @@ using namespace experimental;
 #include "utils/statement.hpp"
 #include "utils/config.h"
 #include "utils/variables.hpp"
+#include "utils/tokens.hpp"
+#include "utils/keywords.hpp"
+#include "utils/source.hpp"
 #include "utils/utilities.hpp"
 #include "utils/configfile.hpp"
 /*
