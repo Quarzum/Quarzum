@@ -20,18 +20,18 @@ public:
                     exprType = stat.assignContent.value.literal.type;
                 }
 
-                if (assignType == NUMBER_LITERAL)
+                if (assignType == NUMBER)
                 {
-                    if (exprType != NUMBER_LITERAL &&
-                        exprType != INT_LITERAL &&
+                    if (exprType != NUMBER &&
+                        exprType != INT &&
                         exprType != NULL_KEYWORD)
                     {
                         errorHandler.exit(TYPE_ERROR);
                     }
                 }
-                if (assignType == INT_LITERAL)
+                if (assignType == INT)
                 {
-                    if (exprType != INT_LITERAL &&
+                    if (exprType != INT &&
                         exprType != NULL_KEYWORD)
                     {
                         errorHandler.exit(TYPE_ERROR);

@@ -61,19 +61,19 @@ public:
                 }
                 errorHandler.exit(SYNTAX_ERROR);
             case BOOL_KEYWORD:
-                addAssignation(BOOL_LITERAL, "BOOL");
+                addAssignation(BOOL, "BOOL");
                 break;
             case INT_KEYWORD:
-                addAssignation(INT_LITERAL, "INT");
+                addAssignation(INT, "INT");
                 break;
             case NUMBER_KEYWORD:
-                addAssignation(NUMBER_LITERAL, "NUM");
+                addAssignation(NUMBER, "NUM");
                 break;
             case STRING_KEYWORD:
-                addAssignation(STRING_LITERAL, "STR");
+                addAssignation(STRING, "STR");
                 break;
             case ANY_KEYWORD:
-                addAssignation(ANY_LITERAL, "ANY");
+                addAssignation(ANY, "ANY");
                 break;
             case IDENTIFIER:
 

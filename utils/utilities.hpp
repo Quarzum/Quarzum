@@ -18,7 +18,7 @@ const map<char, __int8> symbols = {
 const bool isOperator(char value) { return (value == '+' || value == '-' || value == '*' || value == '/' || value == '%' || value == '^'); };
 const bool isComparator(char value) { return (value == '<' || value == '>'); }
 const bool isSizeModifier(string value) { return (value == "x8" || value == "x16" || value == "x32" || value == "x64"); };
-const bool isLiteral(TokenType type) { return (type == INT_LITERAL || type == NUMBER_LITERAL || type == STRING_LITERAL); }
+const bool isLiteral(TokenType type) { return (type == INT || type == NUMBER || type == STRING); }
 const bool isBoolean(TokenType type) { return (type == TRUE || type == FALSE); }
 const bool isSymbol(char src) { return symbols.count(src); }
 string toString(char c)

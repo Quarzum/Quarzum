@@ -18,7 +18,7 @@ public:
                 addToBuffer();
                 if (isException() && buffer.length() > 1)
                 {
-                    addToken(STRING_LITERAL, buffer);
+                    addToken(STRING, buffer);
                 }
             }
             else if (isalpha(c))
@@ -42,7 +42,7 @@ public:
                     {
                         buffer += '0';
                     }
-                    addToken(isNum ? NUMBER_LITERAL : INT_LITERAL, buffer);
+                    addToken(isNum ? NUMBER : INT, buffer);
                     isNum = false;
                 }
             }
