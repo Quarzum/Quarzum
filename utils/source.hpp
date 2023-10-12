@@ -4,7 +4,11 @@ public:
     Source(const string path) : route(move(path)) {}
     const string get()
     {
-        /* Reads the file and returns its content */
+        /*
+
+        Reads the file and returns its content
+
+        */
         ifstream input(route);
         if (input.fail())
         {
@@ -20,6 +24,11 @@ public:
     }
     void validate()
     {
+        /*
+
+        Checks that the file is in a Quarzum able format
+
+        */
         if (route.substr(route.size() - 3) != ".qz")
         {
             errorHandler.exit(REFERENCE_ERROR, "Invalid file format");
@@ -32,4 +41,5 @@ private:
     deque<int> jumps;
 };
 
+// Initialize the source
 static Source src = Source("");

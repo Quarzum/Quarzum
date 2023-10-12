@@ -49,14 +49,14 @@ public:
 
             case EXIT:
                 expr = parse_expr();
-                // Add an int assign with value
+                // Add an exit expression
                 debug("EXIT -> code: " + expr.literal.value);
                 addStatement(Exit{expr}, 1 + expr.size);
                 break;
 
             case RETURN:
                 expr = parse_expr();
-                // Add an int assign with value
+                // Add a return expression
                 debug("RETURN -> value: " + expr.literal.value);
                 addStatement(Return{expr}, 1 + expr.size);
                 break;
@@ -72,6 +72,11 @@ public:
                 }
                 errorHandler.exit(SYNTAX_ERROR);
 
+            /*
+
+            Add a new assignation based on the type
+
+            */
             case BOOL_KEYWORD:
                 addAssignation(BOOL, "BOOL");
                 break;
@@ -98,7 +103,7 @@ public:
                 {
                     expr = parse_expr(2);
 
-                    // Add an int assign with value
+                    // Add a reassign with value
                     debug("REASSIGN -> id: " + next(0).value + ", new value: " + expr.literal.value);
                     addStatement(ReAssign{next(), expr}, 2 + expr.size);
                     break;
@@ -107,7 +112,7 @@ public:
                 else if (followSyntax({OPERATOR, EQUAL}))
                 {
                     expr = parse_expr(3);
-                    // Add an int assign with value
+                    // Add a reassign with value
                     debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + next().value + expr.literal.value);
                     addStatement(ReAssign{next(), expr}, 3 + expr.size);
                     break;
@@ -143,23 +148,40 @@ private:
 
     Token next(__int8 distance = 1)
     {
-        /* Returns the next token in the TokenList */
+        /*
+
+        Returns the next token in the TokenList
+
+        */
         return m_tokens.get(i + distance);
     }
     void addStatement(Statement stat, __int8 size = 1)
     {
-        /* Adds a new statement and increments i by the number of elements of the stat */
+        /*
+
+        Adds a new statement and increments i by the number of elements of the stat
+
+        */
         ast.statements.push_back(stat);
         i += size;
     }
     void addUnaryExpr(string value, string op)
     {
+        /*
+
+        Adds a new unary reassign (i++ <-> i += 1, i-- <-> i -= 1)
+
+        */
         debug("REASSIGN -> id: " + value + ", new value: " + value + " " + op + " 1");
         addStatement(ReAssign{next(), Expr{INT, value + " " + op + " 1"}}, 3);
     }
     bool followSyntax(deque<TokenType> syntax)
     {
-        /* Comproves that a sentence follows a defined syntax step by step */
+        /*
+
+        Checks that a sentence follows a defined syntax step by step
+
+        */
         bool result = true;
         for (short n = 0; n < syntax.size(); n++)
         {
@@ -170,7 +192,11 @@ private:
         }
         return result;
     }
-    /* Expr parsing procedure */
+    /*
+
+    Expression parsing procedure
+
+    */
     Expr parse_expr(__int8 d = 1)
     {
         TokenType t = next(d).type;
@@ -189,7 +215,11 @@ private:
     void addAssignation(TokenType type, string name)
     {
         variableStack.add(next().value);
-        /* Adds a new assignation depending on the type */
+        /*
+
+        Adds a new assignation depending on the type
+
+        */
         if (followSyntax({IDENTIFIER, EQUAL}))
         {
             // Add an assign with value

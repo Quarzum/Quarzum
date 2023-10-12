@@ -16,6 +16,11 @@ public:
     Error() {}
     void exit(__int8 code, string description = "")
     {
+        /*
+
+        Throws an error and stops the program
+
+        */
         cerr << errors[code] << ":\n    " << description << " - Error code: " << code << endl;
         abort();
     }

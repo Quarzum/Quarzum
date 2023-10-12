@@ -4,7 +4,11 @@ public:
     Lexer(string source) : m_src(move(source)) {}
     TokenList tokenize()
     {
-        /* Divides the string into single tokens */
+        /*
+
+        Divides the string into single tokens
+
+        */
         size = m_src.length();
         while (i < size)
         {
@@ -82,12 +86,20 @@ private:
     bool isNum;
     bool isEOF(__int8 d)
     {
-        /* Returns true if m_src[i] is the final character */
+        /*
+
+        Returns true if m_src[i] is the final character
+
+        */
         return i + d > size;
     };
     char next(__int8 distance = 1)
     {
-        /* Returns the next character if it exists*/
+        /*
+
+        Returns the next character if it exists
+
+        */
         if (!isEOF(distance))
         {
             return m_src.at(i + distance);
@@ -96,13 +108,21 @@ private:
     }
     void addToken(TokenType type, string value)
     {
-        /* Adds a new token to the deque */
+        /*
+
+        Adds a new token to the deque
+
+        */
         tokens.addToken(type, value);
         buffer.clear();
     }
     bool isException()
     {
-        /* Returns if the begin of the buffer is a quote */
+        /*
+
+        Returns if the begin of the buffer is a quote
+
+        */
         return buffer[0] == '"';
     }
     void addToBuffer()
