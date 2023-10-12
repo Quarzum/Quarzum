@@ -8,9 +8,6 @@ class Parser
 public:
     Parser(TokenList tokens) : m_tokens(move(tokens)) {}
 
-    /* String parsing procedure */
-    optional<string> parse_string(__int8 d = 1) {}
-
     AST parse()
     {
         i = 0;
@@ -35,6 +32,7 @@ public:
                     }
                 }
                 errorHandler.exit(SYNTAX_ERROR, "Expected string");
+
             case INPUT:
                 if (followSyntax({PAR_OPEN}))
                 {
@@ -48,6 +46,7 @@ public:
                     }
                 }
                 errorHandler.exit(SYNTAX_ERROR, "Expected string");
+
             case EXIT:
                 expr = parse_expr();
                 // Add an int assign with value
@@ -72,21 +71,27 @@ public:
                     break;
                 }
                 errorHandler.exit(SYNTAX_ERROR);
+
             case BOOL_KEYWORD:
                 addAssignation(BOOL, "BOOL");
                 break;
+
             case INT_KEYWORD:
                 addAssignation(INT, "INT");
                 break;
+
             case NUMBER_KEYWORD:
                 addAssignation(NUMBER, "NUM");
                 break;
+
             case STRING_KEYWORD:
                 addAssignation(STRING, "STR");
                 break;
+
             case ANY_KEYWORD:
                 addAssignation(ANY, "ANY");
                 break;
+
             case IDENTIFIER:
 
                 if (followSyntax({EQUAL}))
@@ -101,25 +106,25 @@ public:
 
                 else if (followSyntax({OPERATOR, EQUAL}))
                 {
-
                     expr = parse_expr(3);
                     // Add an int assign with value
                     debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + next().value + expr.literal.value);
                     addStatement(ReAssign{next(), expr}, 3 + expr.size);
                     break;
                 }
+
                 else if (next().value == "+" && next(2).value == "+")
                 {
-                    debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + " + 1");
-                    addStatement(ReAssign{next(), Expr{INT, next(0).value + " + 1"}}, 3);
+                    addUnaryExpr(next(0).value, "+");
                     break;
                 }
+
                 else if (next().value == "-" && next(2).value == "-")
                 {
-                    debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + " - 1");
-                    addStatement(ReAssign{next(), Expr{INT, next(0).value + " - 1"}}, 3);
+                    addUnaryExpr(next(0).value, "-");
                     break;
                 }
+
                 errorHandler.exit(SYNTAX_ERROR, "Expected assignation");
 
             default:
@@ -146,6 +151,11 @@ private:
         /* Adds a new statement and increments i by the number of elements of the stat */
         ast.statements.push_back(stat);
         i += size;
+    }
+    void addUnaryExpr(string value, string op)
+    {
+        debug("REASSIGN -> id: " + value + ", new value: " + value + " " + op + " 1");
+        addStatement(ReAssign{next(), Expr{INT, value + " " + op + " 1"}}, 3);
     }
     bool followSyntax(deque<TokenType> syntax)
     {
