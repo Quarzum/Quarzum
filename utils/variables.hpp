@@ -10,7 +10,7 @@ public:
         {
             if (stack[i] == name)
             {
-                throwError(REFERENCE_ERROR, "Variable re-initialization");
+                errorHandler.exit(REFERENCE_ERROR, "Variable re-initialization");
             }
         }
         stack.push_back(name);
@@ -26,7 +26,7 @@ public:
             }
             else if (i == stack.size() - 1)
             {
-                throwError(REFERENCE_ERROR, "Variable " + name + " doesn't exists");
+                errorHandler.exit(REFERENCE_ERROR, "Variable " + name + " doesn't exists");
             }
         }
     }

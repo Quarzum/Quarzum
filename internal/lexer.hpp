@@ -62,12 +62,12 @@ public:
                 }
                 else
                 {
-                    throwError(LEXICAL_ERROR, "Unexpected token " + c);
+                    errorHandler.exit(LEXICAL_ERROR, "Unexpected token " + c);
                 }
             }
             else if (!isException() && !isspace(c))
             {
-                throwError(LEXICAL_ERROR, "Unexpected token " + toString(c) + " at line " + to_string(line));
+                errorHandler.exit(LEXICAL_ERROR, "Unexpected token " + toString(c) + " at line " + to_string(line));
             }
             i++;
         }

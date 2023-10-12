@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     */
     if (argc < 2)
     {
-        throwError(FILE_NOT_FOUND_ERROR, "No such file or directory");
+        errorHandler.exit(FILE_NOT_FOUND_ERROR, "No such file or directory");
     }
     // Source source = Source(argv[1]);
     src.route = argv[1];

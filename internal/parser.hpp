@@ -34,7 +34,7 @@ public:
                         break;
                     }
                 }
-                throwError(SYNTAX_ERROR, "Expected string");
+                errorHandler.exit(SYNTAX_ERROR, "Expected string");
 
             case EXIT:
                 expr = parse_expr();
@@ -59,7 +59,7 @@ public:
                     i += 2;
                     break;
                 }
-                throwError(SYNTAX_ERROR);
+                errorHandler.exit(SYNTAX_ERROR);
             case BOOL_KEYWORD:
                 addAssignation(BOOL_LITERAL, "BOOL");
                 break;
@@ -97,7 +97,7 @@ public:
                     break;
                 }
 
-                throwError(SYNTAX_ERROR, "Expected assignation");
+                errorHandler.exit(SYNTAX_ERROR, "Expected assignation");
 
             default:
                 i++;
@@ -151,7 +151,7 @@ private:
             }
             return Expr{{t, next(d).value}, 1};
         }
-        throwError(SYNTAX_ERROR, "Invalid expression");
+        errorHandler.exit(SYNTAX_ERROR, "Invalid expression");
     }
     void addAssignation(TokenType type, string name)
     {
@@ -172,7 +172,7 @@ private:
         }
         else
         {
-            throwError(SYNTAX_ERROR, "Expected an initializer");
+            errorHandler.exit(SYNTAX_ERROR, "Expected an initializer");
         }
     }
 };

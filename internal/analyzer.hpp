@@ -26,7 +26,7 @@ public:
                         exprType != INT_LITERAL &&
                         exprType != NULL_KEYWORD)
                     {
-                        throwError(TYPE_ERROR);
+                        errorHandler.exit(TYPE_ERROR);
                     }
                 }
                 if (assignType == INT_LITERAL)
@@ -34,7 +34,7 @@ public:
                     if (exprType != INT_LITERAL &&
                         exprType != NULL_KEYWORD)
                     {
-                        throwError(TYPE_ERROR);
+                        errorHandler.exit(TYPE_ERROR);
                     }
                 }
             }
