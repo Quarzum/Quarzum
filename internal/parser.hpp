@@ -108,7 +108,18 @@ public:
                     addStatement(ReAssign{next(), expr}, 3 + expr.size);
                     break;
                 }
-
+                else if (next().value == "+" && next(2).value == "+")
+                {
+                    debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + " + 1");
+                    addStatement(ReAssign{next(), Expr{INT, next(0).value + " + 1"}}, 3);
+                    break;
+                }
+                else if (next().value == "-" && next(2).value == "-")
+                {
+                    debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + " - 1");
+                    addStatement(ReAssign{next(), Expr{INT, next(0).value + " - 1"}}, 3);
+                    break;
+                }
                 errorHandler.exit(SYNTAX_ERROR, "Expected assignation");
 
             default:
