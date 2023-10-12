@@ -1,2 +1,2 @@
-num pi = 3
+input("Number...")
 int i  = 2

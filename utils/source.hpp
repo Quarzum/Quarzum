@@ -11,6 +11,7 @@ public:
             errorHandler.exit(FILE_NOT_FOUND_ERROR, "No such file or directory");
         }
         string source, line;
+        int index = 0;
         while (getline(input, line))
         {
             source += line + '\n';
@@ -24,7 +25,11 @@ public:
             errorHandler.exit(REFERENCE_ERROR, "Invalid file format");
         }
     }
+
     string route;
+
+private:
+    deque<int> jumps;
 };
 
 static Source src = Source("");

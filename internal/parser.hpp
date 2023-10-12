@@ -35,7 +35,19 @@ public:
                     }
                 }
                 errorHandler.exit(SYNTAX_ERROR, "Expected string");
-
+            case INPUT:
+                if (followSyntax({PAR_OPEN}))
+                {
+                    expr = parse_expr(2);
+                    // Add an input instruction
+                    if (next(3).type == PAR_CLOSE)
+                    {
+                        debug("OUT -> content: " + expr.literal.value);
+                        i += expr.size;
+                        break;
+                    }
+                }
+                errorHandler.exit(SYNTAX_ERROR, "Expected string");
             case EXIT:
                 expr = parse_expr();
                 // Add an int assign with value

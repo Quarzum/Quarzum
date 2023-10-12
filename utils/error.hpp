@@ -9,7 +9,7 @@ enum Errorcode
     ARITHMETIC_ERROR,
     TYPE_ERROR
 };
-
+void abort() { exit(EXIT_FAILURE); }
 class Error
 {
 public:
@@ -17,7 +17,7 @@ public:
     void exit(__int8 code, string description = "")
     {
         cerr << errors[code] << ":\n    " << description << " - Error code: " << code << endl;
-        exit(EXIT_FAILURE);
+        abort();
     }
 
 private:
