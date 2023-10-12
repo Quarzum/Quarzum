@@ -13,11 +13,12 @@ int main(int argc, char *argv[])
     {
         throwError(FILE_NOT_FOUND_ERROR, "No such file or directory");
     }
-    Source source = Source(argv[1]);
-    source.validate();
+    // Source source = Source(argv[1]);
+    src.route = argv[1];
+    src.validate();
     chechForConfigFile(argv[1]);
     // If all is correct, compile the source code
-    compile(source.get());
+    compile(src.get());
 
     return 0;
 }

@@ -24,7 +24,7 @@ public:
             throwError(REFERENCE_ERROR, "Invalid file format");
         }
     }
-
-private:
     string route;
 };
+
+static Source src = Source("");

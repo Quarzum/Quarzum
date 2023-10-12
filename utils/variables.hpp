@@ -1,43 +1,47 @@
-deque<string> variableNames;
-
-void addVar(string name)
+class VariableStack
 {
-    /* Adds a new variable to the list. If the variable already exists, throw an error. */
-    for (unsigned int i = 0; i < variableNames.size(); i++)
+public:
+    VariableStack() {}
+    deque<string> stack;
+    void add(string name)
     {
-        if (variableNames[i] == name)
+        /* Adds a new variable to the list. If the variable already exists, throw an error. */
+        for (unsigned int i = 0; i < stack.size(); i++)
         {
-            throwError(REFERENCE_ERROR, "Variable re-initialization");
+            if (stack[i] == name)
+            {
+                throwError(REFERENCE_ERROR, "Variable re-initialization");
+            }
+        }
+        stack.push_back(name);
+    }
+    void remove(string name)
+    {
+        /* Remove an existing variable in the list. If the variable doesn't exists, throw an error. */
+        for (unsigned int i = 0; i < stack.size(); i++)
+        {
+            if (stack[i] == name)
+            {
+                stack.erase(stack.begin() + 2);
+            }
+            else if (i == stack.size() - 1)
+            {
+                throwError(REFERENCE_ERROR, "Variable " + name + " doesn't exists");
+            }
         }
     }
-    variableNames.push_back(name);
-}
-
-void removeVar(string name)
-{
-    /* Remove an existing variable in the list. If the variable doesn't exists, throw an error. */
-    for (unsigned int i = 0; i < variableNames.size(); i++)
+    void debug()
     {
-        if (variableNames[i] == name)
+        /* Show in console the list of existing variables at the end of the parsing */
+        if (SHOW_COMPILER_DEBUG)
         {
-            variableNames.erase(variableNames.begin() + 2);
-        }
-        else if (i == variableNames.size() - 1)
-        {
-            throwError(REFERENCE_ERROR, "Variable " + name + " doesn't exists");
+            cout << "\nVariables\n------------\n";
+            for (unsigned int i = 0; i < stack.size(); i++)
+            {
+                cout << stack[i] << endl;
+            }
         }
     }
-}
+};
 
-void debugVariables()
-{
-    /* Show in console the list of existing variables at the end of the parsing */
-    if (SHOW_COMPILER_DEBUG)
-    {
-        cout << "\nVariables\n------------\n";
-        for (unsigned int i = 0; i < variableNames.size(); i++)
-        {
-            cout << variableNames[i] << endl;
-        }
-    }
-}
+static VariableStack variableStack = VariableStack();

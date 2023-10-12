@@ -54,7 +54,7 @@ public:
                 if (followSyntax({IDENTIFIER}))
                 {
                     // Removes an existing variable
-                    removeVar(next().value);
+                    variableStack.remove(next().value);
                     debug("DELETE -> id: " + next().value);
                     i += 2;
                     break;
@@ -155,7 +155,7 @@ private:
     }
     void addAssignation(TokenType type, string name)
     {
-        addVar(next().value);
+        variableStack.add(next().value);
         /* Adds a new assignation depending on the type */
         if (followSyntax({IDENTIFIER, EQUAL}))
         {
