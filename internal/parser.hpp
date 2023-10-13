@@ -143,7 +143,7 @@ public:
 
 private:
     TokenList m_tokens;
-    unsigned int i;
+    uint8_t i;
     AST ast;
 
     Token next(__int8 distance = 1)
@@ -183,7 +183,7 @@ private:
 
         */
         bool result = true;
-        for (short n = 0; n < syntax.size(); n++)
+        for (uint16_t n = 0; n < syntax.size(); n++)
         {
             if (next(1 + n).type != syntax.at(n))
             {

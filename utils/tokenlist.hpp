@@ -20,7 +20,7 @@ public:
         */
         return getItems().size();
     }
-    Token get(short index = 1)
+    Token get(uint16_t index = 1)
     {
         /*
 

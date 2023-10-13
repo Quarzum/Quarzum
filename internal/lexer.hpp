@@ -84,7 +84,7 @@ private:
     unsigned int size, line, i = 0;
     char c;
     bool isNum;
-    bool isEOF(__int8 d)
+    bool isEOF(uint8_t d)
     {
         /*
 

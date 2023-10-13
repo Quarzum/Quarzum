@@ -16,6 +16,7 @@ using namespace experimental;
 #include "utils/tokentype.h"
 #include "utils/tokenlist.hpp"
 #include "utils/nodes.h"
+#include "utils/ast.hpp"
 #include "utils/statement.hpp"
 #include "utils/config.h"
 #include "utils/variables.hpp"

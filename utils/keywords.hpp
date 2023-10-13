@@ -1,4 +1,4 @@
-const map<string, __int8> keywords = {
+const map<string, uint8_t> keywords = {
     {"exit", 0},
     {"return", 1},
     {"import", 2},

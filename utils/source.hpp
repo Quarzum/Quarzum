@@ -15,7 +15,7 @@ public:
             errorHandler.exit(FILE_NOT_FOUND_ERROR, "No such file or directory");
         }
         string source, line;
-        int index = 0;
+        unsigned int index = 0;
         while (getline(input, line))
         {
             source += line + '\n';
