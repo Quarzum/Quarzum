@@ -197,7 +197,8 @@ private:
     Expression parsing procedure
 
     */
-    Expr parse_expr(__int8 d = 1)
+    Expr
+    parse_expr(__int8 d = 1)
     {
         TokenType t = next(d).type;
         if (isTerm(t))
