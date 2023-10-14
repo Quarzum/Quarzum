@@ -20,8 +20,9 @@ using namespace experimental;
 #include "utils/tokentype.h"
 #include "utils/tokenlist.hpp"
 #include "utils/nodes.h"
-#include "utils/ast.hpp"
 #include "utils/statement.hpp"
+#include "utils/ast.hpp"
+
 #include "utils/config.h"
 #include "utils/variables.hpp"
 #include "utils/tokens.hpp"
@@ -38,6 +39,5 @@ using namespace experimental;
 #include "internal/lexer.hpp"
 #include "internal/parser.hpp"
 #include "internal/linker.hpp"
-#include "internal/analyzer.hpp"
 #include "internal/generator.hpp"
 #include "internal/compile.hpp"

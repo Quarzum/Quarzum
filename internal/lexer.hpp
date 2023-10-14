@@ -6,7 +6,7 @@ public:
     {
         /*
 
-        Divides the string into single tokens
+        Divides the string into tokens
 
         */
         size = m_src.length();

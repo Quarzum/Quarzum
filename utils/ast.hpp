@@ -1,74 +1,25 @@
-struct Stmt;
-struct Expression;
-
-enum StmtType
+class AST
 {
-    STMT_NONE,
-
-    STMT_GLOBAL_DECL,
-    STMT_FUNCTION_DECL,
-
-    STMT_IF,
-    STMT_WHILE,
-    STMT_FOR,
-    STMT_SWITCH,
-    STMT_CASE,
-    STMT_DEFAULT,
-    STMT_BREAK,
-    STMT_CONTINUE,
-
-    STMT_RETURN,
-    STMT_EXIT
-};
-struct DeclFlags
-{
-    bool isConst;
-};
-struct Expression
-{
-    unsigned int size;
-};
-
-struct StmtGroup
-{
-    Stmt **kids;
-    uint32_t count;
-};
-
-struct StmtDecl
-{
-    TokenType type;
-    DeclFlags flags;
-    string name;
-    Expression expr;
-};
-
-struct StmtReturn
-{
-    Expression expr;
-};
-
-struct StmtExit
-{
-    Expression expr;
-};
-
-struct StmtIf
-{
-    Expression condition;
-    Stmt *body;
-};
-
-struct Stmt
-{
-
-    StmtType type;
-    union
+public:
+    AST() {}
+    int size()
     {
-        StmtGroup _group;
-        StmtReturn _return;
-        StmtExit _exit;
-        StmtIf _if;
+        return childcount;
+    }
+
+    deque<Statement> getParent()
+    {
+        return nodes;
     };
-    ~Stmt() {}
+
+    void addIntInit(Token name, Expr value = Expr{})
+    {
+        nodes.push_back(Assign{INT, name, value});
+    }
+
+private:
+    int childcount;
+    deque<Statement> nodes;
 };
+
+static AST ast = AST();

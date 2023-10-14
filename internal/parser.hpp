@@ -1,14 +1,10 @@
-struct AST
-{
-    deque<Statement> statements;
-};
 
 class Parser
 {
 public:
     Parser(TokenList tokens) : m_tokens(move(tokens)) {}
 
-    AST parse()
+    void parse()
     {
         i = 0;
         debug("Statements\n-------------");
@@ -138,13 +134,11 @@ public:
             }
         }
         // debugVariables();
-        return ast;
     }
 
 private:
     TokenList m_tokens;
     uint8_t i;
-    AST ast;
 
     Token next(__int8 distance = 1)
     {
@@ -162,7 +156,7 @@ private:
         Adds a new statement and increments i by the number of elements of the stat
 
         */
-        ast.statements.push_back(stat);
+        // ast.statements.push_back(stat);
         i += size;
     }
     void addUnaryExpr(string value, string op)
@@ -226,13 +220,15 @@ private:
             // Add an assign with value
             Expr expr = parse_expr(3);
             debug(name + "_INIT -> id: " + next().value + ", value: " + expr.literal.value);
-            addStatement(Assign{type, next(), expr}, 3 + expr.size);
+            ast.addIntInit(next(), expr);
+            i += 3 + expr.size;
         }
         else if (followSyntax({IDENTIFIER}))
         {
             // Add an assign without value
             debug(name + "_INIT -> id: " + next().value + ", value: null");
-            addStatement(Assign{type, next(), {NULL_KEYWORD, "null"}}, 2);
+            ast.addIntInit(next());
+            i += 2;
         }
         else
         {

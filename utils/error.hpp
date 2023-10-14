@@ -9,7 +9,7 @@ enum Errorcode
     ARITHMETIC_ERROR,
     TYPE_ERROR
 };
-void abort() { exit(EXIT_FAILURE); }
+
 class ErrorComponent
 {
 public:
@@ -35,6 +35,7 @@ private:
         "Out of range",
         "ArithmeticError",
         "TypeError"};
+    void abort() { exit(EXIT_FAILURE); }
 };
 
-ErrorComponent Error = ErrorComponent();
+static ErrorComponent Error = ErrorComponent();

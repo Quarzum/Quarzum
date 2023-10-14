@@ -29,7 +29,7 @@ const map<string, uint8_t> keywords = {
     {"static", 49},
     {"delete", 50},
     {"out", 54},
-    {"input", 56},
+    {"input", 55},
     {"typeOf", 56},
 };
 const __int8 findKeyword(string keyword) { return keywords.at(keyword); }
