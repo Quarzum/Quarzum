@@ -16,8 +16,20 @@ public:
             }
             else if (strcmp(args[i], "-init") == 0)
             {
+                cout << "Creating a new project..." << endl;
+                ofstream program("main.qz");
+                ofstream configfile("main.config.qz");
+                if (_mkdir("modules") == 0)
+                {
+                    cout << "Project created successfully" << endl;
+                    program.close();
+                    configfile.close();
+                }
+                else
+                {
+                    errorHandler.exit(RUNTIME_ERROR, "Error creating a new project: unable to make directories");
+                }
             }
-            cout << "\n";
         }
     }
     char *output()
@@ -34,6 +46,11 @@ private:
     char **args;
     int8_t argc;
     int8_t o_index = 1;
+
+    bool isArg(string str)
+    {
+        return str.front() != '-';
+    }
 };
 
 CLI quarzumCLI = CLI();
