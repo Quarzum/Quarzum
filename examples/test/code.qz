@@ -1,6 +1,5 @@
-module Program
-int i = 2
-bool hola
+int i = 2 + 1
+bool hola = true > false
 i = 4
 i++
 i--

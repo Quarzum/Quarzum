@@ -38,5 +38,9 @@ void debug(string input)
 // Checks if the TokenType is a valid expression term
 bool isTerm(TokenType t)
 {
-    return isLiteral(t) || t == IDENTIFIER || t == NULL_KEYWORD || isBoolean(t);
+    return isLiteral(t) || t == IDENTIFIER || t == NULL_KEYWORD;
+}
+bool isBool(TokenType t)
+{
+    return t == IDENTIFIER || isBoolean(t);
 }

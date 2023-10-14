@@ -128,11 +128,6 @@ public:
 
                 Error.exit(SYNTAX_ERROR, "Expected assignation");
 
-            case MODULE_KEYWORD:
-                debug("MODULE -> " + next().value + " :");
-                insideModule = true;
-                i += 2;
-                break;
             default:
                 i++;
                 break;
@@ -141,7 +136,6 @@ public:
         // debugVariables();
     }
     unsigned short i;
-    bool insideModule = false;
 
 private:
     TokenList m_tokens;
@@ -187,16 +181,43 @@ private:
         Error.exit(SYNTAX_ERROR, "Invalid expression");
         return {};
     }
+    // Expression parsing procedure
+    Cond parse_cond(short d = 1)
+    {
+        TokenType t = next(d).type;
+        if (isBool(t))
+        {
+            if (isComparator(next(d + 1).value[0]))
+            {
+                Cond expr = parse_cond(d + 2);
+                // If the expression exists, it is (actually) a sum
+                return Cond{{t, next(d).value + " " + next(d + 1).value[0] + " " + expr.literal.value}, 1 + expr.size};
+            }
+            return Cond{{t, next(d).value}, 1};
+        }
+        Error.exit(SYNTAX_ERROR, "Invalid expression");
+        return {};
+    }
+
     // Adds a new assignation depending on the type
     void addAssignation(TokenType type)
     {
         VariableStack.add(next().value);
         if (followSyntax({IDENTIFIER, EQUAL}))
         {
-            // Add an assign with value
-            Expr expr = parse_expr(3);
-            ast.addInit(type, next().value, expr);
-            i += 3 + expr.size;
+            if (type == BOOL)
+            {
+                Cond cond = parse_cond(3);
+                ast.addCond(next().value, cond);
+                i += 3 + cond.size;
+            }
+            else
+            {
+                // Add an assign with value
+                Expr expr = parse_expr(3);
+                ast.addInit(type, next().value, expr);
+                i += 3 + expr.size;
+            }
         }
         else if (followSyntax({IDENTIFIER}))
         {

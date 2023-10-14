@@ -5,6 +5,12 @@ struct Expr
     Token literal;
     int size;
 };
+// cond -> <bool> || <bool> <c_op> <bool>
+struct Cond
+{
+    Token literal;
+    int size;
+};
 // exit -> "exit" <expr>
 struct Exit
 {
@@ -21,7 +27,7 @@ struct Assign
 {
     TokenType type;
     string id;
-    Expr value;
+    variant<Expr, Cond> value;
 };
 
 // re_assign -> <ident> = <expr>
@@ -45,14 +51,14 @@ struct Block
 // if -> "if" ( <condition> ) { <block> }
 struct If
 {
-    // condition
+    Cond condition;
     Block content;
 };
 
 // while -> "while" ( <condition> ){ <block> }
 struct While
 {
-    // condition
+    Cond condition;
     Block content;
 };
 
@@ -60,7 +66,7 @@ struct While
 struct For
 {
     Assign var;
-    // condition
+    Cond condition;
     ReAssign step;
     Block content;
 };

@@ -13,6 +13,12 @@ public:
         nodes.push_back(Statement{Assign{type, name, value}});
     }
 
+    void addCond(string name, Cond value)
+    {
+        debug(tokens[BOOL] + "_INIT -> id: " + name + ", value: " + value.literal.value);
+        nodes.push_back(Statement{Assign{BOOL, name, value}});
+    }
+
     void addReturn(Expr expr)
     {
         debug("RETURN -> value: " + expr.literal.value);
