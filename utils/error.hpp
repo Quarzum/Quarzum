@@ -10,10 +10,10 @@ enum Errorcode
     TYPE_ERROR
 };
 void abort() { exit(EXIT_FAILURE); }
-class Error
+class ErrorComponent
 {
 public:
-    Error() {}
+    ErrorComponent() {}
     void exit(__int8 code, string description = "")
     {
         /*
@@ -37,4 +37,4 @@ private:
         "TypeError"};
 };
 
-Error errorHandler = Error();
+ErrorComponent Error = ErrorComponent();

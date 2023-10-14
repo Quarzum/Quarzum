@@ -1,7 +1,7 @@
-class VariableStack
+class VariableStackComponent
 {
 public:
-    VariableStack() {}
+    VariableStackComponent() {}
     deque<string> stack;
     void add(string name)
     {
@@ -14,7 +14,7 @@ public:
         {
             if (stack[i] == name)
             {
-                errorHandler.exit(REFERENCE_ERROR, "Variable re-initialization");
+                Error.exit(REFERENCE_ERROR, "Variable re-initialization");
             }
         }
         stack.push_back(name);
@@ -34,7 +34,7 @@ public:
             }
             else if (i == stack.size() - 1)
             {
-                errorHandler.exit(REFERENCE_ERROR, "Variable " + name + " doesn't exists");
+                Error.exit(REFERENCE_ERROR, "Variable " + name + " doesn't exists");
             }
         }
     }
@@ -57,4 +57,4 @@ public:
 };
 
 // Initializing the stack
-static VariableStack variableStack = VariableStack();
+static VariableStackComponent VariableStack = VariableStackComponent();

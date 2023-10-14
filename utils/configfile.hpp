@@ -31,7 +31,7 @@ void chechForConfigFile(string path)
 
     if (input.good())
     {
-        Source source = Source(location + path + ".config.qz");
+        SourceComponent source = SourceComponent(location + path + ".config.qz");
         /* If it exists, execute instructions */
         applyConfig(source.get());
     }

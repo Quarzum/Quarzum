@@ -1,7 +1,7 @@
-class Source
+class SourceComponent
 {
 public:
-    Source(const string path) : route(move(path)) {}
+    SourceComponent(const string path) : route(move(path)) {}
     const string get()
     {
         /*
@@ -42,4 +42,4 @@ private:
 };
 
 // Initialize the source
-static Source src = Source("");
+static SourceComponent Source = SourceComponent("");

@@ -31,7 +31,7 @@ public:
                         break;
                     }
                 }
-                errorHandler.exit(SYNTAX_ERROR, "Expected string");
+                Error.exit(SYNTAX_ERROR, "Expected string");
 
             case INPUT:
                 if (followSyntax({PAR_OPEN}))
@@ -45,7 +45,7 @@ public:
                         break;
                     }
                 }
-                errorHandler.exit(SYNTAX_ERROR, "Expected string");
+                Error.exit(SYNTAX_ERROR, "Expected string");
 
             case EXIT:
                 expr = parse_expr();
@@ -65,12 +65,12 @@ public:
                 if (followSyntax({IDENTIFIER}))
                 {
                     // Removes an existing variable
-                    variableStack.remove(next().value);
+                    VariableStack.remove(next().value);
                     debug("DELETE -> id: " + next().value);
                     i += 2;
                     break;
                 }
-                errorHandler.exit(SYNTAX_ERROR);
+                Error.exit(SYNTAX_ERROR);
 
             /*
 
@@ -130,7 +130,7 @@ public:
                     break;
                 }
 
-                errorHandler.exit(SYNTAX_ERROR, "Expected assignation");
+                Error.exit(SYNTAX_ERROR, "Expected assignation");
 
             default:
                 i++;
@@ -211,11 +211,11 @@ private:
             }
             return Expr{{t, next(d).value}, 1};
         }
-        errorHandler.exit(SYNTAX_ERROR, "Invalid expression");
+        Error.exit(SYNTAX_ERROR, "Invalid expression");
     }
     void addAssignation(TokenType type, string name)
     {
-        variableStack.add(next().value);
+        VariableStack.add(next().value);
         /*
 
         Adds a new assignation depending on the type
@@ -236,7 +236,7 @@ private:
         }
         else
         {
-            errorHandler.exit(SYNTAX_ERROR, "Expected an initializer");
+            Error.exit(SYNTAX_ERROR, "Expected an initializer");
         }
     }
 };

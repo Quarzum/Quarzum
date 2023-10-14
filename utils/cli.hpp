@@ -1,7 +1,7 @@
-class CLI
+class CLIComponent
 {
 public:
-    CLI() {}
+    CLIComponent() {}
     void getFlags()
     {
         for (int8_t i = 1; i < argc; i++)
@@ -10,7 +10,7 @@ public:
             {
                 /*
 
-                If flags -v or -version exist, show the version of the compiler
+                If flags --v or --version exist, show the version of the compiler
 
                 */
                 wcout << "[Quarzum " << L'\u00A9' << " 2023] - Version: 1.0.0" << endl;
@@ -19,7 +19,7 @@ public:
             {
                 /*
 
-                If flags -h or -help exist, show the help panel
+                If flags --h or --help exist, show the help panel
 
                 */
                 cout << "\n\n Usage: quarzum.exe [options] file"
@@ -33,9 +33,13 @@ public:
             }
             else if (strcmp(args[i], "--init") == 0)
             {
+                if (isArg(args[i + 1]))
+                {
+                    i++;
+                }
                 /*
 
-                If flag -init exists, create this project structure:
+                If flag --init exists, create this project structure:
                     > main.qz
                     > main.config.qz
                     > /modules
@@ -52,7 +56,24 @@ public:
                 }
                 else
                 {
-                    errorHandler.exit(RUNTIME_ERROR, "Error creating a new project: unable to make directories");
+                    Error.exit(RUNTIME_ERROR, "Error creating a new project: unable to make directories");
+                }
+            }
+            else if (strcmp(args[i], "--i") == 0 || strcmp(args[i], "--input") == 0)
+            {
+                /*
+
+                If flags --i or --input exist, select that path as the input file location
+
+                */
+                if (isArg(args[i + 1]))
+                {
+                    i++;
+                    o_index = i;
+                }
+                else
+                {
+                    Error.exit(RUNTIME_ERROR, "No input file provided.");
                 }
             }
             else
@@ -61,7 +82,7 @@ public:
             }
         }
     }
-    char *output()
+    char *input()
     {
         /*
 
@@ -87,4 +108,4 @@ private:
     }
 };
 
-CLI quarzumCLI = CLI();
+CLIComponent CLI = CLIComponent();
