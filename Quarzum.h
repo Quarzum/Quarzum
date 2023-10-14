@@ -5,6 +5,7 @@
 #include <experimental/optional>
 #include <map>
 #include <experimental/any>
+#include <cstring>
 using namespace std;
 using namespace experimental;
 /*
@@ -13,6 +14,7 @@ using namespace experimental;
 
 */
 #include "utils/error.hpp"
+#include "utils/cli.hpp"
 #include "utils/tokentype.h"
 #include "utils/tokenlist.hpp"
 #include "utils/nodes.h"

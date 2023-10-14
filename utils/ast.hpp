@@ -29,40 +29,46 @@ struct Expression
     unsigned int size;
 };
 
+struct StmtGroup
+{
+    Stmt **kids;
+    uint32_t count;
+};
+
+struct StmtDecl
+{
+    TokenType type;
+    DeclFlags flags;
+    string name;
+    Expression expr;
+};
+
+struct StmtReturn
+{
+    Expression expr;
+};
+
+struct StmtExit
+{
+    Expression expr;
+};
+
+struct StmtIf
+{
+    Expression condition;
+    Stmt *body;
+};
+
 struct Stmt
 {
-    StmtType type;
 
+    StmtType type;
     union
     {
-        struct StmtGroup
-        {
-            Stmt **kids;
-            uint32_t count;
-        } _group;
-
-        struct StmtDecl
-        {
-            TokenType type;
-            DeclFlags flags;
-            string name;
-            Expression expr;
-        } _decl;
-
-        struct StmtReturn
-        {
-            Expression expr;
-        } _return;
-
-        struct StmtExit
-        {
-            Expression expr;
-        } _exit;
-
-        struct StmtIf
-        {
-            Expression condition;
-            Stmt *body;
-        } _if;
+        StmtGroup _group;
+        StmtReturn _return;
+        StmtExit _exit;
+        StmtIf _if;
     };
+    ~Stmt() {}
 };

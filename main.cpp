@@ -14,9 +14,11 @@ int main(int argc, char *argv[])
         errorHandler.exit(FILE_NOT_FOUND_ERROR, "No such file or directory");
     }
     // Source source = Source(argv[1]);
-    src.route = argv[1];
+    quarzumCLI.setArgs(argv, argc);
+    quarzumCLI.getFlags();
+    src.route = quarzumCLI.output();
     src.validate();
-    chechForConfigFile(argv[1]);
+    chechForConfigFile(quarzumCLI.output());
     // If all is correct, compile the source code
     compile(src.get());
 
