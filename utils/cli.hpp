@@ -6,7 +6,7 @@ public:
     {
         for (int8_t i = 1; i < argc; i++)
         {
-            if (strcmp(args[i], "-v") == 0 || strcmp(args[i], "-version") == 0)
+            if (strcmp(args[i], "--v") == 0 || strcmp(args[i], "--version") == 0)
             {
                 /*
 
@@ -15,16 +15,23 @@ public:
                 */
                 wcout << "[Quarzum " << L'\u00A9' << " 2023] - Version: 1.0.0" << endl;
             }
-            else if (strcmp(args[i], "-h") == 0 || strcmp(args[i], "-help") == 0)
+            else if (strcmp(args[i], "--h") == 0 || strcmp(args[i], "--help") == 0)
             {
                 /*
 
                 If flags -h or -help exist, show the help panel
 
                 */
-                cout << "help" << endl;
+                cout << "\n\n Usage: quarzum.exe [options] file"
+                        "\n\n Options:       "
+                        "\n\n --v / --version : Displays the current compiler version."
+                        "\n --h / --help : Displays this panel."
+                        "\n --init : Creates a new Quarzum project structure."
+                        "\n --i / --input: Specifies the input file location."
+                        "\n --o / --output: Specifies the output file location.\n"
+                     << endl;
             }
-            else if (strcmp(args[i], "-init") == 0)
+            else if (strcmp(args[i], "--init") == 0)
             {
                 /*
 
@@ -76,7 +83,7 @@ private:
 
     bool isArg(string str)
     {
-        return str.front() != '-';
+        return str[0] != '-' && str[1] != '-';
     }
 };
 

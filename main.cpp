@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
     quarzumCLI.setArgs(argv, argc);
     quarzumCLI.getFlags();
 
-    cout << quarzumCLI.output();
     if (quarzumCLI.output() != "")
     {
         src.route = quarzumCLI.output();

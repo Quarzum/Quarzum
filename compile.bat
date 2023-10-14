@@ -1,2 +1,2 @@
 ECHO off
-g++ main.cpp -o main.exe
+g++ main.cpp -o quarzum.exe
