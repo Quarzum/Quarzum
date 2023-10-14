@@ -1,4 +1,4 @@
-const map<char, uint8_t> symbols = {
+const map<char, unsigned short> symbols = {
     {'&', 25},
     {'|', 26},
     {'!', 27},

@@ -4,7 +4,7 @@ public:
     CLIComponent() {}
     void getFlags()
     {
-        for (int8_t i = 1; i < argc; i++)
+        for (unsigned short i = 1; i < argc; i++)
         {
             if (strcmp(args[i], "--v") == 0 || strcmp(args[i], "--version") == 0)
             {
@@ -91,7 +91,7 @@ public:
         */
         return args[o_index];
     }
-    void setArgs(char **x, int8_t count)
+    void setArgs(char **x, unsigned short count)
     {
         args = x;
         argc = count;
@@ -99,8 +99,8 @@ public:
 
 private:
     char **args;
-    int8_t argc;
-    int8_t o_index = -1;
+    unsigned short argc;
+    unsigned short o_index = -1;
 
     bool isArg(string str)
     {

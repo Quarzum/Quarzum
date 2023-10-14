@@ -84,7 +84,7 @@ private:
     unsigned int size, line, i = 0;
     char c;
     bool isNum;
-    bool isEOF(uint8_t d)
+    bool isEOF(unsigned short d)
     {
         /*
 
@@ -93,7 +93,7 @@ private:
         */
         return i + d > size;
     };
-    char next(__int8 distance = 1)
+    char next(short distance = 1)
     {
         /*
 

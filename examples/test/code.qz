@@ -1,3 +1,5 @@
-int i  = 2
+int i = 2
+bool hola
+i = 4
 i++
 i--

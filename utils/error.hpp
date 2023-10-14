@@ -14,7 +14,7 @@ class ErrorComponent
 {
 public:
     ErrorComponent() {}
-    void exit(__int8 code, string description = "")
+    void exit(unsigned short code, string description = "")
     {
         /*
 

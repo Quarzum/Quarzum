@@ -10,7 +10,7 @@ public:
         Adds a new variable to the list. If the variable already exists, throw an error.
 
         */
-        for (uint32_t i = 0; i < stack.size(); i++)
+        for (unsigned int i = 0; i < stack.size(); i++)
         {
             if (stack[i] == name)
             {
@@ -26,7 +26,7 @@ public:
         Remove an existing variable in the list. If the variable doesn't exists, throw an error.
 
         */
-        for (uint32_t i = 0; i < stack.size(); i++)
+        for (unsigned int i = 0; i < stack.size(); i++)
         {
             if (stack[i] == name)
             {
@@ -48,7 +48,7 @@ public:
         if (SHOW_COMPILER_DEBUG)
         {
             cout << "\nVariables\n------------\n";
-            for (uint32_t i = 0; i < stack.size(); i++)
+            for (unsigned int i = 0; i < stack.size(); i++)
             {
                 cout << stack[i] << endl;
             }

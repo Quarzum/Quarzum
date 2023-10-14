@@ -50,3 +50,5 @@ struct Import
     Token id;
     string path;
 };
+
+Expr nullExpr = {Token{NULL_KEYWORD, "null"}, 0};

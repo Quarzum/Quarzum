@@ -1,9 +1,7 @@
-
 class Parser
 {
 public:
     Parser(TokenList tokens) : m_tokens(move(tokens)) {}
-
     void parse()
     {
         i = 0;
@@ -46,15 +44,15 @@ public:
             case EXIT:
                 expr = parse_expr();
                 // Add an exit expression
-                debug("EXIT -> code: " + expr.literal.value);
-                addStatement(Exit{expr}, 1 + expr.size);
+                ast.addExit(expr);
+                i += 1 + expr.size;
                 break;
 
             case RETURN:
                 expr = parse_expr();
                 // Add a return expression
-                debug("RETURN -> value: " + expr.literal.value);
-                addStatement(Return{expr}, 1 + expr.size);
+                ast.addReturn(expr);
+                i += 1 + expr.size;
                 break;
 
             case DELETE:
@@ -74,23 +72,23 @@ public:
 
             */
             case BOOL_KEYWORD:
-                addAssignation(BOOL, "BOOL");
+                addAssignation(BOOL);
                 break;
 
             case INT_KEYWORD:
-                addAssignation(INT, "INT");
+                addAssignation(INT);
                 break;
 
             case NUMBER_KEYWORD:
-                addAssignation(NUMBER, "NUM");
+                addAssignation(NUMBER);
                 break;
 
             case STRING_KEYWORD:
-                addAssignation(STRING, "STR");
+                addAssignation(STRING);
                 break;
 
             case ANY_KEYWORD:
-                addAssignation(ANY, "ANY");
+                addAssignation(ANY);
                 break;
 
             case IDENTIFIER:
@@ -98,10 +96,9 @@ public:
                 if (followSyntax({EQUAL}))
                 {
                     expr = parse_expr(2);
-
                     // Add a reassign with value
-                    debug("REASSIGN -> id: " + next(0).value + ", new value: " + expr.literal.value);
-                    addStatement(ReAssign{next(), expr}, 2 + expr.size);
+                    ast.addAssign(next(0), expr);
+                    i += 2 + expr.size;
                     break;
                 }
 
@@ -114,15 +111,18 @@ public:
                     break;
                 }
 
-                else if (next().value == "+" && next(2).value == "+")
+                else if ((next().value + next(2).value) == "++")
                 {
-                    addUnaryExpr(next(0).value, "+");
+
+                    ast.addUnaryPlus(next(0));
+                    i += 3;
                     break;
                 }
 
-                else if (next().value == "-" && next(2).value == "-")
+                else if ((next().value + next(2).value) == "--")
                 {
-                    addUnaryExpr(next(0).value, "-");
+                    ast.addUnaryMinus(next(0));
+                    i += 3;
                     break;
                 }
 
@@ -135,12 +135,12 @@ public:
         }
         // debugVariables();
     }
+    unsigned short i;
 
 private:
     TokenList m_tokens;
-    uint8_t i;
 
-    Token next(__int8 distance = 1)
+    Token next(short distance = 1)
     {
         /*
 
@@ -149,25 +149,15 @@ private:
         */
         return m_tokens.get(i + distance);
     }
-    void addStatement(Statement stat, __int8 size = 1)
+    void addStatement(Statement stat, short size = 1)
     {
         /*
 
         Adds a new statement and increments i by the number of elements of the stat
 
         */
-        // ast.statements.push_back(stat);
+        ast.nodes.push_back(stat);
         i += size;
-    }
-    void addUnaryExpr(string value, string op)
-    {
-        /*
-
-        Adds a new unary reassign (i++ <-> i += 1, i-- <-> i -= 1)
-
-        */
-        debug("REASSIGN -> id: " + value + ", new value: " + value + " " + op + " 1");
-        addStatement(ReAssign{next(), Expr{INT, value + " " + op + " 1"}}, 3);
     }
     bool followSyntax(deque<TokenType> syntax)
     {
@@ -177,7 +167,7 @@ private:
 
         */
         bool result = true;
-        for (uint16_t n = 0; n < syntax.size(); n++)
+        for (unsigned short n = 0; n < syntax.size(); n++)
         {
             if (next(1 + n).type != syntax.at(n))
             {
@@ -191,8 +181,7 @@ private:
     Expression parsing procedure
 
     */
-    Expr
-    parse_expr(__int8 d = 1)
+    Expr parse_expr(short d = 1)
     {
         TokenType t = next(d).type;
         if (isTerm(t))
@@ -207,7 +196,7 @@ private:
         }
         Error.exit(SYNTAX_ERROR, "Invalid expression");
     }
-    void addAssignation(TokenType type, string name)
+    void addAssignation(TokenType type)
     {
         VariableStack.add(next().value);
         /*
@@ -219,15 +208,13 @@ private:
         {
             // Add an assign with value
             Expr expr = parse_expr(3);
-            debug(name + "_INIT -> id: " + next().value + ", value: " + expr.literal.value);
-            ast.addIntInit(next(), expr);
+            ast.addInit(type, next(), expr);
             i += 3 + expr.size;
         }
         else if (followSyntax({IDENTIFIER}))
         {
             // Add an assign without value
-            debug(name + "_INIT -> id: " + next().value + ", value: null");
-            ast.addIntInit(next());
+            ast.addInit(type, next());
             i += 2;
         }
         else
