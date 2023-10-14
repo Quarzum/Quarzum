@@ -1,18 +1,5 @@
-/*
-
-    Pre-initialize structs for recursion
-
-*/
-struct Expr;
-
-// add -> t "+" expr
-struct Add
-{
-    Token t;
-    Expr *expr;
-};
-
-// expr -> <literal> || <literal> <op> <literal>
+struct Statement;
+// expr -> <literal> || <literal> <op> <expr>
 struct Expr
 {
     Token literal;
@@ -23,7 +10,7 @@ struct Exit
 {
     Expr value;
 };
-
+// return -> "return" <expr>
 struct Return
 {
     Expr value;
@@ -33,14 +20,14 @@ struct Return
 struct Assign
 {
     TokenType type;
-    Token ident;
+    string id;
     Expr value;
 };
 
 // re_assign -> <ident> = <expr>
 struct ReAssign
 {
-    Token ident;
+    string id;
     Expr value;
 };
 
@@ -51,9 +38,43 @@ struct Import
     string path;
 };
 
+struct Block
+{
+    deque<Statement> stmts;
+};
+// if -> "if" ( <condition> ) { <block> }
+struct If
+{
+    // condition
+    Block content;
+};
+
+// while -> "while" ( <condition> ){ <block> }
+struct While
+{
+    // condition
+    Block content;
+};
+
+// for -> "for" (<assign>; <condition>; <reassign> ){ <block> }
+struct For
+{
+    Assign var;
+    // condition
+    ReAssign step;
+    Block content;
+};
+
+// module -> "module" <name> { <block> }
+struct Module
+{
+    string name;
+    Block content;
+};
+
 struct Statement
 {
-    variant<Assign, ReAssign, Exit, Return> stmt;
+    variant<Assign, ReAssign, Exit, Return, Import, If, For, While, Module, Block> stmt;
 };
 
 Expr nullExpr = {Token{NULL_KEYWORD, "null"}, 0};

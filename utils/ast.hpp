@@ -7,38 +7,38 @@ public:
         return childcount;
     }
 
-    void addInit(TokenType type, Token name, Expr value = nullExpr)
+    void addInit(TokenType type, string name, Expr value = nullExpr)
     {
-        debug(tokens[type] + "_INIT -> id: " + name.value + ", value: " + value.literal.value);
-        nodes.push_back(Assign{type, name, value});
+        debug(tokens[type] + "_INIT -> id: " + name + ", value: " + value.literal.value);
+        nodes.push_back(Statement{Assign{type, name, value}});
     }
 
     void addReturn(Expr expr)
     {
         debug("RETURN -> value: " + expr.literal.value);
-        nodes.push_back(Return{expr});
+        nodes.push_back(Statement{Return{expr}});
     }
 
     void addExit(Expr expr)
     {
         debug("EXIT -> value: " + expr.literal.value);
-        nodes.push_back(Exit{expr});
+        nodes.push_back(Statement{Exit{expr}});
     }
 
-    void addAssign(Token name, Expr value)
+    void addAssign(string name, Expr value)
     {
-        debug("REASSIGN -> id: " + name.value + ", value: " + value.literal.value);
-        nodes.push_back(ReAssign{name, value});
+        debug("REASSIGN -> id: " + name + ", value: " + value.literal.value);
+        nodes.push_back(Statement{ReAssign{name, value}});
     }
 
-    void addUnaryPlus(Token name)
+    void addUnaryPlus(string name)
     {
-        Expr expr = Expr{INT, name.value + " + 1", 3};
+        Expr expr = Expr{INT, name + " + 1", 3};
         addAssign(name, expr);
     }
-    void addUnaryMinus(Token name)
+    void addUnaryMinus(string name)
     {
-        Expr expr = Expr{INT, name.value + " - 1", 3};
+        Expr expr = Expr{INT, name + " - 1", 3};
         addAssign(name, expr);
     }
 

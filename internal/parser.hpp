@@ -6,7 +6,7 @@ public:
     {
         i = 0;
         debug("Statements\n-------------");
-        /* Converts tokens into an AST */
+        // Converts tokens into an AST
         while (i < m_tokens.size())
         {
             Expr expr;
@@ -66,27 +66,27 @@ public:
                 }
                 Error.exit(SYNTAX_ERROR);
 
-            /*
-
-            Add a new assignation based on the type
-
-            */
+            // Add a BOOL assign
             case BOOL_KEYWORD:
                 addAssignation(BOOL);
                 break;
 
+            // Add an INT assign
             case INT_KEYWORD:
                 addAssignation(INT);
                 break;
 
+            // Add a NUMBER assign
             case NUMBER_KEYWORD:
                 addAssignation(NUMBER);
                 break;
 
+            // Add a STRING assign
             case STRING_KEYWORD:
                 addAssignation(STRING);
                 break;
 
+            // Add a ANY assign
             case ANY_KEYWORD:
                 addAssignation(ANY);
                 break;
@@ -97,7 +97,7 @@ public:
                 {
                     expr = parse_expr(2);
                     // Add a reassign with value
-                    ast.addAssign(next(0), expr);
+                    ast.addAssign(next(0).value, expr);
                     i += 2 + expr.size;
                     break;
                 }
@@ -107,27 +107,32 @@ public:
                     expr = parse_expr(3);
                     // Add a reassign with value
                     debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + next().value + expr.literal.value);
-                    addStatement(ReAssign{next(), expr}, 3 + expr.size);
+                    addStatement(Statement{ReAssign{next().value, expr}}, 3 + expr.size);
                     break;
                 }
 
                 else if ((next().value + next(2).value) == "++")
                 {
 
-                    ast.addUnaryPlus(next(0));
+                    ast.addUnaryPlus(next(0).value);
                     i += 3;
                     break;
                 }
 
                 else if ((next().value + next(2).value) == "--")
                 {
-                    ast.addUnaryMinus(next(0));
+                    ast.addUnaryMinus(next(0).value);
                     i += 3;
                     break;
                 }
 
                 Error.exit(SYNTAX_ERROR, "Expected assignation");
 
+            case MODULE_KEYWORD:
+                debug("MODULE -> " + next().value + " :");
+                insideModule = true;
+                i += 2;
+                break;
             default:
                 i++;
                 break;
@@ -136,36 +141,25 @@ public:
         // debugVariables();
     }
     unsigned short i;
+    bool insideModule = false;
 
 private:
     TokenList m_tokens;
 
+    // Returns the next token in the TokenList
     Token next(short distance = 1)
     {
-        /*
-
-        Returns the next token in the TokenList
-
-        */
         return m_tokens.get(i + distance);
     }
+    // Adds a new statement and increments i by the number of elements of the stat
     void addStatement(Statement stat, short size = 1)
     {
-        /*
-
-        Adds a new statement and increments i by the number of elements of the stat
-
-        */
         ast.nodes.push_back(stat);
         i += size;
     }
+    // Checks that a sentence follows a defined syntax step by step
     bool followSyntax(deque<TokenType> syntax)
     {
-        /*
-
-        Checks that a sentence follows a defined syntax step by step
-
-        */
         bool result = true;
         for (unsigned short n = 0; n < syntax.size(); n++)
         {
@@ -176,11 +170,7 @@ private:
         }
         return result;
     }
-    /*
-
-    Expression parsing procedure
-
-    */
+    // Expression parsing procedure
     Expr parse_expr(short d = 1)
     {
         TokenType t = next(d).type;
@@ -197,25 +187,21 @@ private:
         Error.exit(SYNTAX_ERROR, "Invalid expression");
         return {};
     }
+    // Adds a new assignation depending on the type
     void addAssignation(TokenType type)
     {
         VariableStack.add(next().value);
-        /*
-
-        Adds a new assignation depending on the type
-
-        */
         if (followSyntax({IDENTIFIER, EQUAL}))
         {
             // Add an assign with value
             Expr expr = parse_expr(3);
-            ast.addInit(type, next(), expr);
+            ast.addInit(type, next().value, expr);
             i += 3 + expr.size;
         }
         else if (followSyntax({IDENTIFIER}))
         {
             // Add an assign without value
-            ast.addInit(type, next());
+            ast.addInit(type, next().value);
             i += 2;
         }
         else
