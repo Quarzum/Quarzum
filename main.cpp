@@ -16,11 +16,16 @@ int main(int argc, char *argv[])
     // Source source = Source(argv[1]);
     quarzumCLI.setArgs(argv, argc);
     quarzumCLI.getFlags();
-    src.route = quarzumCLI.output();
-    src.validate();
-    chechForConfigFile(quarzumCLI.output());
-    // If all is correct, compile the source code
-    compile(src.get());
+
+    cout << quarzumCLI.output();
+    if (quarzumCLI.output() != "")
+    {
+        src.route = quarzumCLI.output();
+        src.validate();
+        chechForConfigFile(quarzumCLI.output());
+        // If all is correct, compile the source code
+        compile(src.get());
+    }
 
     return 0;
 }

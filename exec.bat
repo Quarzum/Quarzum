@@ -1,5 +1,5 @@
 ECHO off
 g++ main.cpp -o quarzum.exe
-quarzum.exe ./examples/test/code.qz
+quarzum.exe -help
 del quarzum.exe
 exit
