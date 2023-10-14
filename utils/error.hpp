@@ -14,13 +14,9 @@ class ErrorComponent
 {
 public:
     ErrorComponent() {}
+    // Throws an error and stops the program
     void exit(unsigned short code, string description = "")
     {
-        /*
-
-        Throws an error and stops the program
-
-        */
         cerr << errors[code] << ":\n    " << description << " - Error code: " << code << endl;
         abort();
     }

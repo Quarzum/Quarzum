@@ -51,4 +51,9 @@ struct Import
     string path;
 };
 
+struct Statement
+{
+    variant<Assign, ReAssign, Exit, Return> stmt;
+};
+
 Expr nullExpr = {Token{NULL_KEYWORD, "null"}, 0};

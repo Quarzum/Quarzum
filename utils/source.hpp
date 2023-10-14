@@ -2,13 +2,9 @@ class SourceComponent
 {
 public:
     SourceComponent(const string path) : route(move(path)) {}
+    // Reads the file and returns its content
     const string get()
     {
-        /*
-
-        Reads the file and returns its content
-
-        */
         ifstream input(route);
         if (input.fail())
         {
@@ -22,13 +18,9 @@ public:
         }
         return source;
     }
+    // Checks that the file is in a Quarzum able format
     void validate()
     {
-        /*
-
-        Checks that the file is in a Quarzum able format
-
-        */
         if (route.substr(route.size() - 3) != ".qz")
         {
             Error.exit(REFERENCE_ERROR, "Invalid file format");

@@ -3,13 +3,9 @@ class VariableStackComponent
 public:
     VariableStackComponent() {}
     deque<string> stack;
+    // Add a new variable to the list. If the variable already exists, throw an error.
     void add(string name)
     {
-        /*
-
-        Adds a new variable to the list. If the variable already exists, throw an error.
-
-        */
         for (unsigned int i = 0; i < stack.size(); i++)
         {
             if (stack[i] == name)
@@ -19,13 +15,9 @@ public:
         }
         stack.push_back(name);
     }
+    // Remove an existing variable in the list. If the variable doesn't exists, throw an error.
     void remove(string name)
     {
-        /*
-
-        Remove an existing variable in the list. If the variable doesn't exists, throw an error.
-
-        */
         for (unsigned int i = 0; i < stack.size(); i++)
         {
             if (stack[i] == name)
@@ -38,13 +30,9 @@ public:
             }
         }
     }
+    // Show in console the list of existing variables at the end of the parsing
     void debug()
     {
-        /*
-
-        Show in console the list of existing variables at the end of the parsing
-
-        */
         if (SHOW_COMPILER_DEBUG)
         {
             cout << "\nVariables\n------------\n";

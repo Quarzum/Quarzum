@@ -59,10 +59,11 @@ const string tokens[] = {
     "TO_INT",
     "TO_STR",
     "TO_NUM"};
+// Shows in console a list of tokens
 void debugTokens(deque<Token> composed)
 {
     cout << "\nTokens\n-----------\n";
-    /* Shows in console a list of tokens */
+
     for (unsigned short i = 0; i < composed.size(); i++)
     {
         cout << tokens[composed.at(i).type] << " -> " << composed.at(i).value << endl;

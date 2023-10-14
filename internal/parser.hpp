@@ -195,6 +195,7 @@ private:
             return Expr{{t, next(d).value}, 1};
         }
         Error.exit(SYNTAX_ERROR, "Invalid expression");
+        return {};
     }
     void addAssignation(TokenType type)
     {

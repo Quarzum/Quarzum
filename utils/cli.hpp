@@ -82,13 +82,9 @@ public:
             }
         }
     }
+    // Returns the flag with the output file path
     char *input()
     {
-        /*
-
-            Returns the flag with the output file path
-
-        */
         return args[o_index];
     }
     void setArgs(char **x, unsigned short count)

@@ -27,24 +27,16 @@ string toString(char c)
     s = c;
     return s;
 }
+// If is enabled, show as output the prodedure
 void debug(string input)
 {
-    /*
-
-    If is enabled, show as output the prodedure
-
-    */
     if (SHOW_COMPILER_DEBUG)
     {
         cout << input << endl;
     }
 }
+// Checks if the TokenType is a valid expression term
 bool isTerm(TokenType t)
 {
-    /*
-
-    Checks if the TokenType is a valid expression term
-
-    */
     return isLiteral(t) || t == IDENTIFIER || t == NULL_KEYWORD || isBoolean(t);
 }
