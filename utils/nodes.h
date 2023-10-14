@@ -37,6 +37,12 @@ struct ReAssign
     Expr value;
 };
 
+// function-call -> <id>(<expr>*)
+struct FunctionCall
+{
+    deque<Expr> args;
+};
+
 // import -> "import" <id> "from" <path>
 struct Import
 {
@@ -47,6 +53,15 @@ struct Import
 struct Block
 {
     deque<Statement> stmts;
+};
+
+// function -> <type>(|| "function") <id> ( <arg>* ) { <block> }
+struct Function
+{
+    TokenType type;
+    string id;
+    deque<Assign> args;
+    Block content;
 };
 // if -> "if" ( <condition> ) { <block> }
 struct If
@@ -80,7 +95,20 @@ struct Module
 
 struct Statement
 {
-    variant<Assign, ReAssign, Exit, Return, Import, If, For, While, Module, Block> stmt;
+    variant<
+        Assign,
+        ReAssign,
+        Exit,
+        Return,
+        Import,
+        If,
+        For,
+        While,
+        Module,
+        Block,
+        Function,
+        FunctionCall>
+        stmt;
 };
 
 Expr nullExpr = {Token{NULL_KEYWORD, "null"}, 0};

@@ -7,6 +7,8 @@ public:
         return childcount;
     }
 
+    Statement lastIdent;
+
     void addInit(TokenType type, string name, Expr value = nullExpr)
     {
         debug(tokens[type] + "_INIT -> id: " + name + ", value: " + value.literal.value);
@@ -46,6 +48,12 @@ public:
     {
         Expr expr = Expr{INT, name + " - 1", 3};
         addAssign(name, expr);
+    }
+
+    void addFunction(TokenType type, string name)
+    {
+        debug(tokens[type] + "_FUNCTION -> id: " + name + ", args: (), content: ");
+        nodes.push_back(Statement{Function{type, name, {}, Block{}}});
     }
 
     deque<Statement> nodes;

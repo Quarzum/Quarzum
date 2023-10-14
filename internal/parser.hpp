@@ -128,6 +128,16 @@ public:
 
                 Error.exit(SYNTAX_ERROR, "Expected assignation");
 
+            case FUNCTION_KEYWORD:
+                if (followSyntax({IDENTIFIER, PAR_OPEN, PAR_CLOSE, C_BRACKET_OPEN}))
+                {
+                    ast.addFunction(ANY, next().value);
+                    i += 5;
+                    break;
+                }
+
+                Error.exit(SYNTAX_ERROR, "Expected function initialization");
+
             default:
                 i++;
                 break;
@@ -218,6 +228,11 @@ private:
                 ast.addInit(type, next().value, expr);
                 i += 3 + expr.size;
             }
+        }
+        else if (followSyntax({IDENTIFIER, PAR_OPEN, PAR_CLOSE, C_BRACKET_OPEN}))
+        {
+            ast.addFunction(type, next().value);
+            i += 5;
         }
         else if (followSyntax({IDENTIFIER}))
         {
