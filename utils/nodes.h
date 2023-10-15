@@ -21,7 +21,10 @@ struct Return
 {
     Expr value;
 };
-
+struct Out
+{
+    Expr value;
+};
 // argument -> <type> <ident> (= <expr>)?
 struct Argument
 {
@@ -114,6 +117,7 @@ struct Identation
 struct Statement
 {
     variant<
+        Out,
         Assign,
         ReAssign,
         Exit,

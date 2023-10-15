@@ -21,6 +21,7 @@ const bool isSizeModifier(string value) { return (value == "x8" || value == "x16
 const bool isLiteral(TokenType type) { return (type == INT || type == NUMBER || type == STRING); }
 const bool isBoolean(TokenType type) { return (type == TRUE || type == FALSE); }
 const bool isSymbol(char src) { return symbols.count(src); }
+const bool isType(TokenType type) { return (type == INT_KEYWORD || type == STRING_KEYWORD || type == BOOL_KEYWORD || type == NUMBER_KEYWORD || type == ANY_KEYWORD); }
 string toString(char c)
 {
     string s;

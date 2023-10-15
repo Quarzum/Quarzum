@@ -7,6 +7,12 @@ public:
         return childcount;
     }
 
+    void addOut(Expr expr)
+    {
+        debug(identate() + "OUT -> content: " + expr.literal.value);
+        newStmt(Statement{Out{expr}});
+    }
+
     void addInit(TokenType type, string name, Expr value = nullExpr)
     {
         VariableStack.add(name);

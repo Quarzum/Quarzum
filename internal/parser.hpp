@@ -27,10 +27,10 @@ public:
                 {
                     expr = parse_expr(2);
                     // Add a print instruction
-                    if (next(3).type == PAR_CLOSE)
+                    if (next(3 + expr.size).type == PAR_CLOSE)
                     {
-                        debug("OUT -> content: " + expr.literal.value);
-                        advance(expr.size);
+                        ast.addOut(expr);
+                        advance(3 + expr.size);
                         break;
                     }
                 }
@@ -196,7 +196,7 @@ private:
     Argument parse_args(short d = 1)
     {
         TokenType t = next(d).type;
-        if (followSyntax({INT_KEYWORD, IDENTIFIER}, d))
+        if (isType(t) && next(d + 1).type == IDENTIFIER)
         {
             return Argument{INT, next(d + 1).value, nullExpr, 2};
         }

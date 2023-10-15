@@ -3,7 +3,7 @@ module Math{
     num sum(int t){
         return t + 1
     }
-    function hello(int d){
-        return d
+    function hello(string d){
+        out("Hello, " + d)    
     }
 }
