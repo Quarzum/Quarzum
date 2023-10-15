@@ -21,7 +21,7 @@ public:
                     if (next(3).type == PAR_CLOSE)
                     {
                         debug("OUT -> content: " + expr.literal.value);
-                        i += expr.size;
+                        advance(expr.size);
                         break;
                     }
                 }
@@ -34,34 +34,31 @@ public:
                     // Add an input instruction
                     if (next(3).type == PAR_CLOSE)
                     {
-                        debug("OUT -> content: " + expr.literal.value);
-                        i += expr.size;
+                        debug("INPUT -> content: " + expr.literal.value);
+                        advance(expr.size);
                         break;
                     }
                 }
                 Error.exit(SYNTAX_ERROR, "Expected string");
-
+            // Add an exit expression
             case EXIT:
                 expr = parse_expr();
-                // Add an exit expression
                 ast.addExit(expr);
-                i += 1 + expr.size;
+                advance(1 + expr.size);
                 break;
-
+            // Add a return expression
             case RETURN:
                 expr = parse_expr();
-                // Add a return expression
                 ast.addReturn(expr);
-                i += 1 + expr.size;
+                advance(1 + expr.size);
                 break;
-
+            // Removes an existing variable
             case DELETE:
                 if (followSyntax({IDENTIFIER}))
                 {
-                    // Removes an existing variable
                     VariableStack.remove(next().value);
                     debug("DELETE -> id: " + next().value);
-                    i += 2;
+                    advance(2);
                     break;
                 }
                 Error.exit(SYNTAX_ERROR);
@@ -98,7 +95,7 @@ public:
                     expr = parse_expr(2);
                     // Add a reassign with value
                     ast.addAssign(next(0).value, expr);
-                    i += 2 + expr.size;
+                    advance(2 + expr.size);
                     break;
                 }
 
@@ -106,8 +103,8 @@ public:
                 {
                     expr = parse_expr(3);
                     // Add a reassign with value
-                    debug("REASSIGN -> id: " + next(0).value + ", new value: " + next(0).value + next().value + expr.literal.value);
-                    addStatement(Statement{ReAssign{next().value, expr}}, 3 + expr.size);
+                    ast.addAssign(next(0).value, Expr{{.type = expr.literal.type, .value = next(0).value + next().value + expr.literal.value}, expr.size + 2});
+                    advance(3 + expr.size);
                     break;
                 }
 
@@ -115,14 +112,14 @@ public:
                 {
 
                     ast.addUnaryPlus(next(0).value);
-                    i += 3;
+                    advance(3);
                     break;
                 }
 
                 else if ((next().value + next(2).value) == "--")
                 {
                     ast.addUnaryMinus(next(0).value);
-                    i += 3;
+                    advance(3);
                     break;
                 }
 
@@ -132,14 +129,15 @@ public:
                 if (followSyntax({IDENTIFIER, PAR_OPEN, PAR_CLOSE, C_BRACKET_OPEN}))
                 {
                     ast.addFunction(ANY, next().value);
-                    i += 5;
+                    advance(5);
+                    VariableStack.add(next().value);
                     break;
                 }
 
                 Error.exit(SYNTAX_ERROR, "Expected function initialization");
 
             default:
-                i++;
+                advance();
                 break;
             }
         }
@@ -149,7 +147,10 @@ public:
 
 private:
     TokenList m_tokens;
-
+    void advance(short d = 1)
+    {
+        i += d;
+    }
     // Returns the next token in the TokenList
     Token next(short distance = 1)
     {
@@ -159,7 +160,7 @@ private:
     void addStatement(Statement stat, short size = 1)
     {
         ast.nodes.push_back(stat);
-        i += size;
+        advance(size);
     }
     // Checks that a sentence follows a defined syntax step by step
     bool followSyntax(deque<TokenType> syntax)
@@ -212,33 +213,35 @@ private:
     // Adds a new assignation depending on the type
     void addAssignation(TokenType type)
     {
-        VariableStack.add(next().value);
+        string var = next().value;
+        VariableStack.add(var);
         if (followSyntax({IDENTIFIER, EQUAL}))
         {
             if (type == BOOL)
             {
                 Cond cond = parse_cond(3);
-                ast.addCond(next().value, cond);
-                i += 3 + cond.size;
+                ast.addCond(var, cond);
+                advance(3 + cond.size);
             }
             else
             {
                 // Add an assign with value
                 Expr expr = parse_expr(3);
-                ast.addInit(type, next().value, expr);
-                i += 3 + expr.size;
+                ast.addInit(type, var, expr);
+                advance(3 + expr.size);
             }
         }
         else if (followSyntax({IDENTIFIER, PAR_OPEN, PAR_CLOSE, C_BRACKET_OPEN}))
         {
-            ast.addFunction(type, next().value);
-            i += 5;
+            ast.addFunction(type, var);
+            advance(5);
         }
         else if (followSyntax({IDENTIFIER}))
         {
             // Add an assign without value
-            ast.addInit(type, next().value);
-            i += 2;
+            ast.addInit(type, var);
+            advance(2);
+            VariableStack.add(var);
         }
         else
         {
