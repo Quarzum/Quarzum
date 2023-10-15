@@ -60,7 +60,7 @@ struct Function
 {
     TokenType type;
     string id;
-    deque<Assign> args;
+    // deque<Assign> args;
     Block content;
 };
 // if -> "if" ( <condition> ) { <block> }

@@ -9,12 +9,14 @@ public:
 
     void addInit(TokenType type, string name, Expr value = nullExpr)
     {
+        VariableStack.add(name);
         debug(identate() + tokens[type] + "_INIT -> id: " + name + ", value: " + value.literal.value);
         newStmt(Statement{Assign{type, name, value}});
     }
 
     void addCond(string name, Cond value)
     {
+        VariableStack.add(name);
         debug(identate() + tokens[BOOL] + "_INIT -> id: " + name + ", value: " + value.literal.value);
         newStmt(Statement{Assign{BOOL, name, value}});
     }
@@ -50,8 +52,10 @@ public:
 
     void addFunction(TokenType type, string name)
     {
-        debug(identate() + tokens[type] + "_FUNCTION -> id: " + name + ", args: (), content: ");
-        newStmt(Statement{Function{type, name, {}, Block{}}});
+
+        debug(identate() + tokens[type] + "_FUNCTION -> id: " + name + ", args: ()");
+        identations.push_back({"function", name, Block{}});
+        VariableStack.add(name);
     }
 
     void addModule(string name)
@@ -59,12 +63,23 @@ public:
         debug(identate() + "MODULE -> id: " + name);
         identations.push_back({"module", name, Block{}});
     }
+
+    void addDelete(string name)
+    {
+        VariableStack.remove(name);
+        debug("DELETE -> id: " + name);
+    }
+
     void closeLastIdent()
     {
         Identation lastIdent = identations.at(identations.size() - 1);
         if (lastIdent.type == "module")
         {
             newStmt(Statement{Module{lastIdent.name, lastIdent.content}});
+        }
+        else if (lastIdent.type == "function")
+        {
+            newStmt(Statement{Function{ANY, lastIdent.name, lastIdent.content}});
         }
         identations.pop_back();
         debug("");

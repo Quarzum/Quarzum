@@ -65,8 +65,7 @@ public:
             case DELETE:
                 if (followSyntax({IDENTIFIER}))
                 {
-                    VariableStack.remove(next().value);
-                    debug("DELETE -> id: " + next().value);
+                    ast.addDelete(next().value);
                     advance(2);
                     break;
                 }
@@ -139,10 +138,8 @@ public:
                 {
                     ast.addFunction(ANY, next().value);
                     advance(5);
-                    VariableStack.add(next().value);
                     break;
                 }
-
                 Error.exit(SYNTAX_ERROR, "Expected function initialization");
             case C_BRACKET_CLOSE:
                 ast.closeLastIdent();
@@ -226,7 +223,6 @@ private:
     void addAssignation(TokenType type)
     {
         string var = next().value;
-        VariableStack.add(var);
         if (followSyntax({IDENTIFIER, EQUAL}))
         {
             if (type == BOOL)

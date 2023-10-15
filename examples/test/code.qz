@@ -1,8 +1,6 @@
-module Program {
-    int i = 43
-    i *= 3
-    string h 
-    num j
-    exit i
+module Math{
+    num pi = 3.1415926535
+    num sum(){
+        return 1 + 1
+    }
 }
-int m = 3
