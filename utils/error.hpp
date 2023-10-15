@@ -18,7 +18,7 @@ public:
     void exit(unsigned short code, string description = "")
     {
         cerr << errors[code] << ":\n    " << description << " - Error code: " << code << endl;
-        abort();
+        std::exit(EXIT_FAILURE);
     }
 
 private:
@@ -31,10 +31,6 @@ private:
         "Out of range",
         "ArithmeticError",
         "TypeError"};
-    void abort()
-    {
-        exit(EXIT_FAILURE);
-    }
 };
 
 static ErrorComponent Error = ErrorComponent();

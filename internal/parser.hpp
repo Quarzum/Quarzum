@@ -131,14 +131,24 @@ public:
                     break;
                 }
 
-                else if (followSyntax({PAR_OPEN, PAR_CLOSE}))
+                else if (followSyntax({PAR_OPEN}) && VariableStack.exists(next(0).value))
                 {
-                    ast.addFunctionCall(next(0).value);
-                    advance(3);
-                    break;
+                    int s = 0;
+                    if (isLiteral(next(2).type))
+                    {
+                        s++;
+                    }
+                    if (next(s + 2).value == ")")
+                    {
+                        ast.addFunctionCall(next(0).value, s > 0 ? next(2).value : "");
+                        advance(s + 2);
+                        break;
+                    }
                 }
-
-                Error.exit(SYNTAX_ERROR, "Expected assignation");
+                else
+                {
+                    Error.exit(SYNTAX_ERROR, "Expected assignation");
+                }
 
             case FUNCTION_KEYWORD:
                 if (followSyntax({IDENTIFIER, PAR_OPEN}))

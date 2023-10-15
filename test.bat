@@ -1,2 +1,2 @@
-main.exe ./examples/test/code.qz
-del main.exe
+quarzum.exe ./examples/test/code.qz
+del quarzum.exe

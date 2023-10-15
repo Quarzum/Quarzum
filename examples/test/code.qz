@@ -7,4 +7,5 @@ module Math{
         out("Hello, " + d)    
     }
     hello()
+    sum(2)
 }

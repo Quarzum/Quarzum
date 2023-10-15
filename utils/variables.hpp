@@ -3,6 +3,17 @@ class VariableStackComponent
 public:
     VariableStackComponent() {}
     deque<string> stack;
+    bool exists(string name)
+    {
+        for (unsigned int i = 0; i < stack.size(); i++)
+        {
+            if (stack[i] == name)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     // Add a new variable to the list. If the variable already exists, throw an error.
     void add(string name)
     {

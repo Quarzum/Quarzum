@@ -64,9 +64,9 @@ public:
         VariableStack.add(name);
     }
 
-    void addFunctionCall(string name)
+    void addFunctionCall(string name, string arg = "")
     {
-        debug(identate() + "FUNCTION_CALL -> id: " + name + ", args : ()");
+        debug(identate() + "FUNCTION_CALL -> id: " + name + ", args : (" + arg + ")");
         newStmt(Statement{FunctionCall{name}});
     }
 
