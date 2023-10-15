@@ -1,7 +1,7 @@
 module Program {
     int i = 43
     i *= 3
-    string h
+    string h 
     num j
     exit i
 }

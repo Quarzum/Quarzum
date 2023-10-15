@@ -93,6 +93,14 @@ struct Module
     Block content;
 };
 
+// identation -> <type> <name> <block>
+struct Identation
+{
+    string type;
+    string name;
+    Block content;
+};
+
 struct Statement
 {
     variant<

@@ -57,18 +57,21 @@ public:
     void addModule(string name)
     {
         debug(identate() + "MODULE -> id: " + name);
-
-        identations.push_back(Block{});
+        identations.push_back({"module", name, Block{}});
     }
     void closeLastIdent()
     {
-        newStmt(Statement{Module{"hola", identations.at(identations.size() - 1)}});
+        Identation lastIdent = identations.at(identations.size() - 1);
+        if (lastIdent.type == "module")
+        {
+            newStmt(Statement{Module{lastIdent.name, lastIdent.content}});
+        }
         identations.pop_back();
         debug("");
     }
 
     deque<Statement> nodes;
-    deque<Block> identations;
+    deque<Identation> identations;
 
 private:
     int childcount;
@@ -77,7 +80,7 @@ private:
     {
         if (identations.size() > 0)
         {
-            identations.at(identations.size() - 1).stmts.push_back(stmt);
+            identations.at(identations.size() - 1).content.stmts.push_back(stmt);
         }
         else
         {
