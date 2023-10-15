@@ -31,7 +31,10 @@ private:
         "Out of range",
         "ArithmeticError",
         "TypeError"};
-    void abort() { exit(EXIT_FAILURE); }
+    void abort()
+    {
+        exit(EXIT_FAILURE);
+    }
 };
 
 static ErrorComponent Error = ErrorComponent();

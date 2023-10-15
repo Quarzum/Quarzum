@@ -141,7 +141,7 @@ public:
                 break;
             }
         }
-        // debugVariables();
+        VariableStack.debug();
     }
     unsigned short i;
 
@@ -241,7 +241,6 @@ private:
             // Add an assign without value
             ast.addInit(type, var);
             advance(2);
-            VariableStack.add(var);
         }
         else
         {

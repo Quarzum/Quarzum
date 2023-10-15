@@ -22,11 +22,12 @@ public:
         {
             if (stack[i] == name)
             {
-                stack.erase(stack.begin() + 2);
+                stack.erase(stack.begin() + i);
+                break;
             }
             else if (i == stack.size() - 1)
             {
-                Error.exit(REFERENCE_ERROR, "Variable " + name + " doesn't exists");
+                Error.exit(REFERENCE_ERROR, "Variable " + name + " doesn't exist");
             }
         }
     }
