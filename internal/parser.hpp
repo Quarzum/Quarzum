@@ -131,6 +131,13 @@ public:
                     break;
                 }
 
+                else if (followSyntax({PAR_OPEN, PAR_CLOSE}))
+                {
+                    ast.addFunctionCall(next(0).value);
+                    advance(3);
+                    break;
+                }
+
                 Error.exit(SYNTAX_ERROR, "Expected assignation");
 
             case FUNCTION_KEYWORD:
