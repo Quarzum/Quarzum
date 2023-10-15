@@ -1,7 +1,8 @@
-int i = 43
-i *= 3
-string h
-num j
-
-delete i
-exit i
+module Program {
+    int i = 43
+    i *= 3
+    string h
+    num j
+    exit i
+}
+int m = 3

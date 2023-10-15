@@ -10,9 +10,18 @@ public:
         while (i < m_tokens.size())
         {
             Expr expr;
+
             Token t = m_tokens.get(i);
             switch (t.type)
             {
+            case MODULE_KEYWORD:
+                if (followSyntax({IDENTIFIER, C_BRACKET_OPEN}))
+                {
+                    ast.addModule(next().value);
+                    advance(3);
+                    break;
+                }
+                Error.exit(SYNTAX_ERROR, "Expected module name");
             case OUT:
                 if (followSyntax({PAR_OPEN}))
                 {
@@ -135,7 +144,10 @@ public:
                 }
 
                 Error.exit(SYNTAX_ERROR, "Expected function initialization");
-
+            case C_BRACKET_CLOSE:
+                ast.closeLastIdent();
+                advance();
+                break;
             default:
                 advance();
                 break;

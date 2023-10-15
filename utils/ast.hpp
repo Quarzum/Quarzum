@@ -7,36 +7,34 @@ public:
         return childcount;
     }
 
-    Statement lastIdent;
-
     void addInit(TokenType type, string name, Expr value = nullExpr)
     {
-        debug(tokens[type] + "_INIT -> id: " + name + ", value: " + value.literal.value);
-        nodes.push_back(Statement{Assign{type, name, value}});
+        debug(identate() + tokens[type] + "_INIT -> id: " + name + ", value: " + value.literal.value);
+        newStmt(Statement{Assign{type, name, value}});
     }
 
     void addCond(string name, Cond value)
     {
-        debug(tokens[BOOL] + "_INIT -> id: " + name + ", value: " + value.literal.value);
-        nodes.push_back(Statement{Assign{BOOL, name, value}});
+        debug(identate() + tokens[BOOL] + "_INIT -> id: " + name + ", value: " + value.literal.value);
+        newStmt(Statement{Assign{BOOL, name, value}});
     }
 
     void addReturn(Expr expr)
     {
-        debug("RETURN -> value: " + expr.literal.value);
-        nodes.push_back(Statement{Return{expr}});
+        debug(identate() + "RETURN -> value: " + expr.literal.value);
+        newStmt(Statement{Return{expr}});
     }
 
     void addExit(Expr expr)
     {
-        debug("EXIT -> value: " + expr.literal.value);
-        nodes.push_back(Statement{Exit{expr}});
+        debug(identate() + "EXIT -> value: " + expr.literal.value);
+        newStmt(Statement{Exit{expr}});
     }
 
     void addAssign(string name, Expr value)
     {
-        debug("REASSIGN -> id: " + name + ", value: " + value.literal.value);
-        nodes.push_back(Statement{ReAssign{name, value}});
+        debug(identate() + "REASSIGN -> id: " + name + ", value: " + value.literal.value);
+        newStmt(Statement{ReAssign{name, value}});
     }
 
     void addUnaryPlus(string name)
@@ -52,14 +50,50 @@ public:
 
     void addFunction(TokenType type, string name)
     {
-        debug(tokens[type] + "_FUNCTION -> id: " + name + ", args: (), content: ");
-        nodes.push_back(Statement{Function{type, name, {}, Block{}}});
+        debug(identate() + tokens[type] + "_FUNCTION -> id: " + name + ", args: (), content: ");
+        newStmt(Statement{Function{type, name, {}, Block{}}});
+    }
+
+    void addModule(string name)
+    {
+        debug(identate() + "MODULE -> id: " + name);
+
+        identations.push_back(Block{});
+    }
+    void closeLastIdent()
+    {
+        newStmt(Statement{Module{"hola", identations.at(identations.size() - 1)}});
+        identations.pop_back();
+        debug("");
     }
 
     deque<Statement> nodes;
+    deque<Block> identations;
 
 private:
     int childcount;
+
+    void newStmt(Statement stmt)
+    {
+        if (identations.size() > 0)
+        {
+            identations.at(identations.size() - 1).stmts.push_back(stmt);
+        }
+        else
+        {
+            nodes.push_back(stmt);
+        }
+    }
+
+    string identate()
+    {
+        string result;
+        for (short i = 0; i < identations.size(); i++)
+        {
+            result += "  ";
+        }
+        return result;
+    }
 };
 
 static AST ast = AST();
