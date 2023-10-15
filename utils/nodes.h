@@ -22,6 +22,16 @@ struct Return
     Expr value;
 };
 
+// argument -> <type> <ident> (= <expr>)?
+struct Argument
+{
+    TokenType type;
+    string id;
+    Expr value;
+
+    int size;
+};
+
 // assign -> "static"? "const"? <size_modifier>* <type> <ident> = <expr>
 struct Assign
 {
@@ -60,7 +70,7 @@ struct Function
 {
     TokenType type;
     string id;
-    // deque<Assign> args;
+    // deque<Argument> args;
     Block content;
 };
 // if -> "if" ( <condition> ) { <block> }

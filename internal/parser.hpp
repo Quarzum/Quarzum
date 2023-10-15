@@ -134,11 +134,19 @@ public:
                 Error.exit(SYNTAX_ERROR, "Expected assignation");
 
             case FUNCTION_KEYWORD:
-                if (followSyntax({IDENTIFIER, PAR_OPEN, PAR_CLOSE, C_BRACKET_OPEN}))
+                if (followSyntax({IDENTIFIER, PAR_OPEN}))
                 {
-                    ast.addFunction(ANY, next().value);
-                    advance(5);
-                    break;
+                    Argument arg = parse_args(3);
+                    if (followSyntax({PAR_CLOSE, C_BRACKET_OPEN}, 3 + arg.size))
+                    {
+                        ast.addFunction(ANY, next().value, arg);
+                        advance(5 + arg.size);
+                        break;
+                    }
+                    else
+                    {
+                        Error.exit(SYNTAX_ERROR, "Invalid function declaration");
+                    }
                 }
                 Error.exit(SYNTAX_ERROR, "Expected function initialization");
             case C_BRACKET_CLOSE:
@@ -172,18 +180,29 @@ private:
         advance(size);
     }
     // Checks that a sentence follows a defined syntax step by step
-    bool followSyntax(deque<TokenType> syntax)
+    bool followSyntax(deque<TokenType> syntax, int initialValue = 1)
     {
         bool result = true;
         for (unsigned short n = 0; n < syntax.size(); n++)
         {
-            if (next(1 + n).type != syntax.at(n))
+            if (next(initialValue + n).type != syntax.at(n))
             {
                 result = false;
             }
         }
         return result;
     }
+    // Function argument parsing procedure
+    Argument parse_args(short d = 1)
+    {
+        TokenType t = next(d).type;
+        if (followSyntax({INT_KEYWORD, IDENTIFIER}, d))
+        {
+            return Argument{INT, next(d + 1).value, nullExpr, 2};
+        }
+        return {};
+    }
+
     // Expression parsing procedure
     Expr parse_expr(short d = 1)
     {
@@ -239,14 +258,23 @@ private:
                 advance(3 + expr.size);
             }
         }
-        else if (followSyntax({IDENTIFIER, PAR_OPEN, PAR_CLOSE, C_BRACKET_OPEN}))
+        else if (followSyntax({IDENTIFIER, PAR_OPEN}))
         {
-            ast.addFunction(type, var);
-            advance(5);
+            Argument arg = parse_args(3);
+            if (followSyntax({PAR_CLOSE, C_BRACKET_OPEN}, 3 + arg.size))
+            {
+                ast.addFunction(type, var, arg);
+                advance(5 + arg.size);
+            }
+            else
+            {
+                Error.exit(SYNTAX_ERROR, "Invalid function declaration");
+            }
         }
         else if (followSyntax({IDENTIFIER}))
         {
             // Add an assign without value
+
             ast.addInit(type, var);
             advance(2);
         }

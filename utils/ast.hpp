@@ -50,10 +50,10 @@ public:
         addAssign(name, expr);
     }
 
-    void addFunction(TokenType type, string name)
+    void addFunction(TokenType type, string name, Argument arg = Argument{})
     {
 
-        debug(identate() + tokens[type] + "_FUNCTION -> id: " + name + ", args: ()");
+        debug(identate() + tokens[type] + "_FUNCTION -> id: " + name + ", args: (" + arg.id + " <- " + tokens[arg.type] + ")");
         identations.push_back({"function", name, Block{}});
         VariableStack.add(name);
     }

@@ -1,6 +1,9 @@
 module Math{
     num pi = 3.1415926535
-    num sum(){
-        return 1 + 1
+    num sum(int t){
+        return t + 1
+    }
+    function hello(int d){
+        return d
     }
 }
