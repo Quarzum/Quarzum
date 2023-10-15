@@ -6,6 +6,11 @@ module Math{
     function hello(string d){
         out("Hello, " + d)    
     }
-    hello()
-    sum(2)
+    
+    if(){
+       sum(2) 
+    }
+    else{
+       hello() 
+    }
 }

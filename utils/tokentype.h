@@ -67,7 +67,11 @@ enum TokenType
     TO_INT,
     TO_STR,
     TO_NUM,
-
+    // Bucles
+    IF,
+    ELSE,
+    FOR,
+    WHILE
 };
 struct Token
 {

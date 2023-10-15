@@ -31,6 +31,9 @@ const map<string, unsigned short> keywords = {
     {"out", 54},
     {"input", 55},
     {"typeOf", 56},
-};
+    {"if", 60},
+    {"else", 61},
+    {"for", 62},
+    {"while", 63}};
 const __int8 findKeyword(string keyword) { return keywords.at(keyword); }
 const bool isKeyword(string src) { return keywords.count(src); }

@@ -80,7 +80,13 @@ struct Function
 // if -> "if" ( <condition> ) { <block> }
 struct If
 {
-    Cond condition;
+    // Cond condition;
+    Block content;
+};
+
+// else -> "else" { <block> }
+struct Else
+{
     Block content;
 };
 
@@ -125,6 +131,7 @@ struct Statement
         Return,
         Import,
         If,
+        Else,
         For,
         While,
         Module,

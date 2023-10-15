@@ -17,7 +17,7 @@ public:
     // Throws an error and stops the program
     void exit(unsigned short code, string description = "")
     {
-        cerr << errors[code] << ":\n    " << description << " - Error code: " << code << endl;
+        cerr << errors[code] << ":\n    " << description << endl;
         std::exit(EXIT_FAILURE);
     }
 

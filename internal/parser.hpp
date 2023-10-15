@@ -131,19 +131,24 @@ public:
                     break;
                 }
 
-                else if (followSyntax({PAR_OPEN}) && VariableStack.exists(next(0).value))
+                else if (followSyntax({PAR_OPEN}))
                 {
-                    int s = 0;
-                    if (isLiteral(next(2).type))
+                    if (VariableStack.exists(next(0).value))
                     {
-                        s++;
+                        int s = 0;
+                        if (isLiteral(next(2).type))
+                        {
+                            s++;
+                        }
+                        if (next(s + 2).value == ")")
+                        {
+                            ast.addFunctionCall(next(0).value, s > 0 ? next(2).value : "");
+                            advance(s + 2);
+                            break;
+                        }
+                        Error.exit(SYNTAX_ERROR, "Expected ')'");
                     }
-                    if (next(s + 2).value == ")")
-                    {
-                        ast.addFunctionCall(next(0).value, s > 0 ? next(2).value : "");
-                        advance(s + 2);
-                        break;
-                    }
+                    Error.exit(SYNTAX_ERROR, "Function '" + next(0).value + "' does not exist.");
                 }
                 else
                 {
@@ -166,6 +171,23 @@ public:
                     }
                 }
                 Error.exit(SYNTAX_ERROR, "Expected function initialization");
+
+            case IF:
+                if (followSyntax({PAR_OPEN, PAR_CLOSE, C_BRACKET_OPEN}))
+                {
+                    ast.addIf();
+                    advance(4);
+                    break;
+                }
+                Error.exit(SYNTAX_ERROR, "Expected 'if' bucle");
+            case ELSE:
+                if (followSyntax({C_BRACKET_OPEN}))
+                {
+                    ast.addElse();
+                    advance(2);
+                    break;
+                }
+                Error.exit(SYNTAX_ERROR, "Expected 'else' content");
             case C_BRACKET_CLOSE:
                 ast.closeLastIdent();
                 advance();
@@ -176,6 +198,10 @@ public:
             }
         }
         VariableStack.debug();
+        if (ast.identations.size() > 0)
+        {
+            Error.exit(SYNTAX_ERROR, "Expected end of file");
+        }
     }
     unsigned short i;
 

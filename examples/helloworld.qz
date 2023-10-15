@@ -5,4 +5,4 @@
 */
 
 string name = input("What is your name?")
-out("Hello, @{name}!")
+out("Hello, " + name + "!")

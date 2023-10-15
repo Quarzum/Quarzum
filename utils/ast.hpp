@@ -70,6 +70,17 @@ public:
         newStmt(Statement{FunctionCall{name}});
     }
 
+    void addIf()
+    {
+        debug(identate() + "IF -> condition: " + "");
+        identations.push_back({"if", "", Block{}});
+    }
+    void addElse()
+    {
+        debug(identate() + "ELSE");
+        identations.push_back({"else", "", Block{}});
+    }
+
     void addModule(string name)
     {
         debug(identate() + "MODULE -> id: " + name);
@@ -92,6 +103,14 @@ public:
         else if (lastIdent.type == "function")
         {
             newStmt(Statement{Function{ANY, lastIdent.name, lastIdent.content}});
+        }
+        else if (lastIdent.type == "if")
+        {
+            newStmt(Statement{If{lastIdent.content}});
+        }
+        else if (lastIdent.type == "else")
+        {
+            newStmt(Statement{Else{lastIdent.content}});
         }
         identations.pop_back();
         debug("");
