@@ -14,6 +14,4 @@ void compile(string source)
     parser.parse();
 
     /* Optimizes AST and checks for types */
-    // Analyzer analyzer = Analyzer(root);
-    // AST optimized = analyzer.analyze();
 }
