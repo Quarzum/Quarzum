@@ -1,10 +1,26 @@
-class CLIComponent
+class CLI
 {
 public:
-    CLIComponent() {}
+    CLI(char **x, unsigned short count)
+    {
+        args = x;
+        argc = count;
+        setCommand();
+    }
+    void setCommand()
+    {
+        for (unsigned short i = 0; i < 4; i++)
+        {
+            if (strcmp(args[1], commands[i]) == 0)
+            {
+                cout << commands[i];
+                mode = i;
+            }
+        }
+    }
     void getFlags()
     {
-        for (unsigned short i = 1; i < argc; i++)
+        for (unsigned short i = 2; i < argc; i++)
         {
             if (strcmp(args[i], "--v") == 0 || strcmp(args[i], "--version") == 0)
             {
@@ -26,38 +42,9 @@ public:
                         "\n\n Options:       "
                         "\n\n --v / --version : Displays the current compiler version."
                         "\n --h / --help : Displays this panel."
-                        "\n --init : Creates a new Quarzum project structure."
                         "\n --i / --input: Specifies the input file location."
                         "\n --o / --output: Specifies the output file location.\n"
                      << endl;
-            }
-            else if (strcmp(args[i], "--init") == 0)
-            {
-                if (isArg(args[i + 1]))
-                {
-                    i++;
-                }
-                /*
-
-                If flag --init exists, create this project structure:
-                    > main.qz
-                    > main.config.qz
-                    > /modules
-
-                */
-                cout << "Creating a new project..." << endl;
-                ofstream program("main.qz");
-                ofstream configfile("main.config.qz");
-                if (_mkdir("modules") == 0)
-                {
-                    cout << "Project created successfully" << endl;
-                    program.close();
-                    configfile.close();
-                }
-                else
-                {
-                    Error.exit(RUNTIME_ERROR, "Error creating a new project: unable to make directories");
-                }
             }
             else if (strcmp(args[i], "--i") == 0 || strcmp(args[i], "--input") == 0)
             {
@@ -87,10 +74,12 @@ public:
     {
         return args[o_index];
     }
-    void setArgs(char **x, unsigned short count)
+
+    int mode;
+
+    int getIndex()
     {
-        args = x;
-        argc = count;
+        return o_index;
     }
 
 private:
@@ -102,6 +91,19 @@ private:
     {
         return str[0] != '-' && str[1] != '-';
     }
-};
 
-CLIComponent CLI = CLIComponent();
+    const char *commands[4] = {
+        "run",
+        "init",
+        "install",
+        "publish"
+
+    };
+};
+enum Modes
+{
+    RUN,
+    INIT,
+    INSTALL,
+    PUBLISH
+};

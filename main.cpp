@@ -6,24 +6,44 @@
 */
 int main(int argc, char *argv[])
 {
-    /*
-    Throw error if file is not found or there is an invalid format
-    */
-    if (argc < 2)
-    {
-        Error.exit(FILE_NOT_FOUND_ERROR, "No such file or directory");
-    }
-    // Source source = Source(argv[1]);
-    CLI.setArgs(argv, argc);
-    CLI.getFlags();
+    CLI cli = CLI(argv, argc);
 
-    if (CLI.input() != "")
+    if (cli.mode == INIT)
     {
-        Source.route = CLI.input();
-        Source.validate();
-        chechForConfigFile(CLI.input());
-        // If all is correct, compile the source code
-        compile(Source.get());
+        cout << "Creating a new project..." << endl;
+        ofstream program("main.qz");
+        ofstream configfile("main.config.qz");
+        if (_mkdir("modules") == 0)
+        {
+            cout << "Project created successfully" << endl;
+            program.close();
+            configfile.close();
+        }
+        else
+        {
+            Error.exit(RUNTIME_ERROR, "Error creating a new project: unable to make directories");
+        }
+    }
+
+    if (cli.mode == INSTALL)
+    {
+    }
+
+    if (cli.mode == RUN)
+    {
+        cli.getFlags();
+        if (cli.input() != "")
+        {
+            Source.route = cli.input();
+            Source.validate();
+            chechForConfigFile(cli.input());
+            // If all is correct, compile the source code
+            compile(Source.get());
+        }
+        if (cli.getIndex() == -1)
+        {
+            Error.exit(FILE_NOT_FOUND_ERROR, "No such file or directory");
+        }
     }
 
     return 0;
