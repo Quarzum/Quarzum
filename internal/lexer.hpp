@@ -60,8 +60,17 @@ public:
                 }
                 else if (c == '/' && next() == '/')
                 {
-                    cout << "COMMENT\n";
                     isSingleComment = true;
+                    i++;
+                }
+                else if (c == '/' && next() == '*')
+                {
+                    isComment = true;
+                    i++;
+                }
+                else if (c == '*' && next() == '/')
+                {
+                    isComment = false;
                     i++;
                 }
                 else if (isOperator(c))
@@ -72,12 +81,8 @@ public:
                 {
                     addToken(TokenType(symbols.at(c)), toString(c));
                 }
-                else
-                {
-                    Error.exit(LEXICAL_ERROR, "Unexpected token " + c);
-                }
             }
-            else if (!isException() && !isspace(c))
+            else if (!isException() && !isspace(c) && !isComment && !isSingleComment)
             {
                 Error.exit(LEXICAL_ERROR, "Unexpected token " + toString(c) + " at line " + to_string(line));
             }
@@ -121,7 +126,7 @@ private:
         Adds a new token to the deque
 
         */
-        if (!isSingleComment)
+        if (!isSingleComment && !isComment)
         {
             tokens.addToken(type, value);
             buffer.clear();
@@ -138,10 +143,11 @@ private:
     }
     void addToBuffer()
     {
-        if (!isSingleComment)
+        if (!isSingleComment && !isComment)
         {
             buffer += c;
         }
     }
     bool isSingleComment = false;
+    bool isComment = false;
 };
