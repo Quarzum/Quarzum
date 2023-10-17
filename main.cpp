@@ -8,17 +8,20 @@ int main(int argc, char *argv[])
 {
     // Initializing the Command Line Interface
     CLI cli = CLI(argv, argc);
-    if (cli.input() != "")
+    if (cli.mode == RUN)
     {
-        Source.route = cli.input();
-        Source.validate();
-        chechForConfigFile(cli.input());
-        // If all is correct, compile the source code
-        compile(Source.get());
-    }
-    else
-    {
-        Error.exit(FILE_NOT_FOUND_ERROR, "No such file or directory");
+        if (cli.input() != "")
+        {
+            Source.route = cli.input();
+            Source.validate();
+            chechForConfigFile(cli.input());
+            // If all is correct, compile the source code
+            compile(Source.get());
+        }
+        else
+        {
+            Error.exit(FILE_NOT_FOUND_ERROR, "No such file or directory");
+        }
     }
 
     return 0;

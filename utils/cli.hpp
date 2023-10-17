@@ -1,9 +1,10 @@
 enum Modes
 {
-    RUN,
-    INIT,
-    INSTALL,
-    PUBLISH
+    NONE = -1,
+    RUN = 0,
+    INIT = 1,
+    INSTALL = 2,
+    PUBLISH = 3
 };
 
 class CLI
@@ -24,11 +25,14 @@ public:
         case RUN:
             getFlags();
             break;
+        case NONE:
+            getFlags();
+            break;
         }
     }
 
     // Returns the flag with the output file path
-    char *input()
+    string input()
     {
         if (o_index == -1)
         {
@@ -37,18 +41,19 @@ public:
         return args[o_index];
     }
 
-    int mode;
+    int mode = -1;
     short o_index = -1;
 
 private:
     char **args;
     unsigned short argc;
 
+    // Returns if the value starts with "--" (is a flag) or not
     bool isArg(string str)
     {
         return str[0] != '-' && str[1] != '-';
     }
-
+    // List of all the avaliable modes
     const char *commands[4] = {
         "run",
         "init",
@@ -56,19 +61,18 @@ private:
         "publish"
 
     };
-
+    // Set the mode depending on the first parameter
     void setCommand()
     {
         for (unsigned short i = 0; i < 4; i++)
         {
             if (strcmp(args[1], commands[i]) == 0)
             {
-                cout << commands[i];
                 mode = i;
             }
         }
     }
-
+    // Creates a Quarzum project template
     void init()
     {
         cout << "\nCreating a new project..." << endl;
@@ -85,10 +89,10 @@ private:
             Error.exit(RUNTIME_ERROR, "Error creating a new project: unable to make directories");
         }
     }
-
+    // Gets the flags and execute them
     void getFlags()
     {
-        for (unsigned short i = 2; i < argc; i++)
+        for (unsigned short i = (1 + (mode != -1)); i < argc; i++)
         {
             if (strcmp(args[i], "--v") == 0 || strcmp(args[i], "--version") == 0)
             {
@@ -106,7 +110,11 @@ private:
                 If flags --h or --help exist, show the help panel
 
                 */
-                cout << "\n\n Usage: quarzum.exe [options] file"
+                cout << "\n\n Usage: quarzum.exe [action] [options] file"
+                        "\n\n Actions:       "
+                        "\n\n init : Creates a new Quarzum project template."
+                        "\n run [path] : Runs a Quarzum script."
+                        "\n install [package-name] : Installs a package"
                         "\n\n Options:       "
                         "\n\n --v / --version : Displays the current compiler version."
                         "\n --h / --help : Displays this panel."
