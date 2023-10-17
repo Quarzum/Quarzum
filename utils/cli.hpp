@@ -80,7 +80,8 @@ private:
         ofstream configfile("main.config.qz");
         if (_mkdir("modules") == 0)
         {
-            cout << "Project created successfully!" << endl;
+            cout << "Project created successfully!\n\nCreated 3 files:\n  - main.qz\n  - main.config.qz\n  - /modules\n"
+                 << endl;
             program.close();
             configfile.close();
         }

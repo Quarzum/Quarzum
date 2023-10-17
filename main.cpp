@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
 {
     // Initializing the Command Line Interface
     CLI cli = CLI(argv, argc);
+
     if (cli.mode == RUN)
     {
         if (cli.input() != "")
