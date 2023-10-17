@@ -15,6 +15,7 @@ public:
             c = m_src.at(i);
             if (c == '\n')
             {
+                isSingleComment = false;
                 line++;
             }
             else if (c == '"')
@@ -52,9 +53,16 @@ public:
             }
             else if (ispunct(c))
             {
+
                 if (isException())
                 {
                     addToBuffer();
+                }
+                else if (c == '/' && next() == '/')
+                {
+                    cout << "COMMENT\n";
+                    isSingleComment = true;
+                    i++;
                 }
                 else if (isOperator(c))
                 {
@@ -113,8 +121,11 @@ private:
         Adds a new token to the deque
 
         */
-        tokens.addToken(type, value);
-        buffer.clear();
+        if (!isSingleComment)
+        {
+            tokens.addToken(type, value);
+            buffer.clear();
+        }
     }
     bool isException()
     {
@@ -127,6 +138,10 @@ private:
     }
     void addToBuffer()
     {
-        buffer += c;
+        if (!isSingleComment)
+        {
+            buffer += c;
+        }
     }
+    bool isSingleComment = false;
 };
