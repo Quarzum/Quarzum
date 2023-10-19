@@ -6,7 +6,7 @@ struct Expr
     int size;
 };
 // cond -> <bool> || <bool> <c_op> <bool>
-struct Cond
+struct Condition
 {
     Token literal;
     int size;
@@ -40,7 +40,7 @@ struct Assign
 {
     TokenType type;
     string id;
-    variant<Expr, Cond> value;
+    variant<Expr, Condition> value;
 };
 
 // re_assign -> <ident> = <expr>
@@ -93,7 +93,7 @@ struct Else
 // while -> "while" ( <condition> ){ <block> }
 struct While
 {
-    Cond condition;
+    Condition condition;
     Block content;
 };
 
@@ -101,7 +101,7 @@ struct While
 struct For
 {
     Assign var;
-    Cond condition;
+    Condition condition;
     ReAssign step;
     Block content;
 };
@@ -139,6 +139,7 @@ struct Statement
         Function,
         FunctionCall>
         stmt;
+    string type;
 };
 
 Expr nullExpr = {Token{NULL_KEYWORD, "null"}, 0};

@@ -150,10 +150,7 @@ public:
                     }
                     Error.exit(SYNTAX_ERROR, "Function '" + next(0).value + "' does not exist.");
                 }
-                else
-                {
-                    Error.exit(SYNTAX_ERROR, "Expected assignation");
-                }
+                Error.exit(SYNTAX_ERROR, "Expected assignation");
 
             case FUNCTION_KEYWORD:
                 if (followSyntax({IDENTIFIER, PAR_OPEN}))
@@ -165,19 +162,21 @@ public:
                         advance(5 + arg.size);
                         break;
                     }
-                    else
-                    {
-                        Error.exit(SYNTAX_ERROR, "Invalid function declaration");
-                    }
+                    Error.exit(SYNTAX_ERROR, "Invalid function declaration");
                 }
                 Error.exit(SYNTAX_ERROR, "Expected function initialization");
 
             case IF:
-                if (followSyntax({PAR_OPEN, PAR_CLOSE, C_BRACKET_OPEN}))
+                if (followSyntax({PAR_OPEN}))
                 {
-                    ast.addIf();
-                    advance(4);
-                    break;
+                    Condition cond = parse_condition(2);
+                    if (followSyntax({PAR_CLOSE, C_BRACKET_OPEN}, 3 + cond.size))
+                    {
+                        ast.addIf(cond);
+                        advance(4);
+                        break;
+                    }
+                    Error.exit(SYNTAX_ERROR, "Invalid if declaration");
                 }
                 Error.exit(SYNTAX_ERROR, "Expected 'if' bucle");
             case ELSE:
@@ -264,18 +263,18 @@ private:
         return {};
     }
     // Expression parsing procedure
-    Cond parse_cond(short d = 1)
+    Condition parse_condition(short d = 1)
     {
         TokenType t = next(d).type;
         if (isBool(t))
         {
             if (isComparator(next(d + 1).value[0]))
             {
-                Cond expr = parse_cond(d + 2);
+                Condition expr = parse_condition(d + 2);
                 // If the expression exists, it is (actually) a sum
-                return Cond{{t, next(d).value + " " + next(d + 1).value[0] + " " + expr.literal.value}, 1 + expr.size};
+                return Condition{{t, next(d).value + " " + next(d + 1).value[0] + " " + expr.literal.value}, 1 + expr.size};
             }
-            return Cond{{t, next(d).value}, 1};
+            return Condition{{t, next(d).value}, 1};
         }
         Error.exit(SYNTAX_ERROR, "Invalid expression");
         return {};
@@ -289,7 +288,7 @@ private:
         {
             if (type == BOOL)
             {
-                Cond cond = parse_cond(3);
+                Condition cond = parse_condition(3);
                 ast.addCond(var, cond);
                 advance(3 + cond.size);
             }
@@ -317,7 +316,6 @@ private:
         else if (followSyntax({IDENTIFIER}))
         {
             // Add an assign without value
-
             ast.addInit(type, var);
             advance(2);
         }
