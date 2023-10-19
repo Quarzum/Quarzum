@@ -6,5 +6,4 @@ module Math{
     function hello(string d){
         out("Hello, " + d)    
     }
-
 }

@@ -1,3 +1,5 @@
+#define TEAL "\e[36;40m"
+
 enum Modes
 {
     NONE = -1,
@@ -75,15 +77,31 @@ private:
     // Creates a Quarzum project template
     void init()
     {
-        cout << "\nCreating a new project..." << endl;
-        ofstream program("main.qz");
-        ofstream configfile("main.config.qz");
-        if (_mkdir("modules") == 0)
+
+        cout << "\n\nProject name: " << TEAL;
+        string s;
+        cin >> s;
+        if (_mkdir(s.c_str()) == 0)
         {
-            cout << "Project created successfully!\n\nCreated 3 files:\n  - main.qz\n  - main.config.qz\n  - /modules\n"
-                 << endl;
-            program.close();
-            configfile.close();
+            ofstream program(s + "/main.qz");
+            ofstream configfile(s + "/main.config.qz");
+
+            string path(s);
+            s += "/modules";
+
+            if (_mkdir(s.c_str()) == 0)
+            {
+                cout << NC;
+                Error.success("Project created successfully!");
+                cout << "\nCreated 3 files:\n  - main.qz\n  - main.config.qz\n  - /modules\n"
+                     << endl;
+                program.close();
+                configfile.close();
+            }
+            else
+            {
+                Error.exit(RUNTIME_ERROR, "Error creating a new project: unable to make directories");
+            }
         }
         else
         {
@@ -102,7 +120,7 @@ private:
                 If flags --v or --version exist, show the version of the compiler
 
                 */
-                wcout << "[Quarzum " << L'\u00A9' << " 2023] - Version: 1.0.0" << endl;
+                wcout << "\n[Quarzum " << L'\u00A9' << " 2023] - Version: 1.0.0" << endl;
             }
             else if (strcmp(args[i], "--h") == 0 || strcmp(args[i], "--help") == 0)
             {
@@ -111,7 +129,7 @@ private:
                 If flags --h or --help exist, show the help panel
 
                 */
-                cout << "\n\n Usage: quarzum.exe [action] [options] file"
+                cout << "\n\n Usage: quarzum [action] [options] file"
                         "\n\n Actions:       "
                         "\n\n init : Creates a new Quarzum project template."
                         "\n run [path] : Runs a Quarzum script."

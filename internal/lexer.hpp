@@ -18,6 +18,7 @@ public:
                 isSingleComment = false;
                 line++;
             }
+
             else if (c == '"')
             {
                 addToBuffer();
@@ -97,15 +98,7 @@ private:
     unsigned int size, line, i = 0;
     char c;
     bool isNum;
-    bool isEOF(unsigned short d)
-    {
-        /*
 
-        Returns true if m_src[i] is the final character
-
-        */
-        return i + d > size;
-    };
     char next(short distance = 1)
     {
         /*
@@ -113,7 +106,7 @@ private:
         Returns the next character if it exists
 
         */
-        if (!isEOF(distance))
+        if (i + distance < size)
         {
             return m_src.at(i + distance);
         }
