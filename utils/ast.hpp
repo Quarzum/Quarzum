@@ -124,6 +124,7 @@ private:
 
     void newStmt(Statement stmt)
     {
+
         if (identations.size() > 0)
         {
             identations.at(identations.size() - 1).content.stmts.push_back(stmt);

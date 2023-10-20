@@ -1,13 +1,3 @@
-module Math{
-    num pi = 3.1415926535
-    num sum(int t){
-        return t + 1
-    }
-    function hello(string d){
-        out("Hello, " + d)    
-    }
-
-    if(true > false){
-        return 1
-    }
-}
+int i = 32
+int j = 2 + 1
+i += 3
