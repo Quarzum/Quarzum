@@ -62,7 +62,8 @@ const string tokens[] = {
     "IF",
     "ELSE",
     "FOR",
-    "WHILE"};
+    "WHILE",
+    "COMMENT"};
 // Shows in console a list of tokens
 void debugTokens(deque<Token> composed)
 {

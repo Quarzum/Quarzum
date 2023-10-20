@@ -71,7 +71,8 @@ enum TokenType
     IF,
     ELSE,
     FOR,
-    WHILE
+    WHILE,
+    COMMENT
 };
 struct Token
 {
