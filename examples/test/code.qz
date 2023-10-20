@@ -1,3 +1,2 @@
 int i = 32
-int j = 2 + 1
-i += 3
+string j = "a"
