@@ -11,61 +11,6 @@ public:
         */
         unsigned int size = m_src.length();
         i = 0;
-        map<string, TokenType> rules = {
-
-            {"0+|[1-9][0-9]*", INT},
-            {"int", INT_KEYWORD},
-            {"\"[.]*\"", STRING},
-            {"string", STRING_KEYWORD},
-            {"num", NUMBER_KEYWORD},
-            {"bool", BOOL_KEYWORD},
-            {"any", ANY_KEYWORD},
-            {"null", NULL_KEYWORD},
-            {"function", FUNCTION_KEYWORD},
-            {"return", RETURN},
-            {"import", IMPORT},
-            {"from", FROM},
-            {"exit", EXIT},
-            {"true|false", BOOL},
-            {"struct", STRUCT_KEYWORD},
-            {"enum", ENUM_KEYWORD},
-            {"class", CLASS_KEYWORD},
-            {"public", PUBLIC_KEYWORD},
-            {"private", PRIVATE_KEYWORD},
-            {"module", MODULE_KEYWORD},
-            {"&&|and", AND},
-            {"or", OR},
-            {"!|not", NOT},
-            {",", COMMA},
-            {"\\.", POINT},
-            {"\\(", PAR_OPEN},
-            {"\\)", PAR_CLOSE},
-            {"\\{", C_BRACKET_OPEN},
-            {"\\}", C_BRACKET_CLOSE},
-            {"\\[", S_BRACKET_OPEN},
-            {"\\]", S_BRACKET_CLOSE},
-            {"const", CONST},
-            {"unsigned", UNSIGNED},
-            {"short", SHORT},
-            {"long", LONG},
-            {"x8", X8},
-            {"x16", X16},
-            {"x32", X32},
-            {"x64", X64},
-            {"x128", X128},
-            {"this", THIS},
-            {"static", STATIC},
-            {"delete", DELETE},
-            {"if", IF},
-            {"for", FOR},
-            {"else", ELSE},
-            {"while", WHILE},
-            {"//[.]*\n", COMMENT},
-            {"=", EQUAL},
-
-            {"[a-zA-Z]+", IDENTIFIER},
-
-        };
 
         while (i < size)
         {
@@ -83,14 +28,78 @@ private:
     string m_src;
     TokenList tokens;
     unsigned int line, i;
+
+    map<string, TokenType> rules = {
+
+        {"0+|[1-9][0-9]*", INT},
+        {"int", INT_KEYWORD},
+        {"\"[.]*\"", STRING},
+        {"string", STRING_KEYWORD},
+        {"num", NUMBER_KEYWORD},
+        {"bool", BOOL_KEYWORD},
+        {"any", ANY_KEYWORD},
+        {"null", NULL_KEYWORD},
+        {"function", FUNCTION_KEYWORD},
+        {"return", RETURN},
+        {"import", IMPORT},
+        {"from", FROM},
+        {"exit", EXIT},
+        {"true|false", BOOL},
+        {"struct", STRUCT_KEYWORD},
+        {"enum", ENUM_KEYWORD},
+        {"class", CLASS_KEYWORD},
+        {"public", PUBLIC_KEYWORD},
+        {"private", PRIVATE_KEYWORD},
+        {"module", MODULE_KEYWORD},
+        {"&&|and", AND},
+        {"\\|\\||or", OR},
+        {"!|not", NOT},
+        {",", COMMA},
+        {"\\.", POINT},
+        {"\\(", PAR_OPEN},
+        {"\\)", PAR_CLOSE},
+        {"\\{", C_BRACKET_OPEN},
+        {"\\}", C_BRACKET_CLOSE},
+        {"\\[", S_BRACKET_OPEN},
+        {"\\]", S_BRACKET_CLOSE},
+        {"const", CONST},
+        {"unsigned", UNSIGNED},
+        {"short", SHORT},
+        {"long", LONG},
+        {"x8", X8},
+        {"x16", X16},
+        {"x32", X32},
+        {"x64", X64},
+        {"x128", X128},
+        {"this", THIS},
+        {"static", STATIC},
+        {"delete", DELETE},
+        {"if", IF},
+        {"for", FOR},
+        {"else", ELSE},
+        {"while", WHILE},
+        {"//[.]*\n", COMMENT},
+        {"=", EQUAL},
+
+        {"[a-zA-Z]+", IDENTIFIER},
+
+    };
     void addRule(regex r, TokenType t)
     {
         string s = m_src.substr(i);
         smatch m;
         if (regex_search(s, m, r) && s.find(m.str(0)) == 0)
         {
-            tokens.addToken(t, m.str(0));
-            i += m.str(0).length();
+            string value = m.str(0);
+            if (rules.find(value) != rules.end())
+            {
+                tokens.addToken(rules.at(value), value);
+            }
+            else
+            {
+                tokens.addToken(t, value);
+            }
+            i += value.length();
         }
     }
 };
