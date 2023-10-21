@@ -71,7 +71,7 @@ void debugTokens(deque<Token> composed)
 
     for (unsigned short i = 0; i < composed.size(); i++)
     {
-        cout << tokens[composed.at(i).type] << " -> " << composed.at(i).value << endl;
+        cout << TEAL << tokens[composed.at(i).type] << NC << " -> " << composed.at(i).value << endl;
     }
     cout << "\n\n";
 }

@@ -2,6 +2,8 @@
 #define NC "\e[0m"
 #define YELLOW "\e[30;103m"
 #define GREEN "\e[30;102m"
+#define TEAL "\e[36;40m"
+
 enum Errorcode
 {
     FILE_NOT_FOUND_ERROR,

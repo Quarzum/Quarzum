@@ -1,5 +1,3 @@
-#define TEAL "\e[36;40m"
-
 enum Modes
 {
     NONE = -1,

@@ -5,7 +5,7 @@ public:
     TokenList tokenize()
     {
         // Divides the string into tokens
-        unsigned int size = m_src.length();
+        size_t size = m_src.length();
         i = 0;
 
         while (i < size)
@@ -26,7 +26,7 @@ public:
 private:
     string m_src;
     TokenList tokens;
-    unsigned int line, i;
+    size_t line, i;
 
     map<string, TokenType> rules = {
         {"(-)?[1-9]*[0-9][\\.][0-9]+", NUMBER},
@@ -86,6 +86,7 @@ private:
     {
         string s = m_src.substr(i);
         smatch m;
+
         if (regex_search(s, m, r) && s.find(m.str(0)) == 0)
         {
             string value = m.str(0);
@@ -97,7 +98,7 @@ private:
             {
                 tokens.addToken(t, value);
             }
-            i += value.length();
+            i += value.length() - 1;
             return 1;
         }
         return 0;

@@ -1,3 +1,8 @@
-int i = -32
-num pi = 0.14
-string j = "a"
+module Math{
+    num pi = 3.1415926
+    int three = 3
+
+    num isThree() {
+        return pi
+    }
+}
