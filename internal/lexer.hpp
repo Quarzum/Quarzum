@@ -13,7 +13,7 @@ public:
             for (auto rule : rules)
             {
                 regex r(rule.first);
-                if (addRule(r, rule.second))
+                if (createRule(r, rule.second))
                 {
                     break;
                 }
@@ -30,7 +30,7 @@ private:
 
     map<string, TokenType> rules = {
         {"(-)?[1-9]*[0-9][\\.][0-9]+", NUMBER},
-        {"0+|(-)?[1-9][0-9]*", INT},
+        {"0|(-)?[1-9][0-9]*", INT},
         {"int", INT_KEYWORD},
         {"\"[.]*\"", STRING},
         {"string", STRING_KEYWORD},
@@ -77,27 +77,33 @@ private:
         {"for", FOR},
         {"else", ELSE},
         {"while", WHILE},
-        {"//[.]*\n", COMMENT},
+        {"\\/\\/.*\n", COMMENT},
+        {"\\/\\*(.|\n)*\\*\\/", COMMENT},
         {"=", EQUAL},
         {"[a-zA-Z]+", IDENTIFIER},
 
     };
-    bool addRule(regex r, TokenType t)
+    bool createRule(regex r, TokenType t)
     {
         string s = m_src.substr(i);
         smatch m;
 
         if (regex_search(s, m, r) && s.find(m.str(0)) == 0)
         {
+
             string value = m.str(0);
-            if (rules.find(value) != rules.end())
+            if (t != COMMENT)
             {
-                tokens.addToken(rules.at(value), value);
+                if (rules.find(value) != rules.end())
+                {
+                    tokens.addToken(rules.at(value), value);
+                }
+                else
+                {
+                    tokens.addToken(t, value);
+                }
             }
-            else
-            {
-                tokens.addToken(t, value);
-            }
+
             i += value.length() - 1;
             return 1;
         }
