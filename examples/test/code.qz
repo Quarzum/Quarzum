@@ -1,2 +1,3 @@
-int i = 32
+int i = -32
+num pi = 0.14
 string j = "a"

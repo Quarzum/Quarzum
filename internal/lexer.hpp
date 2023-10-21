@@ -4,11 +4,7 @@ public:
     Lexer(string source) : m_src(move(source)) {}
     TokenList tokenize()
     {
-        /*
-
-        Divides the string into tokens
-
-        */
+        // Divides the string into tokens
         unsigned int size = m_src.length();
         i = 0;
 
@@ -17,7 +13,10 @@ public:
             for (auto rule : rules)
             {
                 regex r(rule.first);
-                addRule(r, rule.second);
+                if (addRule(r, rule.second))
+                {
+                    break;
+                }
             }
             i++;
         }
@@ -30,8 +29,8 @@ private:
     unsigned int line, i;
 
     map<string, TokenType> rules = {
-
-        {"0+|[1-9][0-9]*", INT},
+        {"(-)?[1-9]*[0-9][\\.][0-9]+", NUMBER},
+        {"0+|(-)?[1-9][0-9]*", INT},
         {"int", INT_KEYWORD},
         {"\"[.]*\"", STRING},
         {"string", STRING_KEYWORD},
@@ -80,11 +79,10 @@ private:
         {"while", WHILE},
         {"//[.]*\n", COMMENT},
         {"=", EQUAL},
-
         {"[a-zA-Z]+", IDENTIFIER},
 
     };
-    void addRule(regex r, TokenType t)
+    bool addRule(regex r, TokenType t)
     {
         string s = m_src.substr(i);
         smatch m;
@@ -100,6 +98,8 @@ private:
                 tokens.addToken(t, value);
             }
             i += value.length();
+            return 1;
         }
+        return 0;
     }
 };
