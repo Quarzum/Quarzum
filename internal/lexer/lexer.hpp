@@ -17,9 +17,33 @@ public:
             if (c == '\n')
             {
                 line++;
+                if (isComment == "single")
+                {
+                    isComment = "none";
+                }
                 continue;
             }
-            if (!isspace(c))
+
+            if (c == '/' && m_src.at(i + 1) == '*')
+            {
+                isComment = "multi";
+                i++;
+                continue;
+            }
+            if (c == '*' && m_src.at(i + 1) == '/' && isComment == "multi")
+            {
+                isComment = "none";
+                i++;
+                continue;
+            }
+            if (c == '/' && m_src.at(i + 1) == '/' && isComment != "multi")
+            {
+                isComment = "single";
+                i++;
+                continue;
+            }
+
+            if (!isspace(c) && isComment == "none")
             {
 
                 if (isalpha(c))
@@ -44,12 +68,24 @@ public:
                     }
                     continue;
                 }
-                if (isdigit(c))
+                if (isdigit(c) || (c == '.' && isNum == false))
                 {
                     buffer += c;
-                    if (!isdigit(m_src.at(i + 1)))
+                    if (c == '.')
                     {
-                        tokens.addToken(INT, buffer);
+                        isNum = true;
+                    }
+                    if (!isdigit(m_src.at(i + 1)) && m_src.at(i + 1) != '.')
+                    {
+                        if (isNum)
+                        {
+                            tokens.addToken(NUM, buffer);
+                        }
+                        else
+                        {
+                            tokens.addToken(INT, buffer);
+                        }
+
                         buffer.clear();
                     }
                     continue;
@@ -70,7 +106,10 @@ private:
     TokenList tokens;
     size_t line, i;
 
-    string keywords[2] = {"int", "num"};
+    string isComment = "none";
+    bool isNum;
+
+    string keywords[6] = {"int", "num", "string", "bool", "any", "null"};
     string symbols = "=";
 
     int findKeyword(string key)

@@ -1,2 +1,4 @@
+/* hola */
+// adios
 int i = 3
-num j
+num j = 1.2
