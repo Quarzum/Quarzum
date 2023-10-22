@@ -15,17 +15,18 @@ public:
             // <type> id
             if (isType(t.type) && next().type == IDENTIFIER)
             {
-                // <type> id = <expression>
+                // <type> id = <Expressionession>
                 if (next(2).type == EQUAL)
                 {
-                    Expr e = parse_expr(3);
+                    Expression e = parseExpr(3);
                     ast.addInit(t.type, next().value, e);
+                    i += 3 + e.size;
+                    continue;
                 }
                 // <type> id (= null)
-                else
-                {
-                    ast.addInit(t.type, next().value);
-                }
+                ast.addInit(t.type, next().value);
+                i += 2;
+                continue;
             }
 
             i++;
@@ -36,26 +37,23 @@ public:
 private:
     TokenList m_tokens;
     // Returns the next token in the TokenList
-    Token next(short distance = 1)
+    Token next(__int8 distance = 1)
     {
         return m_tokens.get(i + distance);
     }
 
     // Expression parsing procedure
-    Expr parse_expr(short d = 1)
+    Expression parseExpr(__int8 num)
     {
-        TokenType t = next(d).type;
-        if (isTerm(t))
+
+        if (isTerm(next(num).type))
         {
-            if (isOperator(next(d + 1).value[0]))
-            {
-                Expr expr = parse_expr(d + 2);
-                // If the expression exists, it is (actually) a sum
-                return Expr{{t, next(d).value + " " + next(d + 1).value[0] + " " + expr.literal.value}, 1 + expr.size};
-            }
-            return Expr{{t, next(d).value}, 1};
+            cout << "Is a valid term" << endl;
+
+            return nullExpr;
         }
-        Error.exit(SYNTAX_ERROR, "Invalid expression");
-        return {};
+
+        Error.exit(SYNTAX_ERROR, "Expected expression");
+        return nullExpr;
     }
 };

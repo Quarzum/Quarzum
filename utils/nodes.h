@@ -1,10 +1,18 @@
 struct Statement;
-// expr -> <literal> || <literal> <op> <expr>
-struct Expr
+
+struct Term
 {
-    Token literal;
+    Token lit;
+};
+// expr -> <literal> || <literal> <op> <expr>
+struct Expression
+{
+    Term left;
+    Term right;
+    char op;
     int size;
 };
+
 // cond -> <bool> || <bool> <c_op> <bool>
 struct Condition
 {
@@ -14,23 +22,23 @@ struct Condition
 // exit -> "exit" <expr>
 struct Exit
 {
-    Expr value;
+    Expression value;
 };
 // return -> "return" <expr>
 struct Return
 {
-    Expr value;
+    Expression value;
 };
 struct Out
 {
-    Expr value;
+    Expression value;
 };
 // argument -> <type> <ident> (= <expr>)?
 struct Argument
 {
     TokenType type;
     string id;
-    Expr value;
+    Expression value;
 
     int size;
 };
@@ -40,14 +48,14 @@ struct Assign
 {
     TokenType type;
     string id;
-    variant<Expr, Condition> value;
+    variant<Expression, Condition> value;
 };
 
 // re_assign -> <ident> = <expr>
 struct ReAssign
 {
     string id;
-    Expr value;
+    Expression value;
 };
 
 // function-call -> <id>(<expr>*)
@@ -142,4 +150,4 @@ struct Statement
     string type;
 };
 
-Expr nullExpr = {Token{NULL_KEYWORD, "null"}, 0};
+Expression nullExpr = {Token{NULL_KEYWORD, "null"}, Token{NULL_KEYWORD, "null"}, '+', 0};

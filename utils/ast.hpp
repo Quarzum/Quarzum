@@ -7,16 +7,16 @@ public:
         return childcount;
     }
 
-    void addOut(Expr expr)
-    {
-        debug(identate() + "OUT -> content: " + expr.literal.value);
-        newStmt(Statement{Out{expr}, "out"});
-    }
+    // void addOut(Expression expr)
+    // {
+    //     debug(identate() + "OUT -> content: " + expr.left.value);
+    //     newStmt(Statement{Out{expr}, "out"});
+    // }
 
-    void addInit(TokenType type, string name, Expr value = nullExpr)
+    void addInit(TokenType type, string name, Expression value = nullExpr)
     {
         VariableStack.add(name);
-        debug(identate() + tokens[type].substr(0, tokens[type].find("_")) + "_INIT -> id: " + name + ", value: " + value.literal.value);
+        debug(identate() + tokens[type].substr(0, tokens[type].find("_")) + "_INIT -> id: " + name + ", value: " + value.left.lit.value);
         newStmt(Statement{Assign{type, name, value}, "assign"});
     }
 
@@ -27,34 +27,34 @@ public:
         newStmt(Statement{Assign{BOOL, name, value}, "bassign"});
     }
 
-    void addReturn(Expr expr)
-    {
-        debug(identate() + "RETURN -> value: " + expr.literal.value);
-        newStmt(Statement{Return{expr}, "return"});
-    }
+    // void addReturn(Expression expr)
+    // {
+    //     debug(identate() + "RETURN -> value: " + expr.left.value);
+    //     newStmt(Statement{Return{expr}, "return"});
+    // }
 
-    void addExit(Expr expr)
-    {
-        debug(identate() + "EXIT -> value: " + expr.literal.value);
-        newStmt(Statement{Exit{expr}, "exit"});
-    }
+    // void addExit(Expression expr)
+    // {
+    //     debug(identate() + "EXIT -> value: " + expr.left.value);
+    //     newStmt(Statement{Exit{expr}, "exit"});
+    // }
 
-    void addAssign(string name, Expr value)
-    {
-        debug(identate() + "REASSIGN -> id: " + name + ", value: " + value.literal.value);
-        newStmt(Statement{ReAssign{name, value}, "reassign"});
-    }
+    // void addAssign(string name, Expression value)
+    // {
+    //     debug(identate() + "REASSIGN -> id: " + name + ", value: " + value.left.value);
+    //     newStmt(Statement{ReAssign{name, value}, "reassign"});
+    // }
 
-    void addUnaryPlus(string name)
-    {
-        Expr expr = Expr{INT, name + " + 1", 3};
-        addAssign(name, expr);
-    }
-    void addUnaryMinus(string name)
-    {
-        Expr expr = Expr{INT, name + " - 1", 3};
-        addAssign(name, expr);
-    }
+    // void addUnaryPlus(string name)
+    // {
+    //     Expression expr = Expression{INT, name + " + 1", 3};
+    //     addAssign(name, expr);
+    // }
+    // void addUnaryMinus(string name)
+    // {
+    //     Expression expr = Expression{INT, name + " - 1", 3};
+    //     addAssign(name, expr);
+    // }
 
     void addFunction(TokenType type, string name, Argument arg = Argument{})
     {
