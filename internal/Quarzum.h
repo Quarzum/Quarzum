@@ -36,4 +36,4 @@ using namespace std;
 
 #include "lexer/lexer.hpp"
 
-#include "internal/compile.hpp"
+#include "compile.hpp"
