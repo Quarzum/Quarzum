@@ -14,7 +14,8 @@ enum TokenType
 
     ID,
 
-    EQUAL
+    EQUAL,
+    PLUS
 };
 struct Token
 {

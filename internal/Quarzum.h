@@ -8,7 +8,7 @@
 #include <any>
 #include <map>
 #include <cstring>
-#include <regex>
+
 using namespace std;
 /*
 
@@ -21,6 +21,8 @@ using namespace std;
 #include "lexer/tokentype.h"
 #include "lexer/tokenlist.hpp"
 #include "lexer/tokens.hpp"
+
+#include "parser/nodes.h"
 
 #include "utils/config.h"
 #include "utils/variables.hpp"
@@ -35,5 +37,5 @@ using namespace std;
 */
 
 #include "lexer/lexer.hpp"
-
+#include "parser/parser.hpp"
 #include "compile.hpp"

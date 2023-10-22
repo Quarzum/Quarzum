@@ -13,7 +13,8 @@ const string tokens[] = {
 
     "id",
 
-    "equal"};
+    "equal",
+    "plus"};
 // Shows in console a list of tokens
 void debugTokens(deque<Token> composed)
 {

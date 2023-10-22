@@ -1,4 +1,2 @@
-/* hola */
-// adios
-int i = 3
+int i = 3 + 1
 num j = 1.2

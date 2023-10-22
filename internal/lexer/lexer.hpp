@@ -1,5 +1,6 @@
 #define SYMBOLS_I EQUAL
 
+/* Lexer complexity time: O(n)*/
 class Lexer
 {
 public:
@@ -85,7 +86,6 @@ public:
                         {
                             tokens.addToken(INT, buffer);
                         }
-
                         buffer.clear();
                     }
                     continue;
@@ -110,7 +110,7 @@ private:
     bool isNum;
 
     string keywords[6] = {"int", "num", "string", "bool", "any", "null"};
-    string symbols = "=";
+    string symbols = "=+";
 
     int findKeyword(string key)
     {

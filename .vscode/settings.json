@@ -47,6 +47,7 @@
         "typeinfo": "cpp",
         "compare": "cpp",
         "variant": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "chrono": "cpp"
     }
 }
