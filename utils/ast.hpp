@@ -16,7 +16,7 @@ public:
     void addInit(TokenType type, string name, Expr value = nullExpr)
     {
         VariableStack.add(name);
-        debug(identate() + tokens[type] + "_INIT -> id: " + name + ", value: " + value.literal.value);
+        debug(identate() + tokens[type].substr(0, tokens[type].find("_")) + "_INIT -> id: " + name + ", value: " + value.literal.value);
         newStmt(Statement{Assign{type, name, value}, "assign"});
     }
 
