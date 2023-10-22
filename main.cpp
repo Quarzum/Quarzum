@@ -1,4 +1,4 @@
-#include "Quarzum.h"
+#include "./internal/Quarzum.h"
 /*
 
     Minimal main.cpp, all the procedures are into Quarzum.h

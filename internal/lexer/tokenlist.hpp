@@ -1,19 +1,13 @@
 class TokenList
 {
 public:
-    // Returns all the tokens
-    deque<Token> getItems()
-    {
-        return items;
-    }
-
     // Returns the amount of elements of the list
-    unsigned int size()
+    size_t size()
     {
-        return getItems().size();
+        return items.size();
     }
     // If the token index exists, return that token
-    Token get(unsigned short index = 1)
+    Token get(size_t index = 1)
     {
         if (index < size())
         {
@@ -27,6 +21,5 @@ public:
         items.push_back({type, value});
     }
 
-private:
     deque<Token> items;
 };

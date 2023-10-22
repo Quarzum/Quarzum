@@ -17,15 +17,16 @@ using namespace std;
 */
 #include "utils/error.hpp"
 #include "utils/cli.hpp"
-#include "utils/tokentype.h"
-#include "utils/tokenlist.hpp"
-#include "utils/nodes.h"
+
+#include "lexer/tokentype.h"
+#include "lexer/tokenlist.hpp"
+#include "lexer/tokens.hpp"
+
 #include "utils/config.h"
 #include "utils/variables.hpp"
-#include "utils/tokens.hpp"
+
 #include "utils/source.hpp"
-#include "utils/utilities.hpp"
-#include "utils/ast.hpp"
+
 #include "utils/configfile.hpp"
 /*
 
@@ -33,9 +34,6 @@ using namespace std;
 
 */
 
-#include "internal/lexer.hpp"
-#include "internal/parser.hpp"
-#include "internal/analyzer.hpp"
-#include "internal/linker.hpp"
-#include "internal/generator.hpp"
+#include "lexer/lexer.hpp"
+
 #include "internal/compile.hpp"
