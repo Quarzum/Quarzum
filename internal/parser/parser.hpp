@@ -42,6 +42,10 @@ private:
 
     Expr parseExpr(int d)
     {
+
+        Stack input;
+        Stack op;
+
         string v;
         if (see(d).type == INT)
         {
@@ -56,5 +60,6 @@ private:
             }
         }
         cout << v;
+        return {};
     }
 };

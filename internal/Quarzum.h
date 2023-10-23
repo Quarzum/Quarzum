@@ -23,6 +23,7 @@ using namespace std;
 #include "lexer/tokens.hpp"
 
 #include "parser/nodes.h"
+#include "parser/stack.h"
 
 #include "utils/config.h"
 #include "utils/variables.hpp"
