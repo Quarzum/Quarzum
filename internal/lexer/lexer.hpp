@@ -1,20 +1,20 @@
 #define SYMBOLS_I EQUAL
 
-/* Lexer complexity time: O(n)*/
+// Lexer complexity time: O(n)
 class Lexer
 {
 public:
     Lexer(string source) : m_src(move(source)) {}
     TokenList tokenize()
     {
-        // Divides the string into tokens
+        // Iterates through the source code characters to find patterns
         size_t size = m_src.length();
         i = 0;
-
         for (i; i < size; i++)
         {
             char c = m_src.at(i);
 
+            // Adds a new line
             if (c == '\n')
             {
                 line++;
@@ -24,19 +24,21 @@ public:
                 }
                 continue;
             }
-
+            // Initiates a multiline comment
             if (c == '/' && m_src.at(i + 1) == '*')
             {
                 isComment = "multi";
                 i++;
                 continue;
             }
+            // Closes a multilne comment
             if (c == '*' && m_src.at(i + 1) == '/' && isComment == "multi")
             {
                 isComment = "none";
                 i++;
                 continue;
             }
+            // Adds a sngle line comment
             if (c == '/' && m_src.at(i + 1) == '/' && isComment != "multi")
             {
                 isComment = "single";
@@ -46,7 +48,7 @@ public:
 
             if (!isspace(c) && isComment == "none")
             {
-
+                // If follows the pattern [a-zA-Z][a-zA-Z0-9]*
                 if (isalpha(c))
                 {
                     buffer += c;
@@ -69,6 +71,7 @@ public:
                     }
                     continue;
                 }
+                // If follows the pattern [0-9]+(.[0-9]*)?
                 if (isdigit(c) || (c == '.' && isNum == false))
                 {
                     buffer += c;
@@ -90,6 +93,7 @@ public:
                     }
                     continue;
                 }
+                // If it is a recognized symbol
                 if (symbols.find(c) >= 0)
                 {
                     tokens.addToken(TokenType(SYMBOLS_I + symbols.find(c)), toStr(c));
@@ -112,6 +116,7 @@ private:
     string keywords[6] = {"int", "num", "string", "bool", "any", "null"};
     string symbols = "=+";
 
+    // Finds the number of index of an element inside an array
     int findKeyword(string key)
     {
         for (__int8 i = 0; i < keywords->size(); i++)
@@ -124,6 +129,7 @@ private:
         return -1;
     }
 
+    // Converts a char into string
     string toStr(char c)
     {
         string s(1, c);
