@@ -1,9 +1,3 @@
-#define RED "\e[30;41m"
-#define NC "\e[0m"
-#define YELLOW "\e[30;103m"
-#define GREEN "\e[30;102m"
-#define TEAL "\e[36;40m"
-
 enum Errorcode
 {
     FILE_NOT_FOUND_ERROR,
@@ -23,7 +17,7 @@ public:
     // Throws an error and stops the program
     void exit(unsigned short code, string description = "")
     {
-        cerr << RED "[ERROR]" NC;
+        cerr << RED_BG "[ERROR]" NC;
         cerr << " " + errors[code] << ": " << description << endl;
         std::exit(EXIT_FAILURE);
     }
@@ -31,13 +25,13 @@ public:
     // Throws a warning, but continues the program
     void warn(string description = "")
     {
-        cerr << YELLOW "[WARNING]" NC;
+        cerr << YELLOW_BG "[WARNING]" NC;
         cerr << " " + description << endl;
     }
 
     void success(string description = "")
     {
-        cerr << GREEN "[SUCCESS]" NC;
+        cerr << GREEN_BG "[SUCCESS]" NC;
         cerr << " " + description << endl;
     }
 

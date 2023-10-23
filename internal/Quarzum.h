@@ -15,6 +15,8 @@ using namespace std;
     Including utility-type headers
 
 */
+#include "utils/colors.h"
+
 #include "utils/error.hpp"
 #include "utils/cli.hpp"
 

@@ -6,11 +6,11 @@ public:
     {
         top = 0;
     }
-    void push(char v)
+    void push(string v)
     {
         st[++top] = v;
     }
-    char pop()
+    string pop()
     {
         return st[top--];
     }
@@ -20,6 +20,6 @@ public:
     }
 
 private:
-    char st[STACK_MAX];
+    string st[STACK_MAX];
     int top;
 };

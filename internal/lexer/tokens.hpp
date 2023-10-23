@@ -1,28 +1,36 @@
 const string tokens[] = {
-    "int_k",
-    "num_k",
-    "str_k",
-    "bool_k",
-    "any",
-    "null",
+    "INT_KEYWORD",
+    "NUM_KEYWORD",
+    "STRING_KEYWORD",
+    "BOOL_KEYWORD",
+    "ANY_KEYWORD",
+    "NULL_KEYWORD",
 
-    "int",
-    "num",
-    "str",
-    "bool",
+    "INT",
+    "NUM",
+    "STR",
+    "BOOL",
 
-    "id",
+    "IDENTIFIER",
 
-    "equal",
-    "plus"};
+    "EQUAL",
+    "PLUS"};
 // Shows in console a list of tokens
 void debugTokens(deque<Token> composed)
 {
     cout << "\nTokens\n-----------\n";
 
+    int maxNameLength = 12;
+
     for (unsigned short i = 0; i < composed.size(); i++)
     {
-        cout << TEAL << tokens[composed.at(i).type] << NC << " -> " << composed.at(i).value << endl;
+        string name = tokens[composed.at(i).type];
+        for (__int8 j = 0; j < maxNameLength - tokens[composed.at(i).type].length(); j++)
+        {
+            name += " ";
+        }
+
+        cout << YELLOW << name << GRAY << " -> " << TEAL << composed.at(i).value << NC << endl;
     }
     cout << "\n\n";
 }

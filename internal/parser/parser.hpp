@@ -40,26 +40,43 @@ private:
         return {};
     }
 
-    Expr parseExpr(int d)
+    Expr parseExpr(int d);
+};
+
+bool isLiteral(TokenType t)
+{
+    return t == INT || t == NUM || t == ID;
+}
+bool isTerm(TokenType t)
+{
+    return isLiteral(t) || t == PLUS;
+}
+
+Expr Parser::parseExpr(int d)
+{
+    Stack input;
+    Stack op;
+
+    for (size_t i = 0; i < i + 1; i++)
     {
-
-        Stack input;
-        Stack op;
-
-        string v;
-        if (see(d).type == INT)
+        if (!isTerm(see(d + i).type))
         {
-            v += see(d).value;
-            if (see(d + 1).type == PLUS)
+            cout << " -| s:" << i;
+            break;
+        }
+        else
+        {
+            if (isLiteral(see(d + i).type))
             {
-                v += see(d + 1).value;
-                if (see(d + 2).type == INT)
-                {
-                    v += see(d + 2).value;
-                }
+                cout << see(d + i).value;
+                input.push(see(d + i).value);
+            }
+            else
+            {
+                cout << see(d + i).value;
+                op.push(see(d + i).value);
             }
         }
-        cout << v;
-        return {};
     }
-};
+    return {};
+}
