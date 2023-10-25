@@ -15,7 +15,10 @@ enum TokenType
     ID,
 
     EQUAL,
-    PLUS
+    PLUS,
+    MINUS,
+    PRODUCT,
+    DIVIDE
 };
 struct Token
 {

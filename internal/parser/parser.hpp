@@ -66,7 +66,7 @@ private:
         {
             result.push_back(e.substr(0, e.find('+')));
             result.push_back(e.substr(e.find('+') + 1, e.length()));
-            cout << result[0] << "," << result[1];
+            cout << "Sum(" << result[0] << "," << result[1] << ")";
         }
         else
         {
@@ -80,6 +80,10 @@ Expr Parser::parseExpr(int d)
 {
     string e = readExpr(d);
     cout << e << endl;
-    readSum(e);
+    deque<string> res = readSum(e);
+    if (res.size() == 2)
+    {
+        // return Expr{Sum{Token{INT, res[0]}, Token{INT, res[1]}}};
+    }
     return {};
 }

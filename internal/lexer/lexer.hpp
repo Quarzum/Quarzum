@@ -52,7 +52,7 @@ public:
                 if (isalpha(c))
                 {
                     buffer += c;
-                    if (!isalnum(m_src.at(i + 1)))
+                    if (!isalpha(m_src.at(i + 1)))
                     {
                         if (buffer == "true" || buffer == "false")
                         {
@@ -72,7 +72,7 @@ public:
                     continue;
                 }
                 // If follows the pattern [0-9]+(.[0-9]*)?
-                if (isdigit(c) || c == '.')
+                else if (isdigit(c) || c == '.')
                 {
                     buffer += c;
                     if (c == '.')
@@ -95,7 +95,7 @@ public:
                     continue;
                 }
                 // If it is a recognized symbol
-                if (symbols.find(c) >= 0)
+                else if (symbols.find(c) >= 0)
                 {
                     tokens.addToken(TokenType(SYMBOLS_I + symbols.find(c)), toStr(c));
                     continue;
@@ -114,8 +114,8 @@ private:
     string isComment = "none";
     bool isNum;
 
-    string keywords[13] = {"int", "num", "string", "bool", "any", "null"};
-    string symbols = "=+";
+    string keywords[6] = {"int", "num", "string", "bool", "any", "null"};
+    string symbols = "=+-*/";
 
     // Finds the number of index of an element inside an array
     int findKeyword(string key)

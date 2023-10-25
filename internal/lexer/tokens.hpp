@@ -14,7 +14,10 @@ const string tokens[] = {
     "IDENTIFIER",
 
     "EQUAL",
-    "PLUS"
+    "PLUS",
+    "MINUS",
+    "PRODUCT",
+    "DIVIDE"
 
 };
 // Shows in console a list of tokens
