@@ -45,9 +45,28 @@ public:
                 i++;
                 continue;
             }
+            if (c == '"')
+            {
+                buffer += c;
+                if (buffer[0] == '"' && isStr == true)
+                {
 
+                    isStr = false;
+                    tokens.addToken(STR, buffer);
+                    buffer.clear();
+                    continue;
+                }
+                isStr = true;
+                continue;
+            }
+            if (isStr == true)
+            {
+                buffer += c;
+                continue;
+            }
             if (!isspace(c) && isComment == "none")
             {
+
                 // If follows the pattern [a-zA-Z][a-zA-Z0-9]*
                 if (isalpha(c))
                 {
@@ -112,9 +131,9 @@ private:
     size_t line, i;
 
     string isComment = "none";
-    bool isNum;
+    bool isNum, isStr;
 
-    string keywords[6] = {"int", "num", "string", "bool", "any", "null"};
+    string keywords[6] = {"int", "num", "str", "bool", "any", "null"};
     string symbols = "=+-*/";
 
     // Finds the number of index of an element inside an array

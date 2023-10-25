@@ -7,13 +7,16 @@ public:
         size = m_tokens.size();
         while (i < size)
         {
-            if (isDataType(see(0).type) && see(1).type == ID)
+            if (see(0).type == INT_K && see(1).type == ID)
             {
                 if (see(2).type == EQUAL)
                 {
-                    Expr e = parseExpr(3);
-                    i += 3;
-                    continue;
+                    if (see(3).type == INT)
+                    {
+                        i += 3;
+                        continue;
+                    }
+                    // Expr e = parseExpr(3);
                 }
                 i += 2;
                 continue;
@@ -44,7 +47,7 @@ private:
 
     bool isTerm(TokenType t)
     {
-        return t == INT || t == NUM || t == ID || t == PLUS;
+        return t == INT || t == NUM || t == ID || t == STR || t == PLUS;
     }
     string readExpr(int d)
     {

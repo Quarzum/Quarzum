@@ -1,7 +1,7 @@
 const string tokens[] = {
     "INT_KEYWORD",
     "NUM_KEYWORD",
-    "STRING_KEYWORD",
+    "STR_KEYWORD",
     "BOOL_KEYWORD",
     "ANY_KEYWORD",
     "NULL_KEYWORD",
@@ -25,7 +25,7 @@ void debugTokens(deque<Token> composed)
 {
     cout << "\nTokens\n-----------\n";
 
-    int maxNameLength = 12;
+    int maxNameLength = 16;
 
     for (size_t i = 0; i < composed.size(); i++)
     {

@@ -49,6 +49,16 @@
         "variant": "cpp",
         "bitset": "cpp",
         "chrono": "cpp",
-        "numbers": "cpp"
+        "numbers": "cpp",
+        "bit": "cpp",
+        "charconv": "cpp",
+        "concepts": "cpp",
+        "ctime": "cpp",
+        "ratio": "cpp",
+        "regex": "cpp",
+        "string_view": "cpp",
+        "format": "cpp",
+        "iomanip": "cpp",
+        "span": "cpp"
     }
 }
