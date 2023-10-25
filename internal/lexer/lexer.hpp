@@ -72,7 +72,7 @@ public:
                     continue;
                 }
                 // If follows the pattern [0-9]+(.[0-9]*)?
-                if (isdigit(c) || (c == '.' && isNum == false))
+                if (isdigit(c) || c == '.')
                 {
                     buffer += c;
                     if (c == '.')
@@ -81,9 +81,10 @@ public:
                     }
                     if (!isdigit(m_src.at(i + 1)) && m_src.at(i + 1) != '.')
                     {
-                        if (isNum)
+                        if (isNum == true)
                         {
                             tokens.addToken(NUM, buffer);
+                            isNum = false;
                         }
                         else
                         {
@@ -113,8 +114,8 @@ private:
     string isComment = "none";
     bool isNum;
 
-    string keywords[13] = {"int", "num", "string", "bool", "any", "null", "const", "module", "return", "function", "not", "and", "or"};
-    string symbols = "=+-*/%.,(){}[]";
+    string keywords[13] = {"int", "num", "string", "bool", "any", "null"};
+    string symbols = "=+";
 
     // Finds the number of index of an element inside an array
     int findKeyword(string key)

@@ -5,13 +5,6 @@ const string tokens[] = {
     "BOOL_KEYWORD",
     "ANY_KEYWORD",
     "NULL_KEYWORD",
-    "CONST_KEYWORD",
-    "MODULE_KEYWORD",
-    "RETURN",
-    "FUNCTION_KEYWORD",
-    "NOT",
-    "AND",
-    "OR",
 
     "INT",
     "NUM",
@@ -21,19 +14,7 @@ const string tokens[] = {
     "IDENTIFIER",
 
     "EQUAL",
-    "PLUS",
-    "MINUS",
-    "MULTIPLY",
-    "DIVIDE",
-    "MODULE",
-    "POINT",
-    "COMMA",
-    "PAR_OPEN",
-    "PAR_CLOSE",
-    "C_BRACKET_OPEN",
-    "C_BRACKET_CLOSE",
-    "S_BRACKET_OPEN",
-    "S_BRACKET_CLOSE",
+    "PLUS"
 
 };
 // Shows in console a list of tokens

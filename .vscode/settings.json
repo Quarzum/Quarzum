@@ -48,6 +48,7 @@
         "compare": "cpp",
         "variant": "cpp",
         "bitset": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "numbers": "cpp"
     }
 }

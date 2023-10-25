@@ -41,42 +41,45 @@ private:
     }
 
     Expr parseExpr(int d);
-};
 
-bool isLiteral(TokenType t)
-{
-    return t == INT || t == NUM || t == ID;
-}
-bool isTerm(TokenType t)
-{
-    return isLiteral(t) || t == PLUS;
-}
-
-Expr Parser::parseExpr(int d)
-{
-    Stack input;
-    Stack op;
-
-    for (size_t i = 0; i < i + 1; i++)
+    bool isTerm(TokenType t)
     {
-        if (!isTerm(see(d + i).type))
+        return t == INT || t == NUM || t == ID || t == PLUS;
+    }
+    string readExpr(int d)
+    {
+        string result;
+        for (size_t i = 0; i < i + 1; i++)
         {
-            cout << " -| s:" << i;
-            break;
+            if (!isTerm(see(d + i).type))
+            {
+                break;
+            }
+            result += see(d + i).value;
+        }
+        return result;
+    }
+    deque<string> readSum(string e)
+    {
+        deque<string> result;
+        if (e.find('+') >= 0)
+        {
+            result.push_back(e.substr(0, e.find('+')));
+            result.push_back(e.substr(e.find('+') + 1, e.length()));
+            cout << result[0] << "," << result[1];
         }
         else
         {
-            if (isLiteral(see(d + i).type))
-            {
-                cout << see(d + i).value;
-                input.push(see(d + i).value);
-            }
-            else
-            {
-                cout << see(d + i).value;
-                op.push(see(d + i).value);
-            }
+            result.push_back(e);
         }
+        return result;
     }
+};
+
+Expr Parser::parseExpr(int d)
+{
+    string e = readExpr(d);
+    cout << e << endl;
+    readSum(e);
     return {};
 }
