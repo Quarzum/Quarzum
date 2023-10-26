@@ -1,5 +1,3 @@
-#define SYMBOLS_I EQUAL
-
 // Lexer complexity time: O(n)
 class Lexer
 {
@@ -10,6 +8,7 @@ public:
         // Iterates through the source code characters to find patterns
         size_t size = m_src.length();
         i = 0;
+        line = 1;
         for (i; i < size; i++)
         {
             char c = m_src.at(i);
@@ -25,21 +24,21 @@ public:
                 continue;
             }
             // Initiates a multiline comment
-            if (c == '/' && m_src.at(i + 1) == '*')
+            if (c == '/' and m_src.at(i + 1) == '*')
             {
                 isComment = "multi";
                 i++;
                 continue;
             }
             // Closes a multilne comment
-            if (c == '*' && m_src.at(i + 1) == '/' && isComment == "multi")
+            if (c == '*' and m_src.at(i + 1) == '/' and isComment == "multi")
             {
                 isComment = "none";
                 i++;
                 continue;
             }
             // Adds a sngle line comment
-            if (c == '/' && m_src.at(i + 1) == '/' && isComment != "multi")
+            if (c == '/' and m_src.at(i + 1) == '/' and isComment != "multi")
             {
                 isComment = "single";
                 i++;
@@ -48,7 +47,7 @@ public:
             if (c == '"')
             {
                 buffer += c;
-                if (buffer[0] == '"' && isStr == true)
+                if (buffer[0] == '"' and isStr == true)
                 {
 
                     isStr = false;
@@ -64,7 +63,26 @@ public:
                 buffer += c;
                 continue;
             }
-            if (!isspace(c) && isComment == "none")
+            if (c == '\'')
+            {
+                buffer += c;
+                if (buffer[0] == '\'' and isChar == true)
+                {
+
+                    isChar = false;
+                    tokens.addToken(CHAR, buffer);
+                    buffer.clear();
+                    continue;
+                }
+                isChar = true;
+                continue;
+            }
+            if (isChar == true)
+            {
+                buffer += c;
+                continue;
+            }
+            if (!isspace(c) and isComment == "none")
             {
 
                 // If follows the pattern [a-zA-Z][a-zA-Z0-9]*
@@ -73,13 +91,13 @@ public:
                     buffer += c;
                     if (!isalpha(m_src.at(i + 1)))
                     {
-                        if (buffer == "true" || buffer == "false")
+                        if (buffer == "true" or buffer == "false")
                         {
                             tokens.addToken(BOOL, buffer);
                         }
-                        else if (findKeyword(buffer) >= 0)
+                        else if (keywords.find(buffer) != keywords.end())
                         {
-                            tokens.addToken(TokenType(findKeyword(buffer)), buffer);
+                            tokens.addToken(TokenType(keywords.at(buffer)), buffer);
                         }
                         else
                         {
@@ -91,14 +109,14 @@ public:
                     continue;
                 }
                 // If follows the pattern [0-9]+(.[0-9]*)?
-                else if (isdigit(c) || c == '.')
+                else if (isdigit(c) or c == '.')
                 {
                     buffer += c;
                     if (c == '.')
                     {
                         isNum = true;
                     }
-                    if (!isdigit(m_src.at(i + 1)) && m_src.at(i + 1) != '.')
+                    if (!isdigit(m_src.at(i + 1)) and m_src.at(i + 1) != '.')
                     {
                         if (isNum == true)
                         {
@@ -114,9 +132,9 @@ public:
                     continue;
                 }
                 // If it is a recognized symbol
-                else if (symbols.find(c) >= 0)
+                else if (symbols.find(toStr(c)) != symbols.end())
                 {
-                    tokens.addToken(TokenType(SYMBOLS_I + symbols.find(c)), toStr(c));
+                    tokens.addToken(TokenType(symbols.at(toStr(c))), toStr(c));
                     continue;
                 }
                 Error.exit(LEXICAL_ERROR, "Unexpected token \"" + toStr(c) + "\" at line " + to_string(line));
@@ -131,23 +149,7 @@ private:
     size_t line, i;
 
     string isComment = "none";
-    bool isNum, isStr;
-
-    string keywords[7] = {"int", "num", "str", "char", "bool", "any", "null"};
-    string symbols = "=+-*/^%()";
-
-    // Finds the number of index of an element inside an array
-    int findKeyword(string key)
-    {
-        for (__int8 i = 0; i < keywords->size(); i++)
-        {
-            if (keywords[i] == key)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
+    bool isNum, isStr, isChar;
 
     // Converts a char into string
     string toStr(char c)

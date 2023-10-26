@@ -17,27 +17,43 @@ map<string, __int8> keywords = {
     {"case", CASE},
     {"break", BREAK},
     {"continue", CONTINUE},
+    {"default", DEFAULT},
     {"import", IMPORT},
     {"from", FROM},
     {"module", MODULE},
     {"and", AND},
     {"or", OR},
-    {"not", NOT}
+    {"not", NOT},
+    {"class", CLASS},
+    {"public", PUBLIC},
+    {"private", PRIVATE},
+    {"construct", INIT},
+    {"destroy", DESTROY},
+    {"struct", STRUCT},
+    {"enum", ENUM},
+    {"try", TRY},
+    {"catch", CATCH},
+    {"finally", FINALLY},
+    {"const", CONST},
+    {"static", STATIC},
+    {"typeof", TYPEOF},
+    {"throw", THROW},
+    {"delete", DELETE}
 
 };
 
-map<char, __int8> symbols = {
-    {'=', EQUAL},
-    {'+', PLUS},
-    {'-', MINUS},
-    {'*', PRODUCT},
-    {'/', DIVIDE},
-    {'^', POWER},
-    {'%', INTDIV},
-    {'(', PAR_OPEN},
-    {')', PAR_CLOSE},
-    {'&', AND},
-    {'|', OR},
-    {'!', NOT}
+map<string, __int8> symbols = {
+    {"=", EQUAL},
+    {"+", PLUS},
+    {"-", MINUS},
+    {"*", PRODUCT},
+    {"/", DIVIDE},
+    {"^", POWER},
+    {"%", INTDIV},
+    {"(", PAR_OPEN},
+    {")", PAR_CLOSE},
+    {"&", AND},
+    {"|", OR},
+    {"!", NOT}
 
 };
