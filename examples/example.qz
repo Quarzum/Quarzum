@@ -1,0 +1,5 @@
+int i = 3
+num pi = 3.14
+str name = "Marcos"
+char letter = 'a'
+bool adult = true

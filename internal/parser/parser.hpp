@@ -11,12 +11,13 @@ public:
             {
                 if (see(2).type == EQUAL)
                 {
-                    if (see(3).type == INT)
-                    {
-                        i += 3;
-                        continue;
-                    }
-                    // Expr e = parseExpr(3);
+                    Expr e = parseExpr(3);
+                    // if (see(3).type == INT)
+                    // {
+                    //     cout << "INT_ASSIGN" << endl;
+                    //     i += 3;
+                    //     continue;
+                    // }
                 }
                 i += 2;
                 continue;
@@ -69,7 +70,22 @@ private:
         {
             result.push_back(e.substr(0, e.find('+')));
             result.push_back(e.substr(e.find('+') + 1, e.length()));
-            cout << "Sum(" << result[0] << "," << result[1] << ")";
+            cout << "Sum(" << result[0] << "," << result[1] << ")" << endl;
+        }
+        else
+        {
+            result.push_back(e);
+        }
+        return result;
+    }
+    deque<string> readProd(string e)
+    {
+        deque<string> result;
+        if (e.find('*') >= 0)
+        {
+            result.push_back(e.substr(0, e.find('*')));
+            result.push_back(e.substr(e.find('*') + 1, e.length()));
+            cout << "Prod(" << result[0] << "," << result[1] << ")" << endl;
         }
         else
         {
@@ -82,11 +98,17 @@ private:
 Expr Parser::parseExpr(int d)
 {
     string e = readExpr(d);
-    cout << e << endl;
     deque<string> res = readSum(e);
     if (res.size() == 2)
     {
-        // return Expr{Sum{Token{INT, res[0]}, Token{INT, res[1]}}};
+        deque<string> a = readProd(res[0]);
+        deque<string> b = readProd(res[1]);
     }
-    return {};
+
+    for (size_t i = 0; i < e.length(); i += 2)
+    {
+        cout << e[i] << " - " << tokens[see(3 + i).type] << endl;
+    }
+
+    return Expr{Sum{Token{see(3 + 0)}, Token{see(3 + 2)}}};
 }

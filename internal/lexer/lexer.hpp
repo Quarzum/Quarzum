@@ -133,8 +133,8 @@ private:
     string isComment = "none";
     bool isNum, isStr;
 
-    string keywords[6] = {"int", "num", "str", "bool", "any", "null"};
-    string symbols = "=+-*/";
+    string keywords[7] = {"int", "num", "str", "char", "bool", "any", "null"};
+    string symbols = "=+-*/^%()";
 
     // Finds the number of index of an element inside an array
     int findKeyword(string key)

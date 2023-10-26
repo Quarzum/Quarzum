@@ -6,7 +6,7 @@ const string tokens[] = {
     "ANY_KEYWORD",
     "NULL_KEYWORD",
 
-    "INT",
+        "INT",
     "NUM",
     "STR",
     "BOOL",
@@ -17,7 +17,11 @@ const string tokens[] = {
     "PLUS",
     "MINUS",
     "PRODUCT",
-    "DIVIDE"
+    "DIVIDE",
+    "POWER",
+    "MODULE",
+    "PAR_OPEN",
+    "PAR_CLOSE"
 
 };
 // Shows in console a list of tokens

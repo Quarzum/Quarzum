@@ -2,8 +2,8 @@ struct Expr;
 
 struct Sum
 {
-    Expr *l;
-    Expr *r;
+    Token l;
+    Token r;
 };
 
 struct Expr
