@@ -38,7 +38,9 @@ map<string, __int8> keywords = {
     {"static", STATIC},
     {"typeof", TYPEOF},
     {"throw", THROW},
-    {"delete", DELETE}
+    {"delete", DELETE},
+    {"true", BOOL},
+    {"false", BOOL}
 
 };
 
@@ -52,8 +54,14 @@ map<string, __int8> symbols = {
     {"%", INTDIV},
     {"(", PAR_OPEN},
     {")", PAR_CLOSE},
+    {"[", SQUARE_OPEN},
+    {"]", SQUARE_CLOSE},
+    {"{", CURLY_OPEN},
+    {"}", CURLY_CLOSE},
     {"&", AND},
     {"|", OR},
-    {"!", NOT}
+    {"!", NOT},
+    {">", GREATER},
+    {"<", LESS}
 
 };

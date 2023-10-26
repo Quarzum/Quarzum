@@ -1,3 +1,5 @@
+#define nextType(d) see(d).type
+
 class Parser
 {
 public:
@@ -7,9 +9,9 @@ public:
         size = m_tokens.size();
         while (i < size)
         {
-            if (see(0).type == INT_K && see(1).type == ID)
+            if (nextType(0) == INT_K && nextType(1) == ID)
             {
-                if (see(2).type == EQUAL)
+                if (nextType(2) == EQUAL)
                 {
                     Expr e = parseExpr(3);
                     // if (see(3).type == INT)
@@ -30,10 +32,6 @@ public:
 private:
     TokenList m_tokens;
     size_t size, i = 0;
-    bool isDataType(TokenType t)
-    {
-        return t == INT_K;
-    }
 
     Token see(int d)
     {
@@ -107,7 +105,7 @@ Expr Parser::parseExpr(int d)
 
     for (size_t i = 0; i < e.length(); i += 2)
     {
-        cout << e[i] << " - " << tokens[see(3 + i).type] << endl;
+        cout << e[i] << " - " << tokens[nextType(3 + i)] << endl;
     }
 
     return Expr{Sum{Token{see(3 + 0)}, Token{see(3 + 2)}}};

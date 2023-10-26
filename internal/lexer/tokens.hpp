@@ -56,7 +56,13 @@ const string tokens[] = {
     "PAR_CLOSE",
     "AND",
     "OR",
-    "NOT"
+    "NOT",
+    "SQUARE_OPEN",
+    "SQUARE_CLOSE",
+    "CURLY_OPEN",
+    "CURLY_CLOSE",
+    "GREATER",
+    "LESS"
 
 };
 // Shows in console a list of tokens

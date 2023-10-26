@@ -1,3 +1,9 @@
+#define reload buffer.clear()
+#define buff_add(c) buffer += c
+#define nextc m_src.at(i + 1)
+#define isKeyword keywords.find(buffer) != keywords.end()
+#define isSymbol symbols.find(toStr(c)) != symbols.end()
+#define iterate for (i; i < m_src.length(); i++)
 // Lexer complexity time: O(n)
 class Lexer
 {
@@ -6,10 +12,9 @@ public:
     TokenList tokenize()
     {
         // Iterates through the source code characters to find patterns
-        size_t size = m_src.length();
         i = 0;
         line = 1;
-        for (i; i < size; i++)
+        iterate
         {
             char c = m_src.at(i);
 
@@ -24,21 +29,21 @@ public:
                 continue;
             }
             // Initiates a multiline comment
-            if (c == '/' and m_src.at(i + 1) == '*')
+            if (c == '/' and nextc == '*')
             {
                 isComment = "multi";
                 i++;
                 continue;
             }
             // Closes a multilne comment
-            if (c == '*' and m_src.at(i + 1) == '/' and isComment == "multi")
+            if (c == '*' and nextc == '/' and isComment == "multi")
             {
                 isComment = "none";
                 i++;
                 continue;
             }
             // Adds a sngle line comment
-            if (c == '/' and m_src.at(i + 1) == '/' and isComment != "multi")
+            if (c == '/' and nextc == '/' and isComment != "multi")
             {
                 isComment = "single";
                 i++;
@@ -46,13 +51,13 @@ public:
             }
             if (c == '"')
             {
-                buffer += c;
+                buff_add(c);
                 if (buffer[0] == '"' and isStr == true)
                 {
 
                     isStr = false;
                     tokens.addToken(STR, buffer);
-                    buffer.clear();
+                    reload;
                     continue;
                 }
                 isStr = true;
@@ -60,18 +65,18 @@ public:
             }
             if (isStr == true)
             {
-                buffer += c;
+                buff_add(c);
                 continue;
             }
             if (c == '\'')
             {
-                buffer += c;
+                buff_add(c);
                 if (buffer[0] == '\'' and isChar == true)
                 {
 
                     isChar = false;
                     tokens.addToken(CHAR, buffer);
-                    buffer.clear();
+                    reload;
                     continue;
                 }
                 isChar = true;
@@ -79,7 +84,7 @@ public:
             }
             if (isChar == true)
             {
-                buffer += c;
+                buff_add(c);
                 continue;
             }
             if (!isspace(c) and isComment == "none")
@@ -88,14 +93,10 @@ public:
                 // If follows the pattern [a-zA-Z][a-zA-Z0-9]*
                 if (isalpha(c))
                 {
-                    buffer += c;
-                    if (!isalpha(m_src.at(i + 1)))
+                    buff_add(c);
+                    if (not isalpha(nextc))
                     {
-                        if (buffer == "true" or buffer == "false")
-                        {
-                            tokens.addToken(BOOL, buffer);
-                        }
-                        else if (keywords.find(buffer) != keywords.end())
+                        if (isKeyword)
                         {
                             tokens.addToken(TokenType(keywords.at(buffer)), buffer);
                         }
@@ -103,20 +104,20 @@ public:
                         {
                             tokens.addToken(ID, buffer);
                         }
-                        buffer.clear();
+                        reload;
                         continue;
                     }
                     continue;
                 }
                 // If follows the pattern [0-9]+(.[0-9]*)?
-                else if (isdigit(c) or c == '.')
+                if (isdigit(c) or c == '.')
                 {
-                    buffer += c;
+                    buff_add(c);
                     if (c == '.')
                     {
                         isNum = true;
                     }
-                    if (!isdigit(m_src.at(i + 1)) and m_src.at(i + 1) != '.')
+                    if (not isdigit(nextc) and nextc != '.')
                     {
                         if (isNum == true)
                         {
@@ -127,12 +128,12 @@ public:
                         {
                             tokens.addToken(INT, buffer);
                         }
-                        buffer.clear();
+                        reload;
                     }
                     continue;
                 }
                 // If it is a recognized symbol
-                else if (symbols.find(toStr(c)) != symbols.end())
+                if (isSymbol)
                 {
                     tokens.addToken(TokenType(symbols.at(toStr(c))), toStr(c));
                     continue;
