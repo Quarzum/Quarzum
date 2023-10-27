@@ -33,7 +33,7 @@ private:
     TokenList m_tokens;
     size_t size, i = 0;
 
-    Token see(int d)
+    Token see(__int8 d)
     {
         if (i + d < size)
         {

@@ -65,3 +65,16 @@ map<string, __int8> symbols = {
     {"<", LESS}
 
 };
+
+map<string, __int8> composedSymbols = {
+    {"==", IS_EQUAL},
+    {">=", GREATER_EQUAL},
+    {"<=", LESS_EQUAL},
+    {"+=", PLUS_EQUAL},
+    {"-=", MINUS_EQUAL},
+    {"*=", PROD_EQUAL},
+    {"/=", DIVIDE_EQUAL},
+    {"^=", POWER_EQUAL},
+    {"%=", INTDIV_EQUAL},
+    {"++", UNARY_PLUS},
+    {"--", UNARY_MINUS}};

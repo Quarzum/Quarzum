@@ -1,20 +1,20 @@
 void applyConfig(const string path)
 {
     /* TODO: Applies a config rule */
-    unsigned short i = 0;
-    string buffer;
+    size_t i = 0;
+    char *buffer;
     while (i < path.size())
     {
         buffer += path.at(i);
         if (buffer == "#auto-resize(true)" || buffer == " #auto-resize")
         {
             AUTO_RESIZE = true;
-            buffer.clear();
+            buffer = {};
         }
         if (buffer == "#auto-resize(false)")
         {
             AUTO_RESIZE = false;
-            buffer.clear();
+            buffer = {};
         }
         i++;
     }

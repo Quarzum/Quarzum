@@ -135,6 +135,13 @@ public:
                 // If it is a recognized symbol
                 if (isSymbol)
                 {
+                    string composed = toStr(c) + toStr(nextc);
+                    if (composedSymbols.find(composed) != composedSymbols.end())
+                    {
+                        tokens.addToken(TokenType(composedSymbols.at(composed)), composed);
+                        i++;
+                        continue;
+                    }
                     tokens.addToken(TokenType(symbols.at(toStr(c))), toStr(c));
                     continue;
                 }
