@@ -1,9 +1,8 @@
-#define reload buffer.clear()
+#define buff_cl buffer.clear()
 #define buff_add(c) buffer += c
 #define nextc m_src.at(i + 1)
 #define isKeyword keywords.find(buffer) != keywords.end()
 #define isSymbol symbols.find(toStr(c)) != symbols.end()
-#define iterate for (i; i < m_src.length(); i++)
 // Lexer complexity time: O(n)
 class Lexer
 {
@@ -14,7 +13,7 @@ public:
         // Iterates through the source code characters to find patterns
         i = 0;
         line = 1;
-        iterate
+        for (i; i < m_src.length(); i++)
         {
             char c = m_src.at(i);
 
@@ -57,7 +56,7 @@ public:
 
                     isStr = false;
                     tokens.addToken(STR, buffer);
-                    reload;
+                    buff_cl;
                     continue;
                 }
                 isStr = true;
@@ -76,7 +75,7 @@ public:
 
                     isChar = false;
                     tokens.addToken(CHAR, buffer);
-                    reload;
+                    buff_cl;
                     continue;
                 }
                 isChar = true;
@@ -104,7 +103,7 @@ public:
                         {
                             tokens.addToken(ID, buffer);
                         }
-                        reload;
+                        buff_cl;
                         continue;
                     }
                     continue;
@@ -128,7 +127,7 @@ public:
                         {
                             tokens.addToken(INT, buffer);
                         }
-                        reload;
+                        buff_cl;
                     }
                     continue;
                 }

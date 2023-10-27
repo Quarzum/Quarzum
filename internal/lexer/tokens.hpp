@@ -73,7 +73,9 @@ const string tokens[] = {
     "POWER_EQUAL",
     "INTDIV_EQUAL",
     "UNARY_PLUS",
-    "UNARY_MINUS"
+    "UNARY_MINUS",
+    "OUT",
+    "INPUT"
 
 };
 // Shows in console a list of tokens

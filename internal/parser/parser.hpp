@@ -9,17 +9,17 @@ public:
         size = m_tokens.size();
         while (i < size)
         {
-            if (nextType(0) == INT_K && nextType(1) == ID)
+            if (followSyntax({INT_K, ID}))
             {
                 if (nextType(2) == EQUAL)
                 {
                     Expr e = parseExpr(3);
-                    // if (see(3).type == INT)
-                    // {
-                    //     cout << "INT_ASSIGN" << endl;
-                    //     i += 3;
-                    //     continue;
-                    // }
+                    if (see(3).type == INT)
+                    {
+                        cout << "INT_ASSIGN" << endl;
+                        i += 3;
+                        continue;
+                    }
                 }
                 i += 2;
                 continue;
@@ -46,67 +46,96 @@ private:
 
     bool isTerm(TokenType t)
     {
-        return t == INT || t == NUM || t == ID || t == STR || t == PLUS;
+        return t == INT || t == NUM || t == STR || t == BOOL || t == CHAR || t == ID;
+    }
+    bool isOp(TokenType t)
+    {
+        return t == PLUS || t == MINUS || t == PRODUCT || t == DIVIDE || t == POWER || t == MODULE;
     }
     string readExpr(int d)
     {
         string result;
-        for (size_t i = 0; i < i + 1; i++)
+        if (isTerm(see(d).type))
         {
-            if (!isTerm(see(d + i).type))
+            result += see(d).value;
+            for (size_t i = 1; i < i + 1; i += 2)
             {
+                if (not isOp(see(d + i).type) or not isTerm(see(d + i + 1).type))
+                {
+                    break;
+                }
+                result += see(d + i).value + see(d + i + 1).value;
+            }
+        }
+
+        return result;
+    }
+
+    bool followSyntax(deque<TokenType> list)
+    {
+        bool res = true;
+        for (size_t n = 0; n < list.size(); n++)
+        {
+            if (nextType(n) != list[n])
+            {
+                res = false;
                 break;
             }
-            result += see(d + i).value;
         }
-        return result;
-    }
-    deque<string> readSum(string e)
-    {
-        deque<string> result;
-        if (e.find('+') >= 0)
-        {
-            result.push_back(e.substr(0, e.find('+')));
-            result.push_back(e.substr(e.find('+') + 1, e.length()));
-            cout << "Sum(" << result[0] << "," << result[1] << ")" << endl;
-        }
-        else
-        {
-            result.push_back(e);
-        }
-        return result;
-    }
-    deque<string> readProd(string e)
-    {
-        deque<string> result;
-        if (e.find('*') >= 0)
-        {
-            result.push_back(e.substr(0, e.find('*')));
-            result.push_back(e.substr(e.find('*') + 1, e.length()));
-            cout << "Prod(" << result[0] << "," << result[1] << ")" << endl;
-        }
-        else
-        {
-            result.push_back(e);
-        }
-        return result;
+        return res;
     }
 };
+
+#define findSymbol(s) src.find(s) != string::npos
+#define firstDiv(s) src.substr(0, src.find(s))
+#define secondDiv(s) src.substr(src.find(s) + 1, src.length())
+deque<string> parsePemdas(string src)
+{
+    deque<string> result;
+
+    if (findSymbol("-"))
+    {
+        cout << "IT'S A SUB" << endl;
+        result.push_back(firstDiv("-"));
+        result.push_back(secondDiv("-"));
+    }
+    else if (findSymbol("+"))
+    {
+        cout << "IT'S A SUM" << endl;
+        result.push_back(firstDiv("+"));
+        result.push_back(secondDiv("+"));
+    }
+    else if (findSymbol("/"))
+    {
+        cout << "IT'S A DIVISION" << endl;
+        result.push_back(firstDiv("/"));
+        result.push_back(secondDiv("/"));
+    }
+    else if (findSymbol("*"))
+    {
+        cout << "IT'S A PROD" << endl;
+        result.push_back(firstDiv("*"));
+        result.push_back(secondDiv("*"));
+    }
+    else if (findSymbol("^"))
+    {
+        cout << "IT'S A POWER" << endl;
+        result.push_back(firstDiv("^"));
+        result.push_back(secondDiv("^"));
+    }
+    else if (findSymbol("%"))
+    {
+        cout << "IT'S A INTDIV" << endl;
+        result.push_back(firstDiv("%"));
+        result.push_back(secondDiv("%"));
+    }
+    return result;
+}
 
 Expr Parser::parseExpr(int d)
 {
     string e = readExpr(d);
-    deque<string> res = readSum(e);
-    if (res.size() == 2)
-    {
-        deque<string> a = readProd(res[0]);
-        deque<string> b = readProd(res[1]);
-    }
-
-    for (size_t i = 0; i < e.length(); i += 2)
-    {
-        cout << e[i] << " - " << tokens[nextType(3 + i)] << endl;
-    }
-
-    return Expr{Sum{Token{see(3 + 0)}, Token{see(3 + 2)}}};
+    cout << e << endl;
+    parsePemdas(e);
+    return Expr{};
 }

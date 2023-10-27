@@ -40,7 +40,9 @@ map<string, __int8> keywords = {
     {"throw", THROW},
     {"delete", DELETE},
     {"true", BOOL},
-    {"false", BOOL}
+    {"false", BOOL},
+    {"out", OUT},
+    {"input", INPUT}
 
 };
 

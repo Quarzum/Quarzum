@@ -75,7 +75,9 @@ enum TokenType
     POWER_EQUAL,
     INTDIV_EQUAL,
     UNARY_PLUS,
-    UNARY_MINUS
+    UNARY_MINUS,
+    OUT,
+    INPUT
 };
 struct Token
 {

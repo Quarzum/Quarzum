@@ -17,3 +17,8 @@ struct Assign
     string id;
     // Expression expr;
 };
+
+struct Stmt
+{
+    variant<Assign> content;
+};
