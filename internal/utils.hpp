@@ -5,5 +5,3 @@
 #define TEAL "\e[36;40m"
 #define YELLOW "\e[93;40m"
 #define GRAY "\e[90;40m"
-
-typedef string str;

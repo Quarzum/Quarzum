@@ -1,7 +1,7 @@
 map<string, __int8> keywords = {
     {"int", INT_K},
     {"num", NUM_K},
-    {"str", STR_K},
+    {"string", STR_K},
     {"char", CHAR_K},
     {"bool", BOOL_K},
     {"any", ANY_K},

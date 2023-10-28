@@ -1,1 +1,2 @@
-int i = 100^2 - 1 * 3
+string name
+string h = 3 * name

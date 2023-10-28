@@ -5,6 +5,7 @@
 #define advance(d) \
     i += d;        \
     continue
+
 class Parser
 {
 public:
@@ -27,6 +28,67 @@ public:
                     }
                 }
                 ast.addAssign(INT, see(1).value, nullExpr);
+                advance(2);
+            }
+            // STR ID
+            if (followSyntax({STR_K, ID}))
+            {
+                // STR ID = EXPR
+                if (nextType(2) == EQUAL)
+                {
+                    hasExpr(3)
+                    {
+                        ast.addAssign(STR, see(1).value, e.value());
+                        advance(3 + e.value().size);
+                    }
+                }
+                ast.addAssign(STR, see(1).value, nullExpr);
+                advance(2);
+            }
+            // CHAR ID
+            if (followSyntax({CHAR_K, ID}))
+            {
+                // CHAR ID = EXPR
+                if (nextType(2) == EQUAL)
+                {
+                    hasExpr(3)
+                    {
+                        ast.addAssign(CHAR, see(1).value, e.value());
+                        advance(3 + e.value().size);
+                    }
+                }
+                ast.addAssign(CHAR, see(1).value, nullExpr);
+                advance(2);
+            }
+
+            // NUM ID
+            if (followSyntax({NUM_K, ID}))
+            {
+                // NUM ID = EXPR
+                if (nextType(2) == EQUAL)
+                {
+                    hasExpr(3)
+                    {
+                        ast.addAssign(NUM, see(1).value, e.value());
+                        advance(3 + e.value().size);
+                    }
+                }
+                ast.addAssign(NUM, see(1).value, nullExpr);
+                advance(2);
+            }
+            // ANY ID
+            if (followSyntax({ANY_K, ID}))
+            {
+                // ANY ID = EXPR
+                if (nextType(2) == EQUAL)
+                {
+                    hasExpr(3)
+                    {
+                        ast.addAssign(ANY_K, see(1).value, e.value());
+                        advance(3 + e.value().size);
+                    }
+                }
+                ast.addAssign(ANY_K, see(1).value, nullExpr);
                 advance(2);
             }
             // EXIT EXPR
@@ -88,7 +150,7 @@ private:
 
 bool isTerm(TokenType t)
 {
-    return t == INT or t == NUM or t == ID;
+    return t == INT or t == NUM or t == STR or t == CHAR or t == ID;
 }
 bool isOp(TokenType t)
 {
@@ -98,14 +160,14 @@ bool isOp(TokenType t)
 #define makePartition(d) int partition = expr.find(d)
 #define nodeDataA parseExpr(d, partition)
 #define nodeDataB parseExpr(d + partition - extraLimit + 1, size - (partition - 1))
-#define findSymbol(d) if (expr.find(d) != str::npos)
+#define findSymbol(d) if (expr.find(d) != string::npos)
 optional<NodeExpr> Parser::parseExpr(int d, int limit)
 {
     NodeExpr result = nullExpr;
     int size = 0;
     int index = 1;
     int extraLimit = 0;
-    str expr;
+    string expr;
     // Read first term
     if (isTerm(nextType(d)))
     {
