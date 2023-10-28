@@ -15,12 +15,25 @@ public:
                 {
                     if (auto e = parseExpr(3))
                     {
+                        ast.addAssign(INT, see(1).value, e.value());
                         cout << "INT_ASSIGN" << endl;
                         i += 3;
                         continue;
                     }
                 }
                 i += 2;
+                continue;
+            }
+            if (followSyntax({EXIT}))
+            {
+                if (auto e = parseExpr(1))
+                {
+                    ast.addExit(e.value());
+                    cout << "EXIT" << endl;
+                    i += 2;
+                    continue;
+                }
+                i++;
                 continue;
             }
 

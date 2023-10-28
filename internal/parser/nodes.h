@@ -5,14 +5,19 @@ struct Expr
     Token value;
 };
 
+struct Exit
+{
+    Expr value;
+};
+
 struct Assign
 {
     TokenType type;
     string id;
-    // Expression expr;
+    Expr value;
 };
 
 struct Stmt
 {
-    variant<Assign> content;
+    variant<Assign, Exit> content;
 };
