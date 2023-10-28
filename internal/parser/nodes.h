@@ -1,14 +1,26 @@
 struct Expr;
+struct Prod;
+struct Sum;
+struct Op
+{
+    variant<Sum, Prod, Token> *op;
+};
 
 struct Sum
 {
-    Token l;
-    Token r;
+    Op *l;
+    Op *r;
+};
+
+struct Prod
+{
+    Op *l;
+    Op *r;
 };
 
 struct Expr
 {
-    variant<Sum, Token> value;
+    Op value;
 };
 
 struct Assign

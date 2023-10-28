@@ -24,6 +24,7 @@ using namespace std;
 #include "lexer/tokenlist.hpp"
 #include "lexer/tokens.hpp"
 
+#include "parser/expr.h"
 #include "parser/nodes.h"
 
 #include "utils/config.h"

@@ -91,6 +91,8 @@ private:
 #define secondDiv(s) src.substr(src.find(s) + 1, src.length())
 deque<string> parsePemdas(string src)
 {
+    Expr e{};
+
     deque<string> result;
 
     if (findSymbol("-"))
@@ -128,6 +130,10 @@ deque<string> parsePemdas(string src)
         cout << "IT'S A INTDIV" << endl;
         result.push_back(firstDiv("%"));
         result.push_back(secondDiv("%"));
+    }
+    else
+    {
+        result.push_back(src);
     }
     return result;
 }
