@@ -1,2 +1,1 @@
-int i = 3
-exit 4
+int i = 3 + 1 +2

@@ -1,6 +1,6 @@
 #pragma once
 #define nextType(d) see(d).type
-#define hasExpr(d) if (auto e = parseExpr(d))
+#define hasExpr(d) if (auto e = parseExpr(d, 50))
 #undef advance
 #define advance(d) \
     i += d;        \
@@ -22,9 +22,8 @@ public:
                 {
                     hasExpr(3)
                     {
-                        testExpr(e.value());
                         ast.addAssign(INT, see(1).value, e.value());
-                        advance(3);
+                        advance(3 + e.value().size);
                     }
                 }
                 ast.addAssign(INT, see(1).value, nullExpr);
@@ -36,7 +35,7 @@ public:
                 hasExpr(1)
                 {
                     ast.addExit(e.value());
-                    advance(2);
+                    advance(2 + e.value().size);
                 }
                 advance(1);
             }
@@ -46,7 +45,7 @@ public:
                 hasExpr(1)
                 {
                     ast.addExit(e.value());
-                    advance(2);
+                    advance(2 + e.value().size);
                 }
                 advance(1);
             }
@@ -69,7 +68,7 @@ private:
         return {};
     }
 
-    optional<NodeExpr> parseExpr(int d);
+    optional<NodeExpr> parseExpr(int d, int limit = 50);
 
     // Returns true if the following token types are the same in order as the list
     bool followSyntax(deque<TokenType> list)
@@ -85,29 +84,49 @@ private:
         }
         return res;
     }
+};
 
-    void testExpr(NodeExpr e)
+bool isTerm(TokenType t)
+{
+    return t == INT or t == ID;
+}
+bool isOp(TokenType t)
+{
+    return t == PLUS;
+}
+
+optional<NodeExpr> Parser::parseExpr(int d, int limit)
+{
+    NodeExpr result = nullExpr;
+    int size = 0;
+    int index = 1;
+    string expr;
+    // Read first term
+    if (isTerm(nextType(d)))
     {
-        string s = e.value.type().name();
-        s = s.substr(1);
-        if (s == "NodeSum")
+        expr += see(d).value;
+        size = 1;
+        // Read next pairs of op-term
+        while (isOp(nextType(index + d)) and isTerm(nextType(index + 1 + d)) and index < limit)
         {
-            cout << s << endl;
-            NodeSum sum = any_cast<NodeSum>(e.value);
-            testExpr(NodeExpr{sum.b});
+            expr += see(d + index).value + see(d + 1 + index).value;
+            size += 2;
+            index += 2;
+        }
+        cout << size << " | " << expr << endl;
+
+        if (size > 1)
+        {
+            if (expr.find("+") != string::npos)
+            {
+                int partition = expr.rfind("+");
+                result = NodeExpr{.value = NodeSum{.a = parseExpr(d, partition), .b = parseExpr(d + partition + 1, size - (d + partition + 1))}, .size = size};
+            }
         }
         else
         {
-            cout << "Term" << endl;
+            result = NodeExpr{see(d)};
         }
     }
-};
-
-optional<NodeExpr> Parser::parseExpr(int d)
-{
-    if (nextType(d) == INT or nextType(d) == ID)
-    {
-        return NodeExpr{.value = NodeSum{{see(d)}, NodeSum{{see(d)}, {see(d)}}}};
-    }
-    return {};
+    return result;
 }

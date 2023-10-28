@@ -1,6 +1,7 @@
 struct NodeExpr
 {
     any value;
+    int size;
 };
 
 struct NodeSum
