@@ -2,27 +2,27 @@
 class AST
 {
 public:
-    deque<Stmt> getContent()
+    deque<NodeStmt> getContent()
     {
         return content;
     }
-    void addAssign(TokenType type, string id, Expr value)
+    void addAssign(TokenType type, string id, NodeExpr value)
     {
-        content.push_back({Assign{type, id, value}});
+        content.push_back({NodeAssign{type, id, value}});
     }
-    void addExit(Expr value)
+    void addExit(NodeExpr value)
     {
-        content.push_back({Exit{value}});
+        content.push_back({NodeExit{value}});
     }
-    void addReturn(Expr value)
+    void addReturn(NodeExpr value)
     {
-        content.push_back({Return{value}});
+        content.push_back({NodeReturn{value}});
     }
 
 private:
     deque<string> errors;
 
-    deque<Stmt> content;
+    deque<NodeStmt> content;
 };
 
 static AST ast;

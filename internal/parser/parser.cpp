@@ -1,5 +1,7 @@
+#pragma once
 #define nextType(d) see(d).type
 #define hasExpr(d) if (auto e = parseExpr(d))
+#undef advance
 #define advance(d) \
     i += d;        \
     continue
@@ -20,6 +22,7 @@ public:
                 {
                     hasExpr(3)
                     {
+                        testExpr(e.value());
                         ast.addAssign(INT, see(1).value, e.value());
                         advance(3);
                     }
@@ -66,7 +69,7 @@ private:
         return {};
     }
 
-    optional<Expr> parseExpr(int d);
+    optional<NodeExpr> parseExpr(int d);
 
     // Returns true if the following token types are the same in order as the list
     bool followSyntax(deque<TokenType> list)
@@ -82,13 +85,29 @@ private:
         }
         return res;
     }
+
+    void testExpr(NodeExpr e)
+    {
+        string s = e.value.type().name();
+        s = s.substr(1);
+        if (s == "NodeSum")
+        {
+            cout << s << endl;
+            NodeSum sum = any_cast<NodeSum>(e.value);
+            testExpr(NodeExpr{sum.b});
+        }
+        else
+        {
+            cout << "Term" << endl;
+        }
+    }
 };
 
-optional<Expr> Parser::parseExpr(int d)
+optional<NodeExpr> Parser::parseExpr(int d)
 {
     if (nextType(d) == INT or nextType(d) == ID)
     {
-        return Expr{.value = see(d)};
+        return NodeExpr{.value = NodeSum{{see(d)}, NodeSum{{see(d)}, {see(d)}}}};
     }
     return {};
 }

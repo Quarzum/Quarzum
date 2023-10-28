@@ -1,3 +1,4 @@
+#pragma once
 #define buff_cl buffer.clear()
 #define buff_add(c) buffer.push_back(c)
 #define nextc m_src.at(i + 1)
@@ -6,6 +7,9 @@
 // Lexer complexity time: O(n)
 class Lexer
 {
+#define advance \
+    i++;        \
+    continue
 public:
     Lexer(string source) : m_src(move(source)) {}
     TokenList tokenize()
@@ -31,22 +35,19 @@ public:
             else if (c == '/' and nextc == '*')
             {
                 isComment = "multi";
-                i++;
-                continue;
+                advance;
             }
             // Closes a multilne comment
             else if (c == '*' and nextc == '/' and isComment == "multi")
             {
                 isComment = "none";
-                i++;
-                continue;
+                advance;
             }
             // Adds a sngle line comment
             else if (c == '/' and nextc == '/' and isComment != "multi")
             {
                 isComment = "single";
-                i++;
-                continue;
+                advance;
             }
             else if (c == '"')
             {
@@ -138,8 +139,7 @@ public:
                     if (composedSymbols.find(composed) != composedSymbols.end())
                     {
                         tokens.addToken(TokenType(composedSymbols.at(composed)), composed);
-                        i++;
-                        continue;
+                        advance;
                     }
                     tokens.addToken(TokenType(symbols.at(toStr(c))), toStr(c));
                     continue;

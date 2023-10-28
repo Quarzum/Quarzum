@@ -20,19 +20,18 @@ public:
     {
         items.push_back({type, value});
     }
-
+    // Shows in console the result of Lexer (list of tokens)
     void debug()
     {
         if (SHOW_COMPILER_DEBUG)
         {
             cout << GRAY << "\nToken Stack\n-------------------\n"
                  << NC;
-
             int maxNameLength = 8;
             for (size_t i = 0; i < items.size(); i++)
             {
                 string name = items[i].value;
-                for (__int8 j = 0; j < maxNameLength - items[i].value.length(); j++)
+                for (size_t j = 0; j < maxNameLength - items[i].value.length(); j++)
                 {
                     name += " ";
                 }
@@ -42,10 +41,9 @@ public:
                     num += " ";
                 }
 
-                cout
-                    << GRAY << "| " << num << " | " << YELLOW << name << GRAY << " |\n-------------------" << NC << endl;
+                cout << GRAY << "| " << num << " | " << YELLOW << name << GRAY << " |\n-------------------" << NC << endl;
             }
-            cout << "\n\n";
+            cout << "\n";
         }
     }
 
