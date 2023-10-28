@@ -2,36 +2,42 @@ struct NodeExpr
 {
     any value;
     int size;
+    TokenType type;
 };
 
 struct NodeSum
 {
     NodeExpr a;
     NodeExpr b;
+    TokenType type;
 };
 
 struct NodeProd
 {
     NodeExpr a;
     NodeExpr b;
+    TokenType type;
 };
 
 struct NodeSub
 {
     NodeExpr a;
     NodeExpr b;
+    TokenType type;
 };
 
 struct NodeDiv
 {
     NodeExpr a;
     NodeExpr b;
+    TokenType type;
 };
 
 struct NodePow
 {
     NodeExpr a;
     NodeExpr b;
+    TokenType type;
 };
 
 NodeExpr nullExpr = {};

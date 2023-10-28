@@ -36,12 +36,12 @@ public:
                     name += " ";
                 }
                 string num = to_string(i);
-                for (size_t n = 0; n < 3 - to_string(i).length(); n++)
+                for (size_t n = 0; n < 4 - to_string(i).length(); n++)
                 {
                     num += " ";
                 }
 
-                cout << GRAY << "| " << num << " | " << YELLOW << name << GRAY << " |\n-------------------" << NC << endl;
+                cout << GRAY << "| " << num << " | " << YELLOW << name << GRAY << " |\n]-----------------[" << NC << endl;
             }
             cout << "\n";
         }

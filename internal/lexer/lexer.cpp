@@ -11,7 +11,7 @@ class Lexer
     i++;        \
     continue
 public:
-    Lexer(string source) : m_src(move(source)) {}
+    Lexer(str source) : m_src(move(source)) {}
     TokenList tokenize()
     {
         // Iterates through the source code characters to find patterns
@@ -135,7 +135,7 @@ public:
                 // If it is a recognized symbol
                 else if (isSymbol)
                 {
-                    string composed = toStr(c) + toStr(nextc);
+                    str composed = toStr(c) + toStr(nextc);
                     if (composedSymbols.find(composed) != composedSymbols.end())
                     {
                         tokens.addToken(TokenType(composedSymbols.at(composed)), composed);
@@ -152,17 +152,17 @@ public:
     }
 
 private:
-    string m_src, buffer;
+    str m_src, buffer;
     TokenList tokens;
     size_t line, i;
 
-    string isComment = "none";
+    str isComment = "none";
     bool isNum, isStr, isChar;
 
-    // Converts a char into string
-    string toStr(char c)
+    // Converts a char into str
+    str toStr(char c)
     {
-        string s(1, c);
+        str s(1, c);
         return s;
     }
 };

@@ -88,11 +88,11 @@ private:
 
 bool isTerm(TokenType t)
 {
-    return t == INT or t == ID;
+    return t == INT or t == NUM or t == ID;
 }
 bool isOp(TokenType t)
 {
-    return t == PLUS;
+    return t == PLUS or t == PRODUCT;
 }
 
 optional<NodeExpr> Parser::parseExpr(int d, int limit)
@@ -100,7 +100,7 @@ optional<NodeExpr> Parser::parseExpr(int d, int limit)
     NodeExpr result = nullExpr;
     int size = 0;
     int index = 1;
-    string expr;
+    str expr;
     // Read first term
     if (isTerm(nextType(d)))
     {
@@ -117,10 +117,15 @@ optional<NodeExpr> Parser::parseExpr(int d, int limit)
 
         if (size > 1)
         {
-            if (expr.find("+") != string::npos)
+            if (expr.find("+") != str::npos)
             {
                 int partition = expr.rfind("+");
-                result = NodeExpr{.value = NodeSum{.a = parseExpr(d, partition), .b = parseExpr(d + partition + 1, size - (d + partition + 1))}, .size = size};
+                result = NodeExpr{.value = NodeSum{.a = parseExpr(d, partition), .b = parseExpr(d + partition + 1, size - (partition + 1))}, .size = size};
+            }
+            else if (expr.find("*") != str::npos)
+            {
+                int partition = expr.rfind("*");
+                result = NodeExpr{.value = NodeProd{.a = parseExpr(d, partition), .b = parseExpr(d + partition + 1, size - (partition + 1))}, .size = size};
             }
         }
         else
