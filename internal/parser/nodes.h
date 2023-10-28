@@ -1,11 +1,16 @@
-struct Expr;
 
 struct Expr
 {
     Token value;
 };
 
+Expr nullExpr = {};
+
 struct Exit
+{
+    Expr value;
+};
+struct Return
 {
     Expr value;
 };
@@ -19,5 +24,5 @@ struct Assign
 
 struct Stmt
 {
-    variant<Assign, Exit> content;
+    variant<Assign, Exit, Return> content;
 };

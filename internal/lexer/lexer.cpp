@@ -28,27 +28,27 @@ public:
                 continue;
             }
             // Initiates a multiline comment
-            if (c == '/' and nextc == '*')
+            else if (c == '/' and nextc == '*')
             {
                 isComment = "multi";
                 i++;
                 continue;
             }
             // Closes a multilne comment
-            if (c == '*' and nextc == '/' and isComment == "multi")
+            else if (c == '*' and nextc == '/' and isComment == "multi")
             {
                 isComment = "none";
                 i++;
                 continue;
             }
             // Adds a sngle line comment
-            if (c == '/' and nextc == '/' and isComment != "multi")
+            else if (c == '/' and nextc == '/' and isComment != "multi")
             {
                 isComment = "single";
                 i++;
                 continue;
             }
-            if (c == '"')
+            else if (c == '"')
             {
                 buff_add(c);
                 if (buffer[0] == '"' and isStr == true)
@@ -62,12 +62,12 @@ public:
                 isStr = true;
                 continue;
             }
-            if (isStr == true)
+            else if (isStr == true)
             {
                 buff_add(c);
                 continue;
             }
-            if (c == '\'')
+            else if (c == '\'')
             {
                 buff_add(c);
                 if (buffer[0] == '\'' and isChar == true)
@@ -81,12 +81,12 @@ public:
                 isChar = true;
                 continue;
             }
-            if (isChar == true)
+            else if (isChar == true)
             {
                 buff_add(c);
                 continue;
             }
-            if (!isspace(c) and isComment == "none")
+            else if (!isspace(c) and isComment == "none")
             {
 
                 // If follows the pattern [a-zA-Z][a-zA-Z0-9]*
@@ -109,7 +109,7 @@ public:
                     continue;
                 }
                 // If follows the pattern [0-9]+(.[0-9]*)?
-                if (isdigit(c) or c == '.')
+                else if (isdigit(c) or c == '.')
                 {
                     buff_add(c);
                     if (c == '.')
@@ -132,7 +132,7 @@ public:
                     continue;
                 }
                 // If it is a recognized symbol
-                if (isSymbol)
+                else if (isSymbol)
                 {
                     string composed = toStr(c) + toStr(nextc);
                     if (composedSymbols.find(composed) != composedSymbols.end())
@@ -147,6 +147,7 @@ public:
                 Error.exit(LEXICAL_ERROR, "Unexpected token \"" + toStr(c) + "\" at line " + to_string(line));
             }
         }
+        tokens.debug();
         return tokens;
     }
 

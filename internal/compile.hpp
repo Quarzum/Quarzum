@@ -5,11 +5,6 @@ void compile(string source)
     Lexer lexer = Lexer(source);
 
     TokenList tokens = lexer.tokenize();
-
-    if (SHOW_COMPILER_DEBUG)
-    {
-        debugTokens(tokens.items);
-    }
     /* Pass from tokens to AST */
 
     Parser parser = Parser(tokens);

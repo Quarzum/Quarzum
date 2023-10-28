@@ -15,19 +15,18 @@ using namespace std;
 
 */
 #include "utils.hpp"
-
+#include "utils/config.h"
 #include "utils/error.hpp"
 #include "utils/cli.hpp"
 
 #include "lexer/tokentype.h"
 #include "lexer/keywords.hpp"
 #include "lexer/tokenlist.hpp"
-#include "lexer/tokens.hpp"
 
 #include "parser/nodes.h"
 #include "parser/ast.hpp"
 
-#include "utils/config.h"
+
 #include "utils/variables.hpp"
 
 #include "utils/source.hpp"

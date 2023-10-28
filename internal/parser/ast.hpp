@@ -1,3 +1,4 @@
+#define isType(d) if (holds_alternative<d>(stmt.content))
 class AST
 {
 public:
@@ -12,6 +13,10 @@ public:
     void addExit(Expr value)
     {
         content.push_back({Exit{value}});
+    }
+    void addReturn(Expr value)
+    {
+        content.push_back({Return{value}});
     }
 
 private:

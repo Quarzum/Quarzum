@@ -21,5 +21,33 @@ public:
         items.push_back({type, value});
     }
 
+    void debug()
+    {
+        if (SHOW_COMPILER_DEBUG)
+        {
+            cout << GRAY << "\nToken Stack\n-------------------\n"
+                 << NC;
+
+            int maxNameLength = 8;
+            for (size_t i = 0; i < items.size(); i++)
+            {
+                string name = items[i].value;
+                for (__int8 j = 0; j < maxNameLength - items[i].value.length(); j++)
+                {
+                    name += " ";
+                }
+                string num = to_string(i);
+                for (size_t n = 0; n < 3 - to_string(i).length(); n++)
+                {
+                    num += " ";
+                }
+
+                cout
+                    << GRAY << "| " << num << " | " << YELLOW << name << GRAY << " |\n-------------------" << NC << endl;
+            }
+            cout << "\n\n";
+        }
+    }
+
     deque<Token> items;
 };
