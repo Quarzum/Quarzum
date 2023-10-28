@@ -12,8 +12,7 @@ void debugTokens(deque<Token> composed)
         {
             name += " ";
         }
-        string num = " ";
-        num.append(to_string(i));
+        string num = to_string(i);
         for (size_t n = 0; n < 3 - to_string(i).length(); n++)
         {
             num += " ";

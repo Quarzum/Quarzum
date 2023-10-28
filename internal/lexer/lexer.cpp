@@ -1,5 +1,5 @@
 #define buff_cl buffer.clear()
-#define buff_add(c) buffer += c
+#define buff_add(c) buffer.push_back(c)
 #define nextc m_src.at(i + 1)
 #define isKeyword keywords.find(buffer) != keywords.end()
 #define isSymbol symbols.find(toStr(c)) != symbols.end()
