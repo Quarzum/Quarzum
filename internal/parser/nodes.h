@@ -40,6 +40,13 @@ struct NodePow
     TokenType type;
 };
 
+struct NodeModule
+{
+    NodeExpr a;
+    NodeExpr b;
+    TokenType type;
+};
+
 NodeExpr nullExpr = {};
 
 struct NodeExit
