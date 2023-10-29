@@ -157,9 +157,9 @@ bool isOp(TokenType t)
     return t == PLUS or t == PRODUCT or t == DIVIDE or t == MINUS or t == POWER;
 }
 
-#define makePartition(d) int partition = expr.find(d)
+#define makePartition(d) int partition = expr.rfind(d)
 #define nodeDataA parseExpr(d, partition)
-#define nodeDataB parseExpr(d + partition - extraLimit + 1, size - (partition - 1))
+#define nodeDataB parseExpr(d + partition - extraLimit + 1, size)
 #define findSymbol(d) if (expr.find(d) != string::npos)
 optional<NodeExpr> Parser::parseExpr(int d, int limit)
 {
@@ -178,7 +178,6 @@ optional<NodeExpr> Parser::parseExpr(int d, int limit)
         while (isOp(nextType(index + d)) and isTerm(nextType(index + 1 + d)) and index < (limit - extraLimit))
         {
             expr += see(d + index).value + see(d + 1 + index).value;
-            // extraLimit += see(d + 1 + index).value.length() - 1;
             size += 2;
             index += 2;
         }
@@ -225,7 +224,7 @@ optional<NodeExpr> Parser::parseExpr(int d, int limit)
             }
             else findSymbol("^")
             {
-                makePartition("^");
+                int partition = expr.find("^");
                 result = NodeExpr{
                     .value = NodePow{.a = nodeDataA, .b = nodeDataB},
                     .size = size
