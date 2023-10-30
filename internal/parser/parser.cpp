@@ -106,7 +106,7 @@ public:
             {
                 hasExpr(1)
                 {
-                    ast.addExit(e.value());
+                    ast.addReturn(e.value());
                     advance(2 + e.value().size);
                 }
                 advance(1);
@@ -114,6 +114,7 @@ public:
 
             i++;
         }
+        ast.debug();
     }
 
 private:
@@ -234,7 +235,7 @@ optional<NodeExpr> Parser::parseExpr(int d, int limit)
         }
         else
         {
-            result = NodeExpr{see(d)};
+            result = NodeExpr{see(d), 1};
         }
     }
     return result;

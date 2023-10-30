@@ -1,3 +1,10 @@
+struct NodeCond
+{
+    any value;
+    int size;
+    TokenType type;
+};
+
 struct NodeExpr
 {
     any value;
@@ -5,46 +12,47 @@ struct NodeExpr
     TokenType type;
 };
 
+#define exprContent \
+    NodeExpr a;     \
+    NodeExpr b;     \
+    TokenType type;
+
 struct NodeSum
 {
-    NodeExpr a;
-    NodeExpr b;
-    TokenType type;
+    exprContent;
 };
 
 struct NodeProd
 {
-    NodeExpr a;
-    NodeExpr b;
-    TokenType type;
+    exprContent;
 };
 
 struct NodeSub
 {
-    NodeExpr a;
-    NodeExpr b;
-    TokenType type;
+    exprContent;
 };
 
 struct NodeDiv
 {
-    NodeExpr a;
-    NodeExpr b;
-    TokenType type;
+    exprContent;
 };
-
 struct NodePow
 {
-    NodeExpr a;
-    NodeExpr b;
-    TokenType type;
+    exprContent;
 };
 
 struct NodeModule
 {
-    NodeExpr a;
-    NodeExpr b;
-    TokenType type;
+    exprContent;
+};
+
+#define condContent \
+    NodeCond a;     \
+    NodeCond b;
+
+struct NodeAnd
+{
+    condContent;
 };
 
 NodeExpr nullExpr = {};
