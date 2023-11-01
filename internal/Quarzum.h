@@ -36,4 +36,6 @@ using namespace std;
 
 #include "lexer/lexer.cpp"
 #include "parser/parser.cpp"
+#include "analyzer/analyzer.cpp"
+#include "generator/generator.cpp"
 #include "compile.hpp"

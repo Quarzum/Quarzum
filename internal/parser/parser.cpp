@@ -235,7 +235,7 @@ optional<NodeExpr> Parser::parseExpr(int d, int limit)
         }
         else
         {
-            result = NodeExpr{see(d), 1};
+            result = NodeExpr{see(d), 1, nextType(d)};
         }
     }
     return result;

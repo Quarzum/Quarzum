@@ -10,7 +10,9 @@ void compile(string source)
     Parser parser = Parser(tokens);
     parser.parse();
 
-    /* Optimizes AST and checks for types */
-    // Analyzer analyzer = Analyzer(ast.nodes);
-    // analyzer.analyze();
+    Analyzer analyzer = Analyzer(ast);
+    analyzer.analyze();
+
+    Generator generator = Generator(ast);
+    generator.generate();
 }
