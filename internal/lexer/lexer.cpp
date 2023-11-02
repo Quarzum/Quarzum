@@ -21,132 +21,159 @@ public:
         {
             char c = m_src.at(i);
 
-            // Adds a new line
-            if (c == '\n')
+            switch (c)
             {
+            // Adds a new line
+            case '\n':
                 line++;
                 if (isComment == "single")
                 {
                     isComment = "none";
                 }
-                continue;
-            }
-            // Initiates a multiline comment
-            else if (c == '/' and nextc == '*')
-            {
-                isComment = "multi";
-                advance;
-            }
-            // Closes a multilne comment
-            else if (c == '*' and nextc == '/' and isComment == "multi")
-            {
-                isComment = "none";
-                advance;
-            }
-            // Adds a sngle line comment
-            else if (c == '/' and nextc == '/' and isComment != "multi")
-            {
-                isComment = "single";
-                advance;
-            }
-            else if (c == '"')
-            {
+                break;
+
+            case '/':
+                // Initiates a multiline comment
+                if (nextc == '*')
+                {
+                    isComment = "multi";
+                    break;
+                }
+                // Adds a sngle line comment
+                if (nextc == '/' and isComment != "multi")
+                {
+                    isComment = "single";
+                    break;
+                }
+                // Adding a divide-equal token (/=)
+                if (nextc == '=')
+                {
+                    tokens.addToken(DIVIDE_EQUAL, "/=");
+                    break;
+                }
+                // Adding a divide token (/)
+                tokens.addToken(DIVIDE, "/");
+                break;
+
+            case '"':
+
                 buff_add(c);
+                // Closes a string token
                 if (buffer[0] == '"' and isStr == true)
                 {
 
                     isStr = false;
                     tokens.addToken(STR, buffer);
                     buff_cl;
-                    continue;
+                    break;
                 }
+                // Adds a string token
                 isStr = true;
-                continue;
-            }
-            else if (isStr == true)
-            {
+                break;
+
+            case '*':
+                // Closes a multiline comment
+                if (nextc == '/' and isComment == "multi")
+                {
+                    isComment = "none";
+                    break;
+                }
+                // Adding a prod-equal token (*=)
+                if (nextc == '=')
+                {
+                    tokens.addToken(PROD_EQUAL, "*=");
+                    break;
+                }
+                // Adding a product token (*)
+                tokens.addToken(PRODUCT, "*");
+                break;
+
+            case '\'':
                 buff_add(c);
-                continue;
-            }
-            else if (c == '\'')
-            {
-                buff_add(c);
+                // Closes char token
                 if (buffer[0] == '\'' and isChar == true)
                 {
-
                     isChar = false;
                     tokens.addToken(CHAR, buffer);
                     buff_cl;
-                    continue;
+                    break;
                 }
+                // Opens a char token
                 isChar = true;
-                continue;
-            }
-            else if (isChar == true)
-            {
-                buff_add(c);
-                continue;
-            }
-            else if (!isspace(c) and isComment == "none")
-            {
+                break;
 
-                // If follows the pattern [a-zA-Z][a-zA-Z0-9]*
-                if (isalpha(c))
+            default:
+                if (isStr == true)
                 {
                     buff_add(c);
-                    if (not isalpha(nextc))
-                    {
-                        if (isKeyword)
-                        {
-                            tokens.addToken(TokenType(keywords.at(buffer)), buffer);
-                        }
-                        else
-                        {
-                            tokens.addToken(ID, buffer);
-                        }
-                        buff_cl;
-                        continue;
-                    }
-                    continue;
+                    break;
                 }
-                // If follows the pattern [0-9]+(.[0-9]*)?
-                else if (isdigit(c) or c == '.')
+                if (isChar == true)
                 {
                     buff_add(c);
-                    if (c == '.')
-                    {
-                        isNum = true;
-                    }
-                    if (not isdigit(nextc) and nextc != '.')
-                    {
-                        if (isNum == true)
-                        {
-                            tokens.addToken(NUM, buffer);
-                            isNum = false;
-                        }
-                        else
-                        {
-                            tokens.addToken(INT, buffer);
-                        }
-                        buff_cl;
-                    }
-                    continue;
+                    break;
                 }
-                // If it is a recognized symbol
-                else if (isSymbol)
+                if (!isspace(c) and isComment == "none")
                 {
-                    string composed = toStr(c) + toStr(nextc);
-                    if (composedSymbols.find(composed) != composedSymbols.end())
+                    // If follows the pattern [a-zA-Z][a-zA-Z0-9]*
+                    if (isalpha(c))
                     {
-                        tokens.addToken(TokenType(composedSymbols.at(composed)), composed);
-                        advance;
+                        buff_add(c);
+                        if (not isalpha(nextc))
+                        {
+                            if (isKeyword)
+                            {
+                                tokens.addToken(TokenType(keywords.at(buffer)), buffer);
+                            }
+                            else
+                            {
+                                tokens.addToken(ID, buffer);
+                            }
+                            buff_cl;
+                        }
+                        break;
                     }
-                    tokens.addToken(TokenType(symbols.at(toStr(c))), toStr(c));
-                    continue;
+                    // If follows the pattern [0-9]+(.[0-9]*)?
+                    if (isdigit(c) or c == '.')
+                    {
+                        buff_add(c);
+                        if (c == '.')
+                        {
+                            isNum = true;
+                        }
+                        if (not isdigit(nextc) and nextc != '.')
+                        {
+                            if (isNum == true)
+                            {
+                                tokens.addToken(NUM, buffer);
+                                isNum = false;
+                            }
+                            else
+                            {
+                                tokens.addToken(INT, buffer);
+                            }
+                            buff_cl;
+                        }
+                        break;
+                    }
+
+                    if (isSymbol)
+                    {
+                        string composed = toStr(c) + toStr(nextc);
+                        if (composedSymbols.find(composed) != composedSymbols.end())
+                        {
+                            tokens.addToken(TokenType(composedSymbols.at(composed)), composed);
+                            advance;
+                        }
+                        tokens.addToken(TokenType(symbols.at(toStr(c))), toStr(c));
+                        break;
+                    }
+                    Error.exit(LEXICAL_ERROR, "Unexpected token \"" + toStr(c) + "\" at line " + to_string(line));
                 }
-                Error.exit(LEXICAL_ERROR, "Unexpected token \"" + toStr(c) + "\" at line " + to_string(line));
+                break;
             }
         }
+
         tokens.debug();
         return tokens;
     }

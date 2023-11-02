@@ -162,6 +162,7 @@ bool isOp(TokenType t)
 #define nodeDataA parseExpr(d, partition)
 #define nodeDataB parseExpr(d + partition - extraLimit + 1, size)
 #define findSymbol(d) if (expr.find(d) != string::npos)
+
 optional<NodeExpr> Parser::parseExpr(int d, int limit)
 {
     NodeExpr result = nullExpr;
