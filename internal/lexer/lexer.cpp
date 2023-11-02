@@ -23,8 +23,9 @@ public:
 
             switch (c)
             {
-            // Adds a new line
+
             case '\n':
+                // Adds a new line
                 line++;
                 if (isComment == "single")
                 {

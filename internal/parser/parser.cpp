@@ -131,6 +131,18 @@ private:
         return {};
     }
 
+    string readExpr(int d)
+    {
+        int index = 0;
+        string expr;
+        while (isOp(nextType(d + index)) or isTerm(nextType(d + index)) or isPar(nextType(d + index)))
+        {
+            expr += see(d + index).value;
+            index++;
+        }
+        cout << expr;
+        return expr;
+    }
     optional<NodeExpr> parseExpr(int d, int limit = 50);
 
     // Returns true if the following token types are the same in order as the list
@@ -157,87 +169,48 @@ bool isOp(TokenType t)
 {
     return t == PLUS or t == PRODUCT or t == DIVIDE or t == MINUS or t == POWER;
 }
-
-#define makePartition(d) int partition = expr.rfind(d)
-#define nodeDataA parseExpr(d, partition)
-#define nodeDataB parseExpr(d + partition - extraLimit + 1, size)
-#define findSymbol(d) if (expr.find(d) != string::npos)
+bool isPar(TokenType t)
+{
+    return t == PAR_CLOSE or t == PAR_OPEN;
+}
 
 optional<NodeExpr> Parser::parseExpr(int d, int limit)
 {
     NodeExpr result = nullExpr;
-    int size = 0;
-    int index = 1;
-    int extraLimit = 0;
-    string expr;
-    // Read first term
-    if (isTerm(nextType(d)))
+
+    // 1. Read the expression as string
+
+    int level = 0;
+    string expr = readExpr(d);
+    // 2. Find operators from the end
+    for (size_t n = expr.length(); n >= 0; n--)
     {
-        extraLimit += see(d).value.length() - 1;
-        expr += see(d).value;
-        size = 1;
-        // Read next pairs of op-term
-        while (isOp(nextType(index + d)) and isTerm(nextType(index + 1 + d)) and index < (limit - extraLimit))
+        char c = expr[n];
+        if (c == ')')
         {
-            expr += see(d + index).value + see(d + 1 + index).value;
-            size += 2;
-            index += 2;
+            ++level;
+            continue;
         }
-        cout << size << " | " << expr << endl;
-
-        if (size > 1)
+        if (c == '(')
         {
-            findSymbol("-")
-            {
-                makePartition("-");
-                result = NodeExpr{
-                    .value = NodeSub{.a = nodeDataA, .b = nodeDataB},
-                    .size = size
-
-                };
-            }
-            else findSymbol("+")
-            {
-                makePartition("+");
-
-                result = NodeExpr{
-                    .value = NodeSum{.a = nodeDataA, .b = nodeDataB},
-                    .size = size
-
-                };
-            }
-            else findSymbol("/")
-            {
-                makePartition("/");
-                result = NodeExpr{
-                    .value = NodeDiv{.a = nodeDataA, .b = nodeDataB},
-                    .size = size
-
-                };
-            }
-            else findSymbol("*")
-            {
-                makePartition("*");
-                result = NodeExpr{
-                    .value = NodeProd{.a = nodeDataA, .b = nodeDataB},
-                    .size = size
-
-                };
-            }
-            else findSymbol("^")
-            {
-                int partition = expr.find("^");
-                result = NodeExpr{
-                    .value = NodePow{.a = nodeDataA, .b = nodeDataB},
-                    .size = size
-
-                };
-            }
+            --level;
+            continue;
         }
-        else
-        {
-            result = NodeExpr{see(d), 1, nextType(d)};
+        if (level > 0)
+            continue;
+        if ((c == '+' || c == '-') && n != 0)
+        { // if i==0 then s[0] is sign
+            string left = expr.substr(0, n);
+            string right = expr.substr(n + 1);
+
+            result = (c == '+') ? NodeExpr{NodeSum{
+
+                                  }}
+                                : NodeExpr{NodeSub{
+
+                                  }};
         }
     }
+
     return result;
 }
