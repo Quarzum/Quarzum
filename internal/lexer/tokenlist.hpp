@@ -47,5 +47,10 @@ public:
         }
     }
 
+    void clear()
+    {
+        items.clear();
+    }
+
     deque<Token> items;
 };

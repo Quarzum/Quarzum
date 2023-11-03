@@ -13,204 +13,50 @@ public:
     void parse()
     {
         size = m_tokens.size();
-        while (i < size)
+        for (size_t i = 0; i < size; i++)
         {
-            // INT ID
-            if (followSyntax({INT_K, ID}))
+            Token t = m_tokens.get(i);
+            if (isExprType(t.type))
             {
-                // INT ID = EXPR
-                if (nextType(2) == EQUAL)
+                stack.addToken(t.type, t.value);
+                if (i + 1 > size or !isExprType(m_tokens.get(i + 1).type))
                 {
-                    hasExpr(3)
-                    {
-                        ast.addAssign(INT, see(1).value, e.value());
-                        advance(3 + e.value().size);
-                    }
+                    NodeExpr e = parseExpr();
+                    result.push_back(e);
+                    stack.clear();
                 }
-                ast.addAssign(INT, see(1).value, nullExpr);
-                advance(2);
             }
-            // STR ID
-            if (followSyntax({STR_K, ID}))
+            else
             {
-                // STR ID = EXPR
-                if (nextType(2) == EQUAL)
-                {
-                    hasExpr(3)
-                    {
-                        ast.addAssign(STR, see(1).value, e.value());
-                        advance(3 + e.value().size);
-                    }
-                }
-                ast.addAssign(STR, see(1).value, nullExpr);
-                advance(2);
+                result.push_back(t);
             }
-            // CHAR ID
-            if (followSyntax({CHAR_K, ID}))
-            {
-                // CHAR ID = EXPR
-                if (nextType(2) == EQUAL)
-                {
-                    hasExpr(3)
-                    {
-                        ast.addAssign(CHAR, see(1).value, e.value());
-                        advance(3 + e.value().size);
-                    }
-                }
-                ast.addAssign(CHAR, see(1).value, nullExpr);
-                advance(2);
-            }
-
-            // NUM ID
-            if (followSyntax({NUM_K, ID}))
-            {
-                // NUM ID = EXPR
-                if (nextType(2) == EQUAL)
-                {
-                    hasExpr(3)
-                    {
-                        ast.addAssign(NUM, see(1).value, e.value());
-                        advance(3 + e.value().size);
-                    }
-                }
-                ast.addAssign(NUM, see(1).value, nullExpr);
-                advance(2);
-            }
-            // ANY ID
-            if (followSyntax({ANY_K, ID}))
-            {
-                // ANY ID = EXPR
-                if (nextType(2) == EQUAL)
-                {
-                    hasExpr(3)
-                    {
-                        ast.addAssign(ANY_K, see(1).value, e.value());
-                        advance(3 + e.value().size);
-                    }
-                }
-                ast.addAssign(ANY_K, see(1).value, nullExpr);
-                advance(2);
-            }
-            // EXIT EXPR
-            if (followSyntax({EXIT}))
-            {
-                hasExpr(1)
-                {
-                    ast.addExit(e.value());
-                    advance(2 + e.value().size);
-                }
-                advance(1);
-            }
-            // RETURN EXPR
-            if (followSyntax({RETURN}))
-            {
-                hasExpr(1)
-                {
-                    ast.addReturn(e.value());
-                    advance(2 + e.value().size);
-                }
-                advance(1);
-            }
-
-            i++;
         }
-        ast.debug();
     }
 
 private:
     TokenList m_tokens;
-    size_t size, i = 0;
-
-    // Returns the token at distance d from the actual token (position i)
-    Token see(__int8 d)
+    deque<variant<Token, NodeExpr>> result;
+    TokenList stack;
+    TokenType exprTypes[3] = {INT, ID, PLUS};
+    bool isExprType(TokenType t)
     {
-        if (i + d < size)
+        for (size_t n = 0; n < 3; n++)
         {
-            return m_tokens.get(i + d);
-        }
-        return {};
-    }
-
-    string readExpr(int d)
-    {
-        int index = 0;
-        string expr;
-        while (isOp(nextType(d + index)) or isTerm(nextType(d + index)) or isPar(nextType(d + index)))
-        {
-            expr += see(d + index).value;
-            index++;
-        }
-        cout << expr;
-        return expr;
-    }
-    optional<NodeExpr> parseExpr(int d, int limit = 50);
-
-    // Returns true if the following token types are the same in order as the list
-    bool followSyntax(deque<TokenType> list)
-    {
-        bool res = true;
-        for (size_t n = 0; n < list.size(); n++)
-        {
-            if (nextType(n) != list[n])
+            if (t == exprTypes[n])
             {
-                res = false;
-                break;
+                return true;
             }
         }
-        return res;
+        return false;
     }
+
+    NodeExpr parseExpr()
+    {
+    }
+
+    size_t size;
 };
 
-bool isTerm(TokenType t)
+class Builder
 {
-    return t == INT or t == NUM or t == STR or t == CHAR or t == ID;
-}
-bool isOp(TokenType t)
-{
-    return t == PLUS or t == PRODUCT or t == DIVIDE or t == MINUS or t == POWER;
-}
-bool isPar(TokenType t)
-{
-    return t == PAR_CLOSE or t == PAR_OPEN;
-}
-
-optional<NodeExpr> Parser::parseExpr(int d, int limit)
-{
-    NodeExpr result = nullExpr;
-
-    // 1. Read the expression as string
-
-    int level = 0;
-    string expr = readExpr(d);
-    // 2. Find operators from the end
-    for (size_t n = expr.length(); n >= 0; n--)
-    {
-        char c = expr[n];
-        if (c == ')')
-        {
-            ++level;
-            continue;
-        }
-        if (c == '(')
-        {
-            --level;
-            continue;
-        }
-        if (level > 0)
-            continue;
-        if ((c == '+' || c == '-') && n != 0)
-        { // if i==0 then s[0] is sign
-            string left = expr.substr(0, n);
-            string right = expr.substr(n + 1);
-
-            result = (c == '+') ? NodeExpr{NodeSum{
-
-                                  }}
-                                : NodeExpr{NodeSub{
-
-                                  }};
-        }
-    }
-
-    return result;
-}
+};
