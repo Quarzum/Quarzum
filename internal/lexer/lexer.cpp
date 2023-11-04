@@ -11,7 +11,10 @@ class Lexer
     i++;        \
     continue
 public:
-    Lexer(string source) : m_src(move(source)) {}
+    Lexer(string source) : m_src(move(source))
+    {
+        tokens = TokenList();
+    }
     TokenList tokenize()
     {
         // Iterates through the source code characters to find patterns

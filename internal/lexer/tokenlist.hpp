@@ -1,6 +1,10 @@
 class TokenList
 {
 public:
+    TokenList(deque<Token> tokens = {})
+    {
+        items = tokens;
+    }
     // Returns the amount of elements of the list
     size_t size()
     {
@@ -21,11 +25,12 @@ public:
         items.push_back({type, value});
     }
     // Shows in console the result of Lexer (list of tokens)
-    void debug()
+    void debug(string title = "Token Stack")
     {
         if (SHOW_COMPILER_DEBUG)
         {
-            cout << GRAY << "\nToken Stack\n-------------------\n"
+            cout << GRAY << "\n"
+                 << title << "\n-------------------\n"
                  << NC;
             int maxNameLength = 8;
             for (size_t i = 0; i < items.size(); i++)
@@ -45,6 +50,26 @@ public:
             }
             cout << "\n";
         }
+    }
+
+    deque<Token> divide(int index, bool first)
+    {
+        deque<Token> result;
+        if (first)
+        {
+            for (size_t i = 0; i < index; i++)
+            {
+                result.push_back(get(i));
+            }
+        }
+        else
+        {
+            for (size_t i = index; i < size(); i++)
+            {
+                result.push_back(get(i));
+            }
+        }
+        return result;
     }
 
     void clear()
