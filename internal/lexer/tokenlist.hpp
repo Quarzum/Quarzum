@@ -55,7 +55,7 @@ public:
     deque<Token> divide(int index, bool first)
     {
         deque<Token> result;
-        if (first)
+        if (first == true)
         {
             for (size_t i = 0; i < index; i++)
             {
@@ -64,7 +64,7 @@ public:
         }
         else
         {
-            for (size_t i = index; i < size(); i++)
+            for (size_t i = index + 1; i < size(); i++)
             {
                 result.push_back(get(i));
             }

@@ -55,10 +55,10 @@ private:
     TokenList m_tokens;
     deque<variant<Token, NodeExpr>> result;
     TokenList stack;
-    TokenType exprTypes[12] = {INT, ID, PLUS, PRODUCT, MINUS, DIVIDE, INTDIV, POWER, STR, NUM, PAR_OPEN, PAR_CLOSE};
+    TokenType exprTypes[13] = {INT, STR, ID, PLUS, PRODUCT, MINUS, DIVIDE, INTDIV, POWER, STR, NUM, PAR_OPEN, PAR_CLOSE};
     bool isExprType(TokenType t)
     {
-        for (size_t n = 0; n < 12; n++)
+        for (size_t n = 0; n < 13; n++)
         {
             if (t == exprTypes[n])
             {
@@ -68,17 +68,61 @@ private:
         return false;
     }
 
+    TokenType blendTypes(NodeExpr a, NodeExpr b, string op)
+    {
+        if (op == "sum")
+        {
+            cout << a.type << " + " << b.type << endl;
+            if (a.type == b.type)
+            {
+                return a.type;
+            }
+            else
+            {
+                Error.exit(TYPE_ERROR, "Invalid expression");
+            }
+        }
+        else if (op == "prod")
+        {
+            cout << a.type << "* " << b.type << endl;
+            if (a.type == b.type)
+            {
+                return a.type;
+            }
+            else
+            {
+
+                Error.exit(TYPE_ERROR, "Invalid expression");
+            }
+        }
+    }
+
     NodeExpr parseExpr(TokenList stack)
     {
+        if (stack.size() == 1)
+        {
+            return NodeExpr{
+                .value = stack.get(0),
+                .size = 1,
+                .type = stack.get(0).type
+
+            };
+        }
         for (size_t n = stack.size(); n > 0; n--)
         {
             if (stack.get(n).type == PLUS)
             {
                 cout << "SUM";
-                TokenList a = TokenList(stack.divide(n, true));
-                TokenList b = TokenList(stack.divide(n, false));
+                NodeExpr a = parseExpr(TokenList(stack.divide(n, true)));
+                NodeExpr b = parseExpr(TokenList(stack.divide(n, false)));
+
+                TokenType type = blendTypes(a, b, "sum");
+
                 return NodeExpr{
-                    NodeSum{parseExpr(a), parseExpr(b)}
+
+                    .value = NodeSum{a, b},
+                    .size = (int)stack.size(),
+                    .type = type,
 
                 };
             }
@@ -88,10 +132,16 @@ private:
             if (stack.get(n).type == PRODUCT)
             {
                 cout << "PROD";
-                TokenList a = TokenList(stack.divide(n, true));
-                TokenList b = TokenList(stack.divide(n, false));
+                NodeExpr a = parseExpr(TokenList(stack.divide(n, true)));
+                NodeExpr b = parseExpr(TokenList(stack.divide(n, false)));
+
+                TokenType type = blendTypes(a, b, "prod");
+
                 return NodeExpr{
-                    NodeProd{parseExpr(a), parseExpr(b)}
+
+                    .value = NodeProd{a, b},
+                    .size = (int)stack.size(),
+                    .type = type,
 
                 };
             }
