@@ -30,9 +30,9 @@ public:
         if (SHOW_COMPILER_DEBUG)
         {
             cout << GRAY << "\n"
-                 << title << "\n-------------------\n"
+                 << title << "\n---------------------------\n"
                  << NC;
-            int maxNameLength = 8;
+            int maxNameLength = 16;
             for (size_t i = 0; i < items.size(); i++)
             {
                 string name = items[i].value;
@@ -46,7 +46,7 @@ public:
                     num += " ";
                 }
 
-                cout << GRAY << "| " << num << " | " << YELLOW << name << GRAY << " |\n]-----------------[" << NC << endl;
+                cout << GRAY << "| " << num << " | " << YELLOW << name << GRAY << " |\n]-------------------------[" << NC << endl;
             }
             cout << "\n";
         }

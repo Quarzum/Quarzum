@@ -23,6 +23,7 @@ using namespace std;
 #include "lexer/tokenlist.hpp"
 
 #include "parser/nodes.h"
+#include "parser/blendt.hpp"
 #include "parser/ast.hpp"
 
 #include "utils/variables.hpp"
