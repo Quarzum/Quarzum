@@ -29,7 +29,6 @@ NodeExpr parseExpr(TokenList stack)
         if (stack.get(n).type == PLUS)
         {
             NodePartition("sum");
-            cout << type << endl;
             return NodeExpr{
 
                 .value = NodeSum{a, b},
@@ -41,7 +40,6 @@ NodeExpr parseExpr(TokenList stack)
         else if (stack.get(n).type == MINUS)
         {
             NodePartition("sum");
-            cout << type << endl;
             return NodeExpr{
 
                 .value = NodeSub{a, b},
@@ -61,7 +59,6 @@ NodeExpr parseExpr(TokenList stack)
         if (stack.get(n).type == PRODUCT)
         {
             NodePartition("prod");
-            cout << type << endl;
             return NodeExpr{
 
                 .value = NodeProd{a, b},

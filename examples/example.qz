@@ -1,1 +1,1 @@
-int i = true + 1
+int i = "hola"

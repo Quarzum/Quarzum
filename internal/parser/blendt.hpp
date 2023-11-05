@@ -27,4 +27,6 @@ TokenType blendTypes(NodeExpr a, NodeExpr b, string op)
 
                     Error.exit(TYPE_ERROR, "Invalid expression");
     }
+    Error.exit(TYPE_ERROR, "Invalid expression");
+    return {};
 }

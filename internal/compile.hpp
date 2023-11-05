@@ -9,6 +9,7 @@ void compile(string source)
 
     Parser parser = Parser(tokens);
     parser.parse();
+    parser.buildAST();
 
     Analyzer analyzer = Analyzer(ast);
     analyzer.analyze();

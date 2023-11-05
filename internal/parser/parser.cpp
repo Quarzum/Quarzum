@@ -1,12 +1,16 @@
+#define Expr nullExpr
 class Parser
 {
 public:
-    Parser(TokenList tokens) : m_tokens(move(tokens)) {}
+    Parser(TokenList tokens) : m_tokens(move(tokens))
+    {
+        size = m_tokens.size();
+    }
 
     /* Parses only expressions, conditions, function calls and other */
     void parse()
     {
-        size = m_tokens.size();
+
         for (size_t i = 0; i < size; i++)
         {
             Token t = m_tokens.get(i);
@@ -22,11 +26,12 @@ public:
 
                         stack.debug("Expression lexing");
                         NodeExpr e = parseExpr(stack);
-                        // result.push_back(e);
+                        nodestack.push_back(e);
+                        stack.clear();
                     }
                     else
                     {
-                        result.push_back(t);
+                        nodestack.push_back(t);
                     }
                     stack.clear();
                 }
@@ -34,20 +39,36 @@ public:
             // If not, push it directly into the result
             else
             {
-                result.push_back(t);
+                nodestack.push_back(t);
             }
         }
     }
     /* Once complex AST structures are created, build the AST iterating the list of Tokens/Expr */
     void buildAST()
     {
+        while (index < size)
+        {
+            if (followSyntax({INT_K, ID, EQUAL, Expr}))
+            {
+                if (getExpr(3).type == INT)
+                {
+                    cout << "INT ASSIGN WITH VALUE";
+                    index += 3 + getExpr(3).size;
+                    continue;
+                }
+                Error.exit(TYPE_ERROR, "Initialization value is not an integer");
+            }
+            index++;
+        }
     }
 
 private:
     TokenList m_tokens;
-    deque<variant<Token, NodeExpr>> result;
+    deque<variant<Token, NodeExpr>> nodestack;
     TokenList stack;
     TokenType exprTypes[15] = {INT, BOOL, NUM, STR, ID, PLUS, PRODUCT, MINUS, DIVIDE, INTDIV, POWER, STR, NUM, PAR_OPEN, PAR_CLOSE};
+
+    size_t index = 0;
     bool isExprType(TokenType t)
     {
         for (size_t n = 0; n < 15; n++)
@@ -58,6 +79,37 @@ private:
             }
         }
         return false;
+    }
+
+    bool followSyntax(deque<variant<TokenType, NodeExpr>> list)
+    {
+        for (size_t n = 0; n < list.size(); n++)
+        {
+            if (holds_alternative<TokenType>(list.at(n)))
+            {
+                if (get<TokenType>(list.at(n)) != get<Token>(nodestack.at(index + n)).type)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (not holds_alternative<NodeExpr>(nodestack.at(index + n)))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    NodeExpr getExpr(int d)
+    {
+        if (holds_alternative<NodeExpr>(nodestack.at(index + d)))
+        {
+            return get<NodeExpr>(nodestack.at(index + d));
+        }
+        return nullExpr;
     }
 
     size_t size;
