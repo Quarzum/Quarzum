@@ -1,11 +1,3 @@
-#pragma once
-#define nextType(d) see(d).type
-#define hasExpr(d) if (auto e = parseExpr(d, 50))
-#undef advance
-#define advance(d) \
-    i += d;        \
-    continue
-
 class Parser
 {
 public:
@@ -66,82 +58,6 @@ private:
             }
         }
         return false;
-    }
-
-    NodeExpr parseExpr(TokenList stack)
-    {
-        if (stack.size() == 1)
-        {
-            return NodeExpr{
-                .value = stack.get(0),
-                .size = 1,
-                .type = stack.get(0).type
-
-            };
-        }
-        /*
-
-            Operator Precedence Level 0
-
-        */
-        for (size_t n = stack.size(); n > 0; n--)
-        {
-            if (stack.get(n).type == PLUS)
-            {
-                NodeExpr a = parseExpr(TokenList(stack.divide(n, true)));
-                NodeExpr b = parseExpr(TokenList(stack.divide(n, false)));
-
-                TokenType type = blendTypes(a, b, "sum");
-                cout << type << endl;
-                return NodeExpr{
-
-                    .value = NodeSum{a, b},
-                    .size = (int)stack.size(),
-                    .type = type,
-
-                };
-            }
-            else if (stack.get(n).type == MINUS)
-            {
-                NodeExpr a = parseExpr(TokenList(stack.divide(n, true)));
-                NodeExpr b = parseExpr(TokenList(stack.divide(n, false)));
-
-                TokenType type = blendTypes(a, b, "sum");
-                cout << type << endl;
-                return NodeExpr{
-
-                    .value = NodeSub{a, b},
-                    .size = (int)stack.size(),
-                    .type = type,
-
-                };
-            }
-        }
-        /*
-
-            Operator Precedence Level 1
-
-        */
-        for (size_t n = stack.size(); n > 0; n--)
-        {
-            if (stack.get(n).type == PRODUCT)
-            {
-                NodeExpr a = parseExpr(TokenList(stack.divide(n, true)));
-                NodeExpr b = parseExpr(TokenList(stack.divide(n, false)));
-
-                TokenType type = blendTypes(a, b, "prod");
-                cout << type << endl;
-                return NodeExpr{
-
-                    .value = NodeProd{a, b},
-                    .size = (int)stack.size(),
-                    .type = type,
-
-                };
-            }
-        }
-
-        return nullExpr;
     }
 
     size_t size;

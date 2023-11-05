@@ -24,6 +24,7 @@ using namespace std;
 
 #include "parser/nodes.h"
 #include "parser/blendt.hpp"
+#include "parser/expr.hpp"
 #include "parser/ast.hpp"
 
 #include "utils/variables.hpp"
