@@ -9,7 +9,7 @@
 
 ## NOTE: This project is currently in developement, all this information is provisional and may change in the future
 
-
+## Project status: 40% complete
 
 ## Why Quarzum?
 
