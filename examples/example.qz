@@ -1,1 +1,2 @@
-int i = "hola"
+int i = 2 * 5
+int j

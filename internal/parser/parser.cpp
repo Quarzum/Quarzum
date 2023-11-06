@@ -46,19 +46,32 @@ public:
     /* Once complex AST structures are created, build the AST iterating the list of Tokens/Expr */
     void buildAST()
     {
-        while (index < size)
+        while (index < nodestack.size())
         {
+            cout << index;
             if (followSyntax({INT_K, ID, EQUAL, Expr}))
             {
                 if (getExpr(3).type == INT)
                 {
                     cout << "INT ASSIGN WITH VALUE";
                     index += 3 + getExpr(3).size;
-                    continue;
                 }
-                Error.exit(TYPE_ERROR, "Initialization value is not an integer");
+                else
+                {
+                    Error.exit(TYPE_ERROR, "Initialization value is not an integer");
+                }
             }
-            index++;
+            else if (followSyntax({INT_K, ID}))
+            {
+                cout << "INT ASSIGN WITHOUT VALUE";
+                index += 2;
+                continue;
+            }
+            else
+            {
+                index++;
+            }
+            cout << index;
         }
     }
 
@@ -85,19 +98,26 @@ private:
     {
         for (size_t n = 0; n < list.size(); n++)
         {
-            if (holds_alternative<TokenType>(list.at(n)))
+            if (n < nodestack.size())
             {
-                if (get<TokenType>(list.at(n)) != get<Token>(nodestack.at(index + n)).type)
+                if (holds_alternative<TokenType>(list.at(n)))
                 {
-                    return false;
+                    if (get<TokenType>(list.at(n)) != get<Token>(nodestack.at(index + n)).type)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (not holds_alternative<NodeExpr>(nodestack.at(index + n)))
+                    {
+                        return false;
+                    }
                 }
             }
             else
             {
-                if (not holds_alternative<NodeExpr>(nodestack.at(index + n)))
-                {
-                    return false;
-                }
+                return false;
             }
         }
         return true;

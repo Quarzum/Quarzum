@@ -3,6 +3,7 @@
     {                                                                                  \
         return prec;                                                                   \
     }
+
 #define sameType          \
     if (a.type == b.type) \
     {                     \
@@ -15,17 +16,19 @@ TokenType blendTypes(NodeExpr a, NodeExpr b, string op)
     {
         sameType
             precedence(INT, BOOL)
-
-                Error.exit(TYPE_ERROR, "Invalid expression");
+                precedence(NUM, INT)
+                    precedence(STR, CHAR)
+                        Error.exit(TYPE_ERROR, "Invalid expression");
     }
     else if (op == "prod")
     {
         sameType
             precedence(STR, INT)
-
                 precedence(NUM, INT)
+                    precedence(NUM, BOOL)
+                        precedence(INT, BOOL)
 
-                    Error.exit(TYPE_ERROR, "Invalid expression");
+                            Error.exit(TYPE_ERROR, "Invalid expression");
     }
     Error.exit(TYPE_ERROR, "Invalid expression");
     return {};
