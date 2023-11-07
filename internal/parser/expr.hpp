@@ -68,6 +68,25 @@ NodeExpr parseExpr(TokenList stack)
             };
         }
     }
+    /*
+
+        Operator Precedence Level 2
+
+    */
+    for (size_t n = 0; n < stack.size(); n++)
+    {
+        if (stack.get(n).type == POWER)
+        {
+            NodePartition("power");
+            return NodeExpr{
+
+                .value = NodePow{a, b},
+                .size = (int)stack.size(),
+                .type = type,
+
+            };
+        }
+    }
 
     return nullExpr;
 }

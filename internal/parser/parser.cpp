@@ -25,6 +25,7 @@ public:
                     {
 
                         stack.debug("Expression lexing");
+
                         NodeExpr e = parseExpr(stack);
                         nodestack.push_back(e);
                         stack.clear();

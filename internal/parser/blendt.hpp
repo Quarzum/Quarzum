@@ -30,6 +30,13 @@ TokenType blendTypes(NodeExpr a, NodeExpr b, string op)
 
                             Error.exit(TYPE_ERROR, "Invalid expression");
     }
+    else if (op == "power")
+    {
+        if (a.type != NUM or a.type != INT or b.type != INT or b.type == NUM)
+        {
+            Error.exit(TYPE_ERROR, "Invalid expression");
+        }
+    }
     Error.exit(TYPE_ERROR, "Invalid expression");
     return {};
 }
