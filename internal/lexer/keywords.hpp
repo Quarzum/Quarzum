@@ -47,7 +47,8 @@ Collection keywords = Collection({
 
 });
 
-map<string, unsigned __int8> symbols = {
+Collection symbols = Collection({
+
     {"=", EQUAL},
     {"+", PLUS},
     {"-", MINUS},
@@ -67,9 +68,10 @@ map<string, unsigned __int8> symbols = {
     {">", GREATER},
     {"<", LESS}
 
-};
+});
 
-map<string, unsigned __int8> composedSymbols = {
+Collection composedSymbols = Collection({
+
     {"==", IS_EQUAL},
     {">=", GREATER_EQUAL},
     {"<=", LESS_EQUAL},
@@ -80,4 +82,6 @@ map<string, unsigned __int8> composedSymbols = {
     {"^=", POWER_EQUAL},
     {"%=", INTDIV_EQUAL},
     {"++", UNARY_PLUS},
-    {"--", UNARY_MINUS}};
+    {"--", UNARY_MINUS}
+
+});

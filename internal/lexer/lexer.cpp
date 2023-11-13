@@ -1,6 +1,5 @@
 #pragma once
 #define nextc m_src.at(i + 1)
-#define isSymbol symbols.find(toStr(c)) != symbols.end()
 // Lexer complexity time: O(n)
 class Lexer
 {
@@ -130,15 +129,15 @@ public:
                     continue;
                 }
                 // If it is a recognized symbol
-                else if (isSymbol)
+                else if (symbols.find(toStr(c)) == true)
                 {
                     string composed = toStr(c) + toStr(nextc);
-                    if (composedSymbols.find(composed) != composedSymbols.end())
+                    if (composedSymbols.find(composed) == true)
                     {
-                        tokens.addToken(TokenType(composedSymbols.at(composed)), composed);
+                        tokens.addToken(TokenType(composedSymbols.index(composed)), composed);
                         advance;
                     }
-                    tokens.addToken(TokenType(symbols.at(toStr(c))), toStr(c));
+                    tokens.addToken(TokenType(symbols.index(toStr(c))), toStr(c));
                     continue;
                 }
                 Error.exit(LEXICAL_ERROR, "Unexpected token \"" + toStr(c) + "\" at line " + to_string(line));
