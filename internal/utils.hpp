@@ -25,11 +25,30 @@ public:
         s.clear();
     }
     // Returns true if the N element is the provided
-    bool isNElement(int i, char c)
+    bool isFirstElement(char c)
     {
-        return s[i] == c;
+        return s[0] == c;
     }
 
 private:
     string s;
+};
+
+class Collection
+{
+public:
+    Collection(map<string, unsigned __int8> map) : content(move(map)) {}
+    // Returns true if a provided string exists
+    bool find(string s)
+    {
+        return content.find(s) != content.end();
+    }
+    // Returns the index of the provided element
+    unsigned __int8 index(string s)
+    {
+        return content.at(s);
+    }
+
+private:
+    map<string, unsigned __int8> content;
 };

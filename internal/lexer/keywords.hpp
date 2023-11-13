@@ -1,4 +1,5 @@
-map<string, __int8> keywords = {
+Collection keywords = Collection({
+
     {"int", INT_K},
     {"num", NUM_K},
     {"string", STR_K},
@@ -44,9 +45,9 @@ map<string, __int8> keywords = {
     {"out", OUT},
     {"input", INPUT}
 
-};
+});
 
-map<string, __int8> symbols = {
+map<string, unsigned __int8> symbols = {
     {"=", EQUAL},
     {"+", PLUS},
     {"-", MINUS},
@@ -68,7 +69,7 @@ map<string, __int8> symbols = {
 
 };
 
-map<string, __int8> composedSymbols = {
+map<string, unsigned __int8> composedSymbols = {
     {"==", IS_EQUAL},
     {">=", GREATER_EQUAL},
     {"<=", LESS_EQUAL},

@@ -1,8 +1,5 @@
 #pragma once
-#define buff_cl buffer.clear()
-#define buff_add(c) buffer.add(c)
 #define nextc m_src.at(i + 1)
-#define isKeyword keywords.find(buffer.read()) != keywords.end()
 #define isSymbol symbols.find(toStr(c)) != symbols.end()
 // Lexer complexity time: O(n)
 class Lexer
@@ -51,13 +48,13 @@ public:
             }
             else if (c == '"')
             {
-                buff_add(c);
-                if (buffer.isNElement(0, '"') and isStr == true)
+                buffer.add(c);
+                if (buffer.isFirstElement('"') and isStr == true)
                 {
 
                     isStr = false;
                     tokens.addToken(STR, buffer.read());
-                    buff_cl;
+                    buffer.clear();
                     continue;
                 }
                 isStr = true;
@@ -65,18 +62,18 @@ public:
             }
             else if (isStr == true)
             {
-                buff_add(c);
+                buffer.add(c);
                 continue;
             }
             else if (c == '\'')
             {
-                buff_add(c);
-                if (buffer.isNElement(0, '\'') and isChar == true)
+                buffer.add(c);
+                if (buffer.isFirstElement('\'') and isChar == true)
                 {
 
                     isChar = false;
                     tokens.addToken(CHAR, buffer.read());
-                    buff_cl;
+                    buffer.clear();
                     continue;
                 }
                 isChar = true;
@@ -84,7 +81,7 @@ public:
             }
             else if (isChar == true)
             {
-                buff_add(c);
+                buffer.add(c);
                 continue;
             }
             else if (!isspace(c) and isComment == "none")
@@ -93,18 +90,18 @@ public:
                 // If follows the pattern [a-zA-Z][a-zA-Z0-9]*
                 if (isalpha(c))
                 {
-                    buff_add(c);
+                    buffer.add(c);
                     if (not isalpha(nextc))
                     {
-                        if (isKeyword)
+                        if (keywords.find(buffer.read()) == true)
                         {
-                            tokens.addToken(TokenType(keywords.at(buffer.read())), buffer.read());
+                            tokens.addToken(TokenType(keywords.index(buffer.read())), buffer.read());
                         }
                         else
                         {
                             tokens.addToken(ID, buffer.read());
                         }
-                        buff_cl;
+                        buffer.clear();
                         continue;
                     }
                     continue;
@@ -112,7 +109,7 @@ public:
                 // If follows the pattern [0-9]+(.[0-9]*)?
                 else if (isdigit(c) or c == '.')
                 {
-                    buff_add(c);
+                    buffer.add(c);
                     if (c == '.')
                     {
                         isNum = true;
@@ -128,7 +125,7 @@ public:
                         {
                             tokens.addToken(INT, buffer.read());
                         }
-                        buff_cl;
+                        buffer.clear();
                     }
                     continue;
                 }
