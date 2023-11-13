@@ -10,6 +10,7 @@
         return a.type;    \
     }
 
+// Returns the type that is the result of merging two different types
 TokenType blendTypes(NodeExpr a, NodeExpr b, string op)
 {
     if (op == "sum")

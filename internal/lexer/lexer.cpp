@@ -1,8 +1,8 @@
 #pragma once
 #define buff_cl buffer.clear()
-#define buff_add(c) buffer.push_back(c)
+#define buff_add(c) buffer.add(c)
 #define nextc m_src.at(i + 1)
-#define isKeyword keywords.find(buffer) != keywords.end()
+#define isKeyword keywords.find(buffer.read()) != keywords.end()
 #define isSymbol symbols.find(toStr(c)) != symbols.end()
 // Lexer complexity time: O(n)
 class Lexer
@@ -52,11 +52,11 @@ public:
             else if (c == '"')
             {
                 buff_add(c);
-                if (buffer[0] == '"' and isStr == true)
+                if (buffer.isNElement(0, '"') and isStr == true)
                 {
 
                     isStr = false;
-                    tokens.addToken(STR, buffer);
+                    tokens.addToken(STR, buffer.read());
                     buff_cl;
                     continue;
                 }
@@ -71,11 +71,11 @@ public:
             else if (c == '\'')
             {
                 buff_add(c);
-                if (buffer[0] == '\'' and isChar == true)
+                if (buffer.isNElement(0, '\'') and isChar == true)
                 {
 
                     isChar = false;
-                    tokens.addToken(CHAR, buffer);
+                    tokens.addToken(CHAR, buffer.read());
                     buff_cl;
                     continue;
                 }
@@ -98,11 +98,11 @@ public:
                     {
                         if (isKeyword)
                         {
-                            tokens.addToken(TokenType(keywords.at(buffer)), buffer);
+                            tokens.addToken(TokenType(keywords.at(buffer.read())), buffer.read());
                         }
                         else
                         {
-                            tokens.addToken(ID, buffer);
+                            tokens.addToken(ID, buffer.read());
                         }
                         buff_cl;
                         continue;
@@ -121,12 +121,12 @@ public:
                     {
                         if (isNum == true)
                         {
-                            tokens.addToken(NUM, buffer);
+                            tokens.addToken(NUM, buffer.read());
                             isNum = false;
                         }
                         else
                         {
-                            tokens.addToken(INT, buffer);
+                            tokens.addToken(INT, buffer.read());
                         }
                         buff_cl;
                     }
@@ -152,9 +152,11 @@ public:
     }
 
 private:
-    string m_src, buffer;
+    string m_src;
     TokenList tokens;
     size_t line, i;
+
+    Buffer buffer;
 
     string isComment = "none";
     bool isNum, isStr, isChar;
