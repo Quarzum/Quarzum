@@ -52,3 +52,39 @@ public:
 private:
     map<string, unsigned __int8> content;
 };
+
+enum MessageType
+{
+    SUCCESS = 10001,
+    WARN = 10002,
+    ERR = 10003
+};
+
+class Message
+{
+public:
+    Message(MessageType t, string c, string errtype = "")
+    {
+        type = t;
+        content = c;
+        errtype = errtype;
+    }
+
+    // Show in console the formatted message
+    void print()
+    {
+        switch (type)
+        {
+        case SUCCESS:
+            break;
+        case WARN:
+            break;
+        case ERR:
+            break;
+        }
+    }
+
+private:
+    MessageType type;
+    string content, errtype;
+};
