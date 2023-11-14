@@ -1,4 +1,4 @@
-void applyConfig(const string path)
+void applyConfig(string path)
 {
     /* TODO: Applies a config rule */
     size_t i = 0;

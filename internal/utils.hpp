@@ -5,7 +5,7 @@
 #define TEAL "\e[36;40m"
 #define YELLOW "\e[93;40m"
 #define GRAY "\e[90;40m"
-
+typedef unsigned char uint8;
 class Buffer
 {
 public:
@@ -37,20 +37,20 @@ private:
 class Collection
 {
 public:
-    Collection(map<string, unsigned __int8> map) : content(move(map)) {}
+    Collection(map<string, uint8> map) : content(move(map)) {}
     // Returns true if a provided string exists
     bool find(string s)
     {
         return content.find(s) != content.end();
     }
     // Returns the index of the provided element
-    unsigned __int8 index(string s)
+    uint8 index(string s)
     {
         return content.at(s);
     }
 
 private:
-    map<string, unsigned __int8> content;
+    map<string, uint8> content;
 };
 
 enum MessageType
@@ -123,7 +123,8 @@ public:
         }
         if (errcount > 0)
         {
-            cerr << "Process finished with " << errcount << " errors";
+            cerr << "Process finished with " << errcount << " error" << (errcount > 1 ? "s" : "") << endl
+                 << endl;
             exit(EXIT_FAILURE);
         }
         else

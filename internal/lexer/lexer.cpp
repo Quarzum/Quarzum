@@ -143,7 +143,9 @@ public:
                 Debug.err("Unexpected token \"" + toStr(c) + "\" at line " + to_string(line), "LexicalError");
             }
         }
+        Debug.print();
         tokens.debug();
+
         return tokens;
     }
 

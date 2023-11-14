@@ -10,7 +10,7 @@ enum Modes
 class CLI
 {
 public:
-    CLI(char **x, unsigned short count)
+    CLI(char **x, uint8 count)
     {
         args = x;
         argc = count;
@@ -47,7 +47,7 @@ public:
 
 private:
     char **args;
-    unsigned short argc;
+    uint8 argc;
     MessageStack Debug;
 
     // Returns if the value starts with "--" (is a flag) or not
@@ -66,7 +66,7 @@ private:
     // Set the mode depending on the first parameter
     void setCommand()
     {
-        for (unsigned short i = 0; i < 4; i++)
+        for (uint8 i = 0; i < 4; i++)
         {
             if (strcmp(args[1], commands[i]) == 0)
             {
@@ -111,9 +111,9 @@ private:
     // Gets the flags and execute them
     void getFlags()
     {
-        for (unsigned short i = (1 + (mode != -1)); i < argc; i++)
+        for (uint8 i = (1 + (mode != -1)); i < argc; i++)
         {
-            if (strcmp(args[i], "--v") == 0 || strcmp(args[i], "--version") == 0)
+            if (strcmp(args[i], "--v") == 0 or strcmp(args[i], "--version") == 0)
             {
                 /*
 
@@ -122,7 +122,7 @@ private:
                 */
                 wcout << "\n[Quarzum " << L'\u00A9' << " 2023] - Version: 1.0.0" << endl;
             }
-            else if (strcmp(args[i], "--h") == 0 || strcmp(args[i], "--help") == 0)
+            else if (strcmp(args[i], "--h") == 0 or strcmp(args[i], "--help") == 0)
             {
                 /*
 
@@ -141,7 +141,7 @@ private:
                         "\n --o / --output: Specifies the output file location.\n"
                      << endl;
             }
-            else if (strcmp(args[i], "--i") == 0 || strcmp(args[i], "--input") == 0)
+            else if (strcmp(args[i], "--i") == 0 or strcmp(args[i], "--input") == 0)
             {
                 /*
 
