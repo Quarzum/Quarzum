@@ -76,10 +76,16 @@ public:
         switch (type)
         {
         case SUCCESS:
+            cout << GREEN_BG "[SUCCESS]" NC;
+            cout << " " + content << endl;
             break;
         case WARN:
+            cout << YELLOW_BG "[SUCCESS]" NC;
+            cout << " " + content << endl;
             break;
         case ERR:
+            cout << RED_BG "[ERROR]" NC;
+            cout << " " + errtype << ": " << content << endl;
             break;
         }
     }
@@ -87,4 +93,42 @@ public:
 private:
     MessageType type;
     string content, errtype;
+};
+
+class MessageStack
+{
+public:
+    // Add a new success message to the stack
+    void success(string content)
+    {
+        add(SUCCESS, content);
+    }
+    // Add a new warning to the stack
+    void warn(string content)
+    {
+        add(WARN, content);
+    }
+    // Add a new error to the stack
+    void err(string content, string errtype)
+    {
+        add(ERR, content, errtype);
+    }
+    // Print all the stored messages
+    void print()
+    {
+        for (size_t i = 0; i < stack.size(); i++)
+        {
+            stack[i].print();
+        }
+    }
+
+private:
+    deque<Message> stack;
+
+    // Add a new message to the stack
+    void add(MessageType t, string content, string errtype = "")
+    {
+        Message msg = Message(t, content, errtype);
+        stack.push_back(msg);
+    }
 };

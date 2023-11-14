@@ -7,7 +7,10 @@ class Lexer
     i++;        \
     continue
 public:
-    Lexer(string source) : m_src(move(source)) {}
+    Lexer(string source) : m_src(move(source))
+    {
+        Debug = MessageStack();
+    }
     TokenList tokenize()
     {
         // Iterates through the source code characters to find patterns
@@ -140,7 +143,7 @@ public:
                     tokens.addToken(TokenType(symbols.index(toStr(c))), toStr(c));
                     continue;
                 }
-                Error.exit(LEXICAL_ERROR, "Unexpected token \"" + toStr(c) + "\" at line " + to_string(line));
+                Debug.err("Unexpected token \"" + toStr(c) + "\" at line " + to_string(line), "LexicalError");
             }
         }
         tokens.debug();
@@ -163,4 +166,6 @@ private:
         string s(1, c);
         return s;
     }
+
+    MessageStack Debug;
 };
