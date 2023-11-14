@@ -17,7 +17,7 @@ public:
                     i++;
                     continue;
                 }
-                Error.exit(TYPE_ERROR, "Expected an integer exit code");
+                Debug.err("Expected an integer exit code", "TypeError");
             }
             i++;
         }

@@ -8,7 +8,7 @@ public:
         ifstream input(route);
         if (input.fail())
         {
-            Error.exit(FILE_NOT_FOUND_ERROR, "No such file or directory");
+            Debug.err("No such file or directory", "FileNotFoundError");
         }
         string source, line;
         unsigned int index = 0;
@@ -23,7 +23,7 @@ public:
     {
         if (route.substr(route.size() - 3) != ".qz")
         {
-            Error.exit(REFERENCE_ERROR, "Invalid file format");
+            Debug.err("Invalid file format", "ReferenceError");
         }
     }
 

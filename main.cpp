@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-            Error.exit(FILE_NOT_FOUND_ERROR, "No such file or directory");
+            Debug.err("No such file or directory", "FileNotFoundError");
         }
     }
 

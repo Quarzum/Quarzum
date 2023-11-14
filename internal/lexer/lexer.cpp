@@ -7,10 +7,7 @@ class Lexer
     i++;        \
     continue
 public:
-    Lexer(string source) : m_src(move(source))
-    {
-        Debug = MessageStack();
-    }
+    Lexer(string source) : m_src(move(source)) {}
     TokenList tokenize()
     {
         // Iterates through the source code characters to find patterns
@@ -166,6 +163,4 @@ private:
         string s(1, c);
         return s;
     }
-
-    MessageStack Debug;
 };

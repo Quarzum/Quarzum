@@ -59,7 +59,7 @@ public:
                 }
                 else
                 {
-                    Error.exit(TYPE_ERROR, "Initialization value is not an integer");
+                    Debug.err("Initialization value is not an integer", "TypeError");
                 }
             }
             else if (followSyntax({INT_K, ID}))
@@ -81,7 +81,6 @@ private:
     deque<variant<Token, NodeExpr>> nodestack;
     TokenList stack;
     TokenType exprTypes[15] = {INT, BOOL, NUM, STR, ID, PLUS, PRODUCT, MINUS, DIVIDE, INTDIV, POWER, STR, NUM, PAR_OPEN, PAR_CLOSE};
-
     size_t index = 0;
     bool isExprType(TokenType t)
     {

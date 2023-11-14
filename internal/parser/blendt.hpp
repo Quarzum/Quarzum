@@ -19,7 +19,7 @@ TokenType blendTypes(NodeExpr a, NodeExpr b, string op)
             precedence(INT, BOOL)
                 precedence(NUM, INT)
                     precedence(STR, CHAR)
-                        Error.exit(TYPE_ERROR, "Invalid expression");
+                        Debug.err("Invalid expression", "TypeError");
     }
     else if (op == "prod")
     {
@@ -28,16 +28,15 @@ TokenType blendTypes(NodeExpr a, NodeExpr b, string op)
                 precedence(NUM, INT)
                     precedence(NUM, BOOL)
                         precedence(INT, BOOL)
-
-                            Error.exit(TYPE_ERROR, "Invalid expression");
+                            Debug.err("Invalid expression", "TypeError");
     }
     else if (op == "power")
     {
         if (a.type != NUM or a.type != INT or b.type != INT or b.type == NUM)
         {
-            Error.exit(TYPE_ERROR, "Invalid expression");
+            Debug.err("Invalid expression", "TypeError");
         }
     }
-    Error.exit(TYPE_ERROR, "Invalid expression");
+    Debug.err("Invalid expression", "TypeError");
     return {};
 }

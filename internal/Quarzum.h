@@ -15,7 +15,6 @@ using namespace std;
 */
 #include "utils.hpp"
 #include "utils/config.h"
-#include "utils/error.hpp"
 #include "utils/cli.hpp"
 
 #include "lexer/tokentype.h"

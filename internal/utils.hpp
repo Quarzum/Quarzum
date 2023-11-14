@@ -112,6 +112,7 @@ public:
     void err(string content, string errtype)
     {
         add(ERR, content, errtype);
+        errcount++;
     }
     // Print all the stored messages
     void print()
@@ -120,11 +121,21 @@ public:
         {
             stack[i].print();
         }
+        if (errcount > 0)
+        {
+            cerr << "Process finished with " << errcount << " errors";
+            exit(EXIT_FAILURE);
+        }
+        else
+        {
+            errcount = 0;
+            stack.clear();
+        }
     }
 
 private:
     deque<Message> stack;
-
+    int errcount = 0;
     // Add a new message to the stack
     void add(MessageType t, string content, string errtype = "")
     {
@@ -132,3 +143,4 @@ private:
         stack.push_back(msg);
     }
 };
+static MessageStack Debug = MessageStack();

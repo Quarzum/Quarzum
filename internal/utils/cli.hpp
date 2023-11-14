@@ -29,6 +29,7 @@ public:
             getFlags();
             break;
         }
+        Debug = MessageStack();
     }
 
     // Returns the flag with the output file path
@@ -47,6 +48,7 @@ public:
 private:
     char **args;
     unsigned short argc;
+    MessageStack Debug;
 
     // Returns if the value starts with "--" (is a flag) or not
     bool isArg(string str)
@@ -90,7 +92,7 @@ private:
             if (_mkdir(s.c_str()) == 0)
             {
                 cout << NC;
-                Error.success("Project created successfully!");
+                Debug.success("Project created successfully!");
                 cout << "\nCreated 3 files:\n  - main.qz\n  - main.config.qz\n  - /modules\n"
                      << endl;
                 program.close();
@@ -98,12 +100,12 @@ private:
             }
             else
             {
-                Error.exit(RUNTIME_ERROR, "Error creating a new project: unable to make directories");
+                Debug.err("Error creating a new project: unable to make directories", "RuntimeError");
             }
         }
         else
         {
-            Error.exit(RUNTIME_ERROR, "Error creating a new project: unable to make directories");
+            Debug.err("Error creating a new project: unable to make directories", "RuntimeError");
         }
     }
     // Gets the flags and execute them
@@ -153,7 +155,7 @@ private:
                 }
                 else
                 {
-                    Error.exit(RUNTIME_ERROR, "No input file provided.");
+                    Debug.err("No input file provided.", "RuntimeError");
                 }
             }
             else
