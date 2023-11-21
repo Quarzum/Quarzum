@@ -83,6 +83,11 @@ public:
                 buffer.add(c);
                 continue;
             }
+            else if (c == ';')
+            {
+                Debug.warn("Semicolon are not required.");
+                continue;
+            }
             else if (!isspace(c) and isComment == "none")
             {
 
@@ -140,7 +145,7 @@ public:
                     tokens.addToken(TokenType(symbols.index(toStr(c))), toStr(c));
                     continue;
                 }
-                Debug.err("Unexpected token \"" + toStr(c) + "\" at line " + to_string(line), "LexicalError");
+                Debug.err("Unexpected token \"" + toStr(c) + "\" at line " + to_string(line) + ".", "LexicalError");
             }
         }
         Debug.print();

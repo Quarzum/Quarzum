@@ -1,6 +1,6 @@
 #define NC "\e[0m"
-#define RED_BG "\e[30;41m"
-#define YELLOW_BG "\e[30;103m"
+#define RED_BG "\e[31m"
+#define YELLOW_BG "\e[93m"
 #define GREEN_BG "\e[30;102m"
 #define TEAL "\e[36;40m"
 #define YELLOW "\e[93;40m"
@@ -63,11 +63,11 @@ enum MessageType
 class Message
 {
 public:
-    Message(MessageType t, string c, string errtype = "")
+    Message(MessageType t, string c, string errt)
     {
         type = t;
         content = c;
-        errtype = errtype;
+        errtype = errt;
     }
 
     // Show in console the formatted message
@@ -76,16 +76,16 @@ public:
         switch (type)
         {
         case SUCCESS:
-            cout << GREEN_BG "[SUCCESS]" NC;
-            cout << " " + content << endl;
+            cout << GREEN_BG "Success! | " NC;
+            cout << content << endl;
             break;
         case WARN:
-            cout << YELLOW_BG "[SUCCESS]" NC;
-            cout << " " + content << endl;
+            cout << YELLOW_BG "Warning! | " NC;
+            cout << content << endl;
             break;
         case ERR:
-            cout << RED_BG "[ERROR]" NC;
-            cout << " " + errtype << ": " << content << endl;
+            cout << RED_BG "Error! | " NC;
+            cout << errtype << ": " << content << endl;
             break;
         }
     }
@@ -101,17 +101,17 @@ public:
     // Add a new success message to the stack
     void success(string content)
     {
-        add(SUCCESS, content);
+        add(SUCCESS, content, "");
     }
     // Add a new warning to the stack
     void warn(string content)
     {
-        add(WARN, content);
+        add(WARN, content, "");
     }
     // Add a new error to the stack
-    void err(string content, string errtype)
+    void err(string content, string errt)
     {
-        add(ERR, content, errtype);
+        add(ERR, content, errt);
         errcount++;
     }
     // Print all the stored messages
@@ -138,9 +138,9 @@ private:
     deque<Message> stack;
     int errcount = 0;
     // Add a new message to the stack
-    void add(MessageType t, string content, string errtype = "")
+    void add(MessageType t, string content, string errt)
     {
-        Message msg = Message(t, content, errtype);
+        Message msg = Message(t, content, errt);
         stack.push_back(msg);
     }
 };
