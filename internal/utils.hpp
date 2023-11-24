@@ -123,7 +123,7 @@ public:
         }
         if (errcount > 0)
         {
-            cerr << "Process finished with " << errcount << " error" << (errcount > 1 ? "s" : "") << endl
+            cerr << "Process finished with " << errcount << " error" << (errcount > 1 ? "s." : ".") << endl
                  << endl;
             exit(EXIT_FAILURE);
         }

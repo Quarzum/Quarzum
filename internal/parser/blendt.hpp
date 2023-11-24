@@ -10,10 +10,14 @@
         return a.type;    \
     }
 
+#define SUM if (op == "sum")
+#define PROD if (op == "prod")
+#define POW if (op == "power")
+
 // Returns the type that is the result of merging two different types
 TokenType blendTypes(NodeExpr a, NodeExpr b, string op)
 {
-    if (op == "sum")
+    SUM
     {
         sameType
             precedence(INT, BOOL)
@@ -21,7 +25,7 @@ TokenType blendTypes(NodeExpr a, NodeExpr b, string op)
                     precedence(STR, CHAR)
                         Debug.err("Invalid expression", "TypeError");
     }
-    else if (op == "prod")
+    else PROD
     {
         sameType
             precedence(STR, INT)
@@ -30,12 +34,13 @@ TokenType blendTypes(NodeExpr a, NodeExpr b, string op)
                         precedence(INT, BOOL)
                             Debug.err("Invalid expression", "TypeError");
     }
-    else if (op == "power")
+    else POW
     {
         if (a.type != NUM or a.type != INT or b.type != INT or b.type == NUM)
         {
             Debug.err("Invalid expression", "TypeError");
         }
+        return NUM;
     }
     Debug.err("Invalid expression", "TypeError");
     return {};

@@ -77,3 +77,9 @@ struct NodeStmt
 {
     variant<NodeAssign, NodeExit, NodeReturn> content;
 };
+
+template <typename T>
+bool HasStmt(NodeStmt s, T stmt)
+{
+    return holds_alternative<stmt>(s);
+}
