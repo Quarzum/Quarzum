@@ -7,7 +7,7 @@
 using namespace std;
 int main(/*int argc, char *argv[]*/)
 {   
-    deque<Token> tokens = tokenize("int i = 4");
+    deque<Token> tokens = tokenize("return 12");
     debugTokens(tokens);
     return EXIT_SUCCESS;
 }

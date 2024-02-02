@@ -55,10 +55,10 @@ deque<Token> tokenize(string input){
     deque<Token> output;
     int lineno = 1;
 
-    for(size_t i = 0; i < input.length(); i++){
+    for(size_t i = 0; i <= input.length(); i++){
 
         char c = input[i];
-        char next = NULL;
+        char next = '\0';
         if(i + 1 < input.length()){
             next = input[i + 1];
         }
