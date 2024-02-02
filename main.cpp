@@ -1,11 +1,13 @@
+#include "./internal/Quarzum.h"
 /*
 
     Minimal main.cpp, all the procedures are into Quarzum.h
 
 */
-int main(int argc, char *argv[])
-{
-    
+using namespace std;
+int main(/*int argc, char *argv[]*/)
+{   
+    tokenize("int i = 4");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
