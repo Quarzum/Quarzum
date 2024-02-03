@@ -9,7 +9,7 @@ void debugTokens(deque<Token> list){
     }
 }
 
-const unsigned char KEYWORD_COUNT = 12;
+const unsigned char KEYWORD_COUNT = 32;
 string keywords[KEYWORD_COUNT] = {
     "int",
     "number",
@@ -22,7 +22,27 @@ string keywords[KEYWORD_COUNT] = {
     "enum",
     "const",
     "exit",
-    "out"
+    "out",
+    "input",
+    "struct",
+    "if",
+    "else",
+    "for",
+    "foreach",
+    "while",
+    "do",
+    "break",
+    "continue",
+    "repeat",
+    "try",
+    "catch",
+    "finally",
+    "throw",
+    "module",
+    "import",
+    "class",
+    "public",
+    "private"
 };
 // Searchs if a determined input is a keyword. If not, returns an id Token,
 Token searchForKeyword(string input){
@@ -35,11 +55,30 @@ Token searchForKeyword(string input){
     return {id, input};
 }
 
-const unsigned char SYMBOL_COUNT = 3;
+const unsigned char SYMBOL_COUNT = 22;
 string symbols[SYMBOL_COUNT]={
     "=",
     "(",
-    ")"
+    ")",
+    "!!",
+    "&",
+    "|",
+    "%",
+    "!",
+    "&&",
+    "||",
+    "%%",
+    ".",
+    ",",
+    "+",
+    "-",
+    "*",
+    "/",
+    "^",
+    "{",
+    "}"
+    "[",
+    "]"
 };
 Token searchForSymbol(string input){
     for (size_t i = 0; i < SYMBOL_COUNT; i++)

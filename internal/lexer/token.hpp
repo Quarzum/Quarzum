@@ -52,7 +52,7 @@ enum TokenType{
     plus        = 0x20e,
     minus       = 0x20f,
     prod        = 0x210,
-    div         = 0x211,
+    division    = 0x211,
     power       = 0x212,
     left_cb     = 0x213,
     rigth_cb    = 0x214,

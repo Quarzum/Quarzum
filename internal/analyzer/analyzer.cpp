@@ -21,5 +21,7 @@ string analyze(deque<Statement> input){
             break;
         }
     }
+
+    output += ".ident \"Quarzum Compiler 0.0.1\"";
     return output;
 }
