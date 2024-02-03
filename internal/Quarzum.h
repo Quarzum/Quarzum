@@ -6,6 +6,9 @@ using namespace std;
 #include <deque>
 #include <any>
 #include <fstream> 
+#include <sstream>
+
+#include "other/errorhandler.cpp"
 
 #include "lexer/token.hpp"
 #include "lexer/lexer.cpp"

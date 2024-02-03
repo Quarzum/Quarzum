@@ -2,7 +2,8 @@
 #include "../Quarzum.h"
 
 enum StmtType{
-    return_stmt
+    exit_stmt,
+    out_stmt
 };
 
 // A Statement is a structure that contains one order of type "type" and with 8 possible arguments to pass in.

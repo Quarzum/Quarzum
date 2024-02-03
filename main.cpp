@@ -7,7 +7,9 @@
 using namespace std;
 int main(/*int argc, char *argv[]*/)
 {   
-    deque<Token> tokens = tokenize("return 63");
+
+    deque<Token> tokens = tokenize("exit 63 @");
+    debugTokens(tokens);
     string content = analyze(parse(tokens));
 
     ofstream outfile("out.asm");

@@ -9,7 +9,7 @@ void debugTokens(deque<Token> list){
     }
 }
 
-const unsigned char KEYWORD_COUNT = 10;
+const unsigned char KEYWORD_COUNT = 12;
 string keywords[KEYWORD_COUNT] = {
     "int",
     "number",
@@ -19,8 +19,10 @@ string keywords[KEYWORD_COUNT] = {
     "any",
     "return",
     "function",
-    "enum"
+    "enum",
     "const",
+    "exit",
+    "out"
 };
 // Searchs if a determined input is a keyword. If not, returns an id Token,
 Token searchForKeyword(string input){
@@ -33,9 +35,11 @@ Token searchForKeyword(string input){
     return {id, input};
 }
 
-const unsigned char SYMBOL_COUNT = 1;
+const unsigned char SYMBOL_COUNT = 3;
 string symbols[SYMBOL_COUNT]={
-    "="
+    "=",
+    "(",
+    ")"
 };
 Token searchForSymbol(string input){
     for (size_t i = 0; i < SYMBOL_COUNT; i++)
@@ -50,7 +54,7 @@ Token searchForSymbol(string input){
 
 // Converts an input string into a list of Tokens
 deque<Token> tokenize(string input){
-
+    ErrorHandler errorHandler;
     string buffer;
     deque<Token> output;
     int lineno = 1;
@@ -95,6 +99,9 @@ deque<Token> tokenize(string input){
             buffer.clear();
         }
 
+        else{
+            errorHandler.err({{},lineno,"Unexpected token"});
+        }
     }
     return output;
 }
