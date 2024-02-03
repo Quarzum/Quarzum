@@ -34,7 +34,7 @@ enum TokenType{
     public_k    = 0x01f,
     private_k   = 0x020,
     // 0x1 => Special tokens
-    id          = 0x101,
+    id          = 0x000,
     // 0x2 => Symbols
     equal       = 0x201,
     left_par    = 0x202,

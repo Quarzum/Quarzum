@@ -11,6 +11,7 @@ struct Error{
     string description;
 };
 
+// Stores a limited amount of Errors. At the end of a process, it should be executed by the run() method.
 class ErrorHandler{
     public:
         void run(){

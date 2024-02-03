@@ -4,17 +4,14 @@
     Minimal main.cpp, all the procedures are into Quarzum.h
 
 */
-using namespace std;
 int main(/*int argc, char *argv[]*/)
 {   
 
-    deque<Token> tokens = tokenize("// comentario \n exit 73");
+    deque<Token> tokens = tokenize("exit 8");
     debugTokens(tokens);
-    string content = analyze(parse(tokens));
+    std::string content = analyze(parse(tokens));
 
-    ofstream outfile("out.asm");
-    outfile << content;
-    outfile.close();
+    createFile("out.asm", content);
 
     //system("as -o out.o out.asm");
     //system("ld -o out out.o");

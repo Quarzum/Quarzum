@@ -1,108 +1,27 @@
 #include "../Quarzum.h"
 #pragma once
 
-// Shows in console every token with its type (converted to decimal) and its value.
-void debugTokens(deque<Token> list){
-    for (size_t i = 0; i < list.size(); i++)
-    {
-        cout << list.at(i).type << " - " << list.at(i).value << endl;
-    }
-}
-
-const unsigned char KEYWORD_COUNT = 32;
-string keywords[KEYWORD_COUNT] = {
-    "int",
-    "number",
-    "string",
-    "char",
-    "bool",
-    "any",
-    "return",
-    "function",
-    "enum",
-    "const",
-    "exit",
-    "out",
-    "input",
-    "struct",
-    "if",
-    "else",
-    "for",
-    "foreach",
-    "while",
-    "do",
-    "break",
-    "continue",
-    "repeat",
-    "try",
-    "catch",
-    "finally",
-    "throw",
-    "module",
-    "import",
-    "class",
-    "public",
-    "private"
-};
-// Searchs if a determined input is a keyword. If not, returns an id Token,
-Token searchForKeyword(string input){
-    for (size_t i = 0; i < KEYWORD_COUNT; i++)
-    {
-        if(input == keywords[i]){
-            return {TokenType(0x001 + i),input};
-        }
-    }
-    return {id, input};
-}
-
-const unsigned char SYMBOL_COUNT = 22;
-string symbols[SYMBOL_COUNT]={
-    "=",
-    "(",
-    ")",
-    "!!",
-    "&",
-    "|",
-    "%",
-    "!",
-    "&&",
-    "||",
-    "%%",
-    ".",
-    ",",
-    "+",
-    "-",
-    "*",
-    "/",
-    "^",
-    "{",
-    "}"
-    "[",
-    "]"
-};
-Token searchForSymbol(string input){
-    for (size_t i = 0; i < SYMBOL_COUNT; i++)
-    {
-        if(input == symbols[i]){
-            return {TokenType(0x201 + i),input};
-        }
-    }
-    // TO-DO: throw an error "unexpected token"
-    return {id, input};
-}
-
-// Converts an input string into a list of Tokens
-deque<Token> tokenize(string input){
+/** 
+*   Converts an input string into a list of Tokens.
+*   @param input The input string to tokenize.
+*   @return A deque of tokens.
+*/
+const deque<Token> tokenize(string input) noexcept{
     ErrorHandler errorHandler;
     string buffer;
     deque<Token> output;
     int lineno = 1;
 
-    bool isComment, isSingleComment = false;
+    bool isComment = false;
+    bool isSingleComment = false;
+    cout << "Tokenization..." << endl;
 
-    for(size_t i = 0; i <= input.length(); i++){
+    for(uint i = 0; i <= input.length(); i++){
 
+        // The actual character
         char c = input[i];
+        
+        // The next character (null if c is the last character)
         char next = '\0';
         if(i + 1 < input.length()){
             next = input[i + 1];
@@ -121,14 +40,14 @@ deque<Token> tokenize(string input){
         if(c == '/' and next == '*'){isComment = true; i++; continue;}
         if(c == '*' and next == '/'){isComment = false; i++; continue;}
         if(c == '/' and next == '/'){isSingleComment = true; continue;}
-        
         if(isComment == false && isSingleComment == false){
+            
             // [a-zA-Z][a-zA-Z0-9]+
             if(isalpha(c)){
                 buffer += c;
-            
+                
                 if(!isalnum(next)){
-                    output.push_back(searchForKeyword(buffer));
+                    output.push_back({TokenType(search(buffer, keywords, 32) + 1),buffer});
                     buffer.clear();
                 }
             }
@@ -143,16 +62,13 @@ deque<Token> tokenize(string input){
             // Punctuation
             if(ispunct(c)){
                 buffer +=c;
-                output.push_back(searchForSymbol(buffer));
+                output.push_back({TokenType(search(buffer, symbols, 21) + 0x201), buffer});
                 buffer.clear();
             }
             else{
                 errorHandler.err({{},lineno,"Unexpected token"});
             }
-        }
-        
-
-        
+        }        
     }
     return output;
 }

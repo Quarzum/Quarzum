@@ -8,9 +8,11 @@ using namespace std;
 #include <fstream> 
 #include <sstream>
 
+#include "lexer/token.hpp"
+#include "other/utils.cpp"
 #include "other/errorhandler.cpp"
 
-#include "lexer/token.hpp"
+
 #include "lexer/lexer.cpp"
 
 #include "parser/statement.hpp"
