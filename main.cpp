@@ -8,7 +8,7 @@ using namespace std;
 int main(/*int argc, char *argv[]*/)
 {   
 
-    deque<Token> tokens = tokenize("exit 63 @");
+    deque<Token> tokens = tokenize("// comentario \n exit 73");
     debugTokens(tokens);
     string content = analyze(parse(tokens));
 
@@ -16,8 +16,8 @@ int main(/*int argc, char *argv[]*/)
     outfile << content;
     outfile.close();
 
-    system("as -o out.o out.asm");
-    system("ld -o out out.o");
+    //system("as -o out.o out.asm");
+    //system("ld -o out out.o");
 
     return EXIT_SUCCESS;
 }

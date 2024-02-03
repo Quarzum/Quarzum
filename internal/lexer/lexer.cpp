@@ -98,6 +98,8 @@ deque<Token> tokenize(string input){
     deque<Token> output;
     int lineno = 1;
 
+    bool isComment, isSingleComment = false;
+
     for(size_t i = 0; i <= input.length(); i++){
 
         char c = input[i];
@@ -108,39 +110,49 @@ deque<Token> tokenize(string input){
 
         // If there is a new line, sum 1 to the line number
         if(c == '\n'){
+            isSingleComment = false;
             lineno++;
         }
         // Ignore spaces
         else if(isspace(c)){
             continue;
         }
-        // [a-zA-Z][a-zA-Z0-9]+
-        if(isalpha(c)){
-            buffer += c;
+        // Multiline and single line comments
+        if(c == '/' and next == '*'){isComment = true; i++; continue;}
+        if(c == '*' and next == '/'){isComment = false; i++; continue;}
+        if(c == '/' and next == '/'){isSingleComment = true; continue;}
+        
+        if(isComment == false && isSingleComment == false){
+            // [a-zA-Z][a-zA-Z0-9]+
+            if(isalpha(c)){
+                buffer += c;
             
-            if(!isalnum(next)){
-                output.push_back(searchForKeyword(buffer));
+                if(!isalnum(next)){
+                    output.push_back(searchForKeyword(buffer));
+                    buffer.clear();
+                }
+            }
+            // [0-9]*
+            if(isdigit(c)){
+                buffer += c;
+                if(!isdigit(next)){
+                    output.push_back({int_lit, buffer});
+                    buffer.clear();
+                }
+            }
+            // Punctuation
+            if(ispunct(c)){
+                buffer +=c;
+                output.push_back(searchForSymbol(buffer));
                 buffer.clear();
             }
-        }
-        // [0-9]*
-        if(isdigit(c)){
-            buffer += c;
-            if(!isdigit(next)){
-                output.push_back({int_lit, buffer});
-                buffer.clear();
+            else{
+                errorHandler.err({{},lineno,"Unexpected token"});
             }
         }
-        // Punctuation
-        if(ispunct(c)){
-            buffer +=c;
-            output.push_back(searchForSymbol(buffer));
-            buffer.clear();
-        }
+        
 
-        else{
-            errorHandler.err({{},lineno,"Unexpected token"});
-        }
+        
     }
     return output;
 }
