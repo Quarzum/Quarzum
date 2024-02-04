@@ -2,7 +2,9 @@
 #include "../Quarzum.h"
 
 enum ErrorType{
-
+    file_not_found_err,
+    lexical_err,
+    syntax_err
 };
 
 struct Error{

@@ -2,7 +2,7 @@
 #include "../Quarzum.h"
 typedef unsigned char int8;
 typedef unsigned int uint;
-typedef std::deque<Token> TokenList;
+
 bool isDebugging = true;
 /**
  *    Searchs for a string inside a string array. 
@@ -27,7 +27,7 @@ inline const signed int search(std::string target,const std::string list[], int 
 inline void debugTokens(TokenList list) noexcept{
     for (size_t i = 0; i < list.size(); i++)
     {
-        cout << list.at(i).type << " - " << list.at(i).value << endl;
+        cout << list.get(i).type << " - " << list.get(i).value << endl;
     }
 }
 
@@ -112,4 +112,42 @@ const std::string symbols[]={
     "}"
     "[",
     "]"
+};
+
+/**
+ * An object that stores a list of inmutable Tokens.
+*/
+class TokenList{
+    public:
+        /**
+         * Adds a new Token to the TokenList.
+         * @param t The new Token's type.
+         * @param v The new Token's value.
+        */
+        void addToken(TokenType t, string v) noexcept{
+            tokens.push_back({t,v});
+        }
+        /**
+         * Adds a new Token to the TokenList.
+         * @param t The new Token.
+        */
+        void addToken(Token t) noexcept{
+            tokens.push_back(t);
+        }
+        /**
+         * Returns an specified Token without deleting it.
+         * @param n The index of the target Token.
+         * @return The Token with index n inside the list.
+        */
+        const inline Token get(int n) noexcept{
+            return tokens.at(n);
+        }
+        /**
+         * @return The size of the TokenList.
+        */
+        const inline int size() noexcept{
+            return tokens.size();
+        }
+    private:
+        std::deque<Token> tokens;
 };

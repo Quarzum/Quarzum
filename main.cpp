@@ -7,8 +7,9 @@
 int main(/*int argc, char *argv[]*/)
 {   
 
-    TokenList tokens = tokenize("exit 8");
+    TokenList  tokens = tokenize("exit");
     debugTokens(tokens);
+    
     std::string content = analyze(parse(tokens));
 
     createFile("out.asm", content);

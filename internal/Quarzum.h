@@ -9,9 +9,8 @@ using namespace std;
 #include <sstream>
 
 #include "lexer/token.hpp"
-#include "other/utils.cpp"
 #include "other/errorhandler.cpp"
-
+#include "other/utils.cpp"
 
 #include "lexer/lexer.cpp"
 

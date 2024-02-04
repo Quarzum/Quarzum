@@ -2,14 +2,13 @@
 #pragma once
 
 /** 
-*   Converts an input string into a list of Tokens.
-*   @param input The input string to tokenize.
-*   @return A deque of tokens.
+ *   Converts an input string into a list of Tokens.
+ *   @param input The input string to tokenize.
+ *   @return A deque of tokens.
 */
 const TokenList tokenize(string input) noexcept{
-    ErrorHandler errorHandler;
     string buffer;
-    TokenList output;
+    TokenList output = TokenList();
     int lineno = 1;
     bool isComment = false;
     bool isSingleComment = false;
@@ -32,42 +31,43 @@ const TokenList tokenize(string input) noexcept{
             isSingleComment = false;
             lineno++;
         }
-
-        // Ignore spaces
-        else if(isspace(c)){continue;}
-
         // Multiline and single line comments
-        if(c == '/' and next == '*'){isComment = true; i++; continue;}
-        if(c == '*' and next == '/'){isComment = false; i++; continue;}
-        if(c == '/' and next == '/'){isSingleComment = true; continue;}
+        else if(c == '/' and next == '*'){isComment = true; i++; continue;}
+        else if(c == '*' and next == '/'){isComment = false; i++; continue;}
+        else if(c == '/' and next == '/'){isSingleComment = true; i++; continue;}
 
 
-        if(not (isComment || isSingleComment)){
-            
+        else if(not (isComment || isSingleComment)){
+            // Ignore spaces
+            if(isspace(c)){
+                continue;
+            }
             // [a-zA-Z][a-zA-Z0-9]+
-            if(isalpha(c)){
+            else if(isalpha(c)){
                 buffer += c;
                 if(!isalnum(next)){
-                    output.push_back({TokenType(search(buffer, keywords, 32) + 1),buffer});
+                    output.addToken({TokenType(search(buffer, keywords, 32) + 1),buffer});
                     buffer.clear();
                 }
             }
             // [0-9]*
-            if(isdigit(c)){
+            else if(isdigit(c)){
                 buffer += c;
                 if(!isdigit(next)){
-                    output.push_back({int_lit, buffer});
+                    output.addToken({int_lit, buffer});
                     buffer.clear();
                 }
             }
             // Punctuation
-            if(ispunct(c)){
+            else if(ispunct(c)){
                 buffer +=c;
-                output.push_back({TokenType(search(buffer, symbols, 21) + 0x201), buffer});
+                output.addToken({TokenType(search(buffer, symbols, 21) + 0x201), buffer});
                 buffer.clear();
             }
             else{
-                errorHandler.err({{},lineno,"Unexpected token"});
+                wstring s;
+                s += c;
+                wcerr << "\tLexical Error: Unexpected token " << s << " at line " << to_wstring(lineno) << ".\n";
             }
         }        
     }
