@@ -2,6 +2,7 @@
 #include "../Quarzum.h"
 typedef unsigned char int8;
 typedef unsigned int uint;
+typedef std::deque<Token> TokenList;
 bool isDebugging = true;
 /**
  *    Searchs for a string inside a string array. 
@@ -11,7 +12,7 @@ bool isDebugging = true;
  *    @param maxIndex The max index to find.
  *    @return The index of the target string inside the array.
 */
-const signed int search(std::string target,const std::string list[], int maxIndex) noexcept{
+inline const signed int search(std::string target,const std::string list[], int maxIndex) noexcept{
     for (uint i = 0; i < maxIndex; i++)
     {
         if(list[i] == target){ return i;}
@@ -23,7 +24,7 @@ const signed int search(std::string target,const std::string list[], int maxInde
  *    Shows in console every token with its type (converted to decimal) and its value.
  *    @param list The deque of tokens that will be debugged.
 */
-void debugTokens(deque<Token> list) noexcept{
+inline void debugTokens(TokenList list) noexcept{
     for (size_t i = 0; i < list.size(); i++)
     {
         cout << list.at(i).type << " - " << list.at(i).value << endl;
@@ -35,7 +36,7 @@ void debugTokens(deque<Token> list) noexcept{
  *   @param name The name of the created file.
  *   @param content The content that will be wrote inside the file.
 */
-void createFile(std::string name, std::string content = "") noexcept{
+inline void createFile(std::string name, std::string content = "") noexcept{
     ofstream out(name);
     out << content;
     out.close();
@@ -43,9 +44,9 @@ void createFile(std::string name, std::string content = "") noexcept{
 
 /**
  *   Prints a string on the console if the compiler has the isDebugging condition true.
- *    @param content The content that will be printed. 
+ *   @param content The content that will be printed. 
 */
-void print(std::string content) noexcept{
+inline void print(std::string content) noexcept{
     if(isDebugging == true){ std::cout << content << std::endl;}
 }
 /**

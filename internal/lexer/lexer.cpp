@@ -6,21 +6,21 @@
 *   @param input The input string to tokenize.
 *   @return A deque of tokens.
 */
-const deque<Token> tokenize(string input) noexcept{
+const TokenList tokenize(string input) noexcept{
     ErrorHandler errorHandler;
     string buffer;
-    deque<Token> output;
+    TokenList output;
     int lineno = 1;
-
     bool isComment = false;
     bool isSingleComment = false;
-    cout << "Tokenization..." << endl;
+    
+    print("Tokenization...");
 
     for(uint i = 0; i <= input.length(); i++){
 
         // The actual character
         char c = input[i];
-        
+
         // The next character (null if c is the last character)
         char next = '\0';
         if(i + 1 < input.length()){
@@ -32,20 +32,21 @@ const deque<Token> tokenize(string input) noexcept{
             isSingleComment = false;
             lineno++;
         }
+
         // Ignore spaces
-        else if(isspace(c)){
-            continue;
-        }
+        else if(isspace(c)){continue;}
+
         // Multiline and single line comments
         if(c == '/' and next == '*'){isComment = true; i++; continue;}
         if(c == '*' and next == '/'){isComment = false; i++; continue;}
         if(c == '/' and next == '/'){isSingleComment = true; continue;}
-        if(isComment == false && isSingleComment == false){
+
+
+        if(not (isComment || isSingleComment)){
             
             // [a-zA-Z][a-zA-Z0-9]+
             if(isalpha(c)){
                 buffer += c;
-                
                 if(!isalnum(next)){
                     output.push_back({TokenType(search(buffer, keywords, 32) + 1),buffer});
                     buffer.clear();

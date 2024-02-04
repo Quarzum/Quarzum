@@ -7,7 +7,7 @@
 int main(/*int argc, char *argv[]*/)
 {   
 
-    deque<Token> tokens = tokenize("exit 8");
+    TokenList tokens = tokenize("exit 8");
     debugTokens(tokens);
     std::string content = analyze(parse(tokens));
 

@@ -2,7 +2,7 @@
 #include "../Quarzum.h"
 
 // Converts a list of statements into a string with the code in asm at&t for x86_32
-string analyze(deque<Statement> input){
+const string analyze(deque<Statement> input) noexcept{
     string output;
 
     output = ".data\n\n.text\n.global _start\n_start:\n";

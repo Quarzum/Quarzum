@@ -2,7 +2,7 @@
 #include "../Quarzum.h"
 
 // Converts a list of Tokens into a list of Statements
-deque<Statement> parse(deque<Token> input){
+deque<Statement> parse(TokenList input){
     deque<Statement> output;
     for (size_t i = 0; i < input.size(); i++)
     {
