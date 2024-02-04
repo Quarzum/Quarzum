@@ -6,7 +6,7 @@
 */
 int main(/*int argc, char *argv[]*/)
 {   
-    TokenList tokens = tokenize("exit");
+    TokenList tokens = tokenize("\"hola\"");
     debugTokens(tokens);
     
     string content = analyze(parse(tokens));

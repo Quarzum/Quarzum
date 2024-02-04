@@ -62,6 +62,12 @@ enum TokenType{
     rigth_cb    = 0x214,
     left_sb     = 0x215,
     rigth_sb    = 0x216,
+    semicolon   = 0x217,
+    greater     = 0x218,
+    less        = 0x219,
+    is_equal    = 0x21a,
+    greater_eq  = 0x21b,
+    less_eq     = 0x21c,
     // 0x3 => Literals
     int_lit     = 0x301,
     num_lit     = 0x302,

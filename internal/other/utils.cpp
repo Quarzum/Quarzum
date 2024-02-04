@@ -20,17 +20,6 @@ inline const signed int search(std::string target,const std::string list[], int 
     return -1;
 }
 
-/** 
- *    Shows in console every token with its type (converted to decimal) and its value.
- *    @param list The deque of tokens that will be debugged.
-*/
-inline void debugTokens(TokenList list) noexcept{
-    for (size_t i = 0; i < list.size(); i++)
-    {
-        cout << list.get(i).type << " - " << list.get(i).value << endl;
-    }
-}
-
 /**
  *   Creates a new file and writes content inside it.
  *   @param name The name of the created file.
@@ -84,7 +73,11 @@ const std::string keywords[] = {
     "import",
     "class",
     "public",
-    "private"
+    "private",
+    "uint",
+    "short",
+    "long",
+    "byte"
 };
 /**
  *   The string array that contains all the Quarzum's symbols.
@@ -111,7 +104,13 @@ const std::string symbols[]={
     "{",
     "}"
     "[",
-    "]"
+    "]",
+    ";",
+    ">",
+    "<",
+    "==",
+    ">=",
+    "<="
 };
 
 /**
@@ -151,3 +150,14 @@ class TokenList{
     private:
         std::deque<Token> tokens;
 };
+
+/** 
+ *    Shows in console every token with its type (converted to decimal) and its value.
+ *    @param list The deque of tokens that will be debugged.
+*/
+void debugTokens(TokenList list) noexcept{
+    for (size_t i = 0; i < list.size(); i++)
+    {
+        cout << list.get(i).type << " - " << list.get(i).value << endl;
+    }
+}

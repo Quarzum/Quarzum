@@ -12,6 +12,7 @@ const TokenList tokenize(string input) noexcept{
     int lineno = 1;
     bool isComment = false;
     bool isSingleComment = false;
+    bool isStringLiteral = false;
     
     print("Tokenization...");
 
@@ -30,6 +31,19 @@ const TokenList tokenize(string input) noexcept{
         if(c == '\n'){
             isSingleComment = false;
             lineno++;
+        }
+        else if(c == '"' && isStringLiteral == false){
+            isStringLiteral = true;
+            buffer +=c;
+        }
+        else if(isStringLiteral == true){
+            buffer += c;
+            if(next == '\"'){
+                buffer += next;
+                isStringLiteral = false;
+                output.addToken({str_lit, buffer});
+                buffer.clear();
+            }
         }
         // Multiline and single line comments
         else if(c == '/' and next == '*'){isComment = true; i++; continue;}
