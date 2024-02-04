@@ -40,7 +40,7 @@ enum TokenType{
     // 0x1 => Special tokens
     id          = 0x000,
     // 0x2 => Symbols
-    equal       = 0x201,
+    eq          = 0x201,
     left_par    = 0x202,
     rigth_par   = 0x203,
     not_bit     = 0x204,

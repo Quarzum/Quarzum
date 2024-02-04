@@ -13,20 +13,19 @@ const string analyze(deque<Statement> input) noexcept{
         switch (s.type)
         {
         case exit_stmt:
-            output += "\tmovl $1, %eax\n\tmovl $" + any_cast<string>(s.args[0]) + ", %ebx\n\tint $0x80\n";
+            output += "\tmovq $60, %rax\n\tmovq $" + any_cast<string>(s.args[0]) + ", %rdi\n\tsyscall\n\n";
             break;
         
         case out_stmt:
             string varName = "_out" + to_string(var.size());
-
             var.push_back(any_cast<string>(s.args[0]));
             var[var.size()-1].pop_back();
             var[var.size()-1] += "\\n\"";
-            output += STDWRITE + "\tmovl $"+varName+", %ecx\n\tmovl $_len" + to_string(var.size() - 1) + ", %edx\n\tint $0x80\n\n";
+            output += STDWRITE + "\tmovq $"+varName+", %rsi\n\tmovq $_len" + to_string(var.size() - 1) + ", %rdx\n\tsyscall\n\n";
             break;
         }
     }
-    output += "\tmovl $1, %eax\n\tmovl $0, %ebx\n\tint $0x80\n"; // exit 0 if not specified
+    output += "\tmovq $60, %rax\n\tmovq $0, %rdi\n\tsyscall\n"; // exit 0 if not specified
     output += ".data\n";
     for (size_t i = 0; i < var.size(); i++)
     {

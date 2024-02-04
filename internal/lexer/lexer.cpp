@@ -61,7 +61,7 @@ const TokenList tokenize(string input) noexcept{
             else if(isalpha(c)){
                 buffer += c;
                 if(!isalnum(next)){
-                    output.addToken({TokenType(search(buffer, keywords, 32) + 1),buffer});
+                    output.addToken({TokenType(search(buffer, keywords, 36) + 1),buffer});
                     buffer.clear();
                 }
             }
@@ -76,7 +76,7 @@ const TokenList tokenize(string input) noexcept{
             // Punctuation
             else if(ispunct(c)){
                 buffer +=c;
-                output.addToken({TokenType(search(buffer, symbols, 21) + 0x201), buffer});
+                output.addToken({TokenType(search(buffer, symbols, 28) + 0x201), buffer});
                 buffer.clear();
             }
             else{

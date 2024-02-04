@@ -162,4 +162,4 @@ void debugTokens(TokenList list) noexcept{
     }
 }
 
-const std::string STDWRITE = "\tmovl $4, %eax\n\tmovl $1, %ebx\n";
+const std::string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";

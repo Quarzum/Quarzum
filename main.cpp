@@ -6,7 +6,7 @@
 */
 int main(/*int argc, char *argv[]*/)
 {   
-    TokenList tokens = tokenize("out(\"¡Hola mundo desde Quarzum!\") out(\"Versión indev 1\")");
+    TokenList tokens = tokenize("byte i = 200 out(\"¡Hola mundo!\")");
     debugTokens(tokens);
     
     string content = analyze(parse(tokens));
