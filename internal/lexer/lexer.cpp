@@ -40,6 +40,7 @@ const TokenList tokenize(string input) noexcept{
             buffer += c;
             if(next == '\"'){
                 buffer += next;
+                i++;
                 isStringLiteral = false;
                 output.addToken({str_lit, buffer});
                 buffer.clear();

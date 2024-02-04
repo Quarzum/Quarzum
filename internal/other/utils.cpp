@@ -161,3 +161,5 @@ void debugTokens(TokenList list) noexcept{
         cout << list.get(i).type << " - " << list.get(i).value << endl;
     }
 }
+
+const std::string STDWRITE = "\tmovl $4, %eax\n\tmovl $1, %ebx\n";

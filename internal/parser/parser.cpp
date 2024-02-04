@@ -4,6 +4,7 @@
 // Converts a list of Tokens into a list of Statements
 deque<Statement> parse(TokenList input){
     deque<Statement> output;
+    print("Parsing...");
     for (size_t i = 0; i < input.size(); i++)
     {
         Token t = input.get(i);
@@ -18,7 +19,7 @@ deque<Statement> parse(TokenList input){
         case out_k:
             if(i+3<=input.size() 
                 and input.get(i + 1).type == left_par
-                and input.get(i + 2).type == int_lit
+                and input.get(i + 2).type == str_lit
                 and input.get(i + 3).type == rigth_par)
             {
                 output.push_back({out_stmt, {input.get(i+2).value}});
