@@ -33,6 +33,10 @@ enum TokenType{
     class_k     = 0x01e,
     public_k    = 0x01f,
     private_k   = 0x020,
+    uint_k      = 0x021,
+    short_k     = 0x022,
+    long_k      = 0x023,
+    byte_k      = 0x024,
     // 0x1 => Special tokens
     id          = 0x000,
     // 0x2 => Symbols

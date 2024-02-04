@@ -5,7 +5,7 @@
 const string analyze(deque<Statement> input) noexcept{
     string output;
 
-    output = ".data\n\n.text\n.global _start\n_start:\n";
+    output = ".text\n.global _start\n_start:\n";
 
     for (size_t i = 0; i < input.size(); i++)
     {

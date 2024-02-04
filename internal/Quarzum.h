@@ -17,4 +17,4 @@ using namespace std;
 #include "parser/statement.hpp"
 #include "parser/parser.cpp"
 
-#include "analyzer/analyzer.cpp"
+#include "assembler/assembler.cpp"
