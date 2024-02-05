@@ -3,7 +3,7 @@
 typedef unsigned char int8;
 typedef unsigned int uint;
 
-bool isDebugging = true;
+bool isDebugging = false;
 /**
  *    Searchs for a string inside a string array. 
  *    If the target string is not found, returns -1.
@@ -163,3 +163,35 @@ void debugTokens(TokenList list) noexcept{
 }
 
 const std::string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
+
+bool isSymbol(char c){
+    string s;
+    s = c;
+    return search(s, symbols, 28) != 0x200;
+}
+/**
+ * This class manages the input file, creating a Source object with a specified path.
+*/
+class Source{
+public:
+    string path;
+    Source(string path){
+        this->path = path;
+    }
+    /**
+     * @return The input file content
+    */
+    const string getContent(){
+        string line, result;
+        ifstream input(path);
+        if(input.is_open()){
+            while (getline(input, line))
+            {
+                result += line + "\n";
+            }
+            input.close();
+            return result;
+        }
+        return "";
+    }
+};

@@ -31,10 +31,12 @@ const TokenList tokenize(string input) noexcept{
         if(c == '\n'){
             isSingleComment = false;
             lineno++;
+            continue;
         }
         else if(c == '"' && isStringLiteral == false){
             isStringLiteral = true;
             buffer +=c;
+            continue;
         }
         else if(isStringLiteral == true){
             buffer += c;
@@ -45,6 +47,7 @@ const TokenList tokenize(string input) noexcept{
                 output.addToken({str_lit, buffer});
                 buffer.clear();
             }
+            continue;
         }
         // Multiline and single line comments
         else if(c == '/' and next == '*'){isComment = true; i++; continue;}
@@ -52,18 +55,15 @@ const TokenList tokenize(string input) noexcept{
         else if(c == '/' and next == '/'){isSingleComment = true; i++; continue;}
 
 
-        else if(not (isComment || isSingleComment)){
-            // Ignore spaces
-            if(isspace(c)){
-                continue;
-            }
+        else if(not (isspace(c) || isComment || isSingleComment)){
             // [a-zA-Z][a-zA-Z0-9]+
-            else if(isalpha(c)){
+            if(isalpha(c)){
                 buffer += c;
                 if(!isalnum(next)){
                     output.addToken({TokenType(search(buffer, keywords, 36) + 1),buffer});
                     buffer.clear();
                 }
+                continue;
             }
             // [0-9]*
             else if(isdigit(c)){
@@ -72,12 +72,14 @@ const TokenList tokenize(string input) noexcept{
                     output.addToken({int_lit, buffer});
                     buffer.clear();
                 }
+                continue;
             }
             // Punctuation
-            else if(ispunct(c)){
+            else if(isSymbol(c)){
                 buffer +=c;
                 output.addToken({TokenType(search(buffer, symbols, 28) + 0x201), buffer});
                 buffer.clear();
+                continue;
             }
             else{
                 wstring s;

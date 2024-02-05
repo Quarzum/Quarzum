@@ -6,15 +6,14 @@
 */
 int main(/*int argc, char *argv[]*/)
 {   
-    TokenList tokens = tokenize("byte i = 200 out(\"¡Hola mundo!\")");
-    debugTokens(tokens);
-    
-    string content = analyze(parse(tokens));
+    Source source = Source("../code.qz");
 
-    createFile("out.asm", content);
+    TokenList tokens = tokenize(source.getContent());
 
+    createFile("out.asm", analyze(parse(tokens)));
     system("as -o out.o out.asm");
     system("ld -o out out.o");
+    system("./out");
 
     return EXIT_SUCCESS;
 }
