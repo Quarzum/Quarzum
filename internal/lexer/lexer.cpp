@@ -1,92 +1,118 @@
 #include "../Quarzum.h"
 #pragma once
-
-/** 
- *   Converts an input string into a list of Tokens.
- *   @param input The input string to tokenize.
- *   @return A deque of tokens.
-*/
-const TokenList tokenize(string input) noexcept{
-    string buffer;
-    TokenList output = TokenList();
-    int lineno = 1;
-    bool isComment = false;
-    bool isSingleComment = false;
-    bool isStringLiteral = false;
-    
-    print("Tokenization...");
-
-    for(uint i = 0; i <= input.length(); i++){
-
-        // The actual character
-        char c = input[i];
-
-        // The next character (null if c is the last character)
-        char next = '\0';
-        if(i + 1 < input.length()){
-            next = input[i + 1];
-        }
-
-        // If there is a new line, sum 1 to the line number
-        if(c == '\n'){
-            isSingleComment = false;
-            lineno++;
-            continue;
-        }
-        else if(c == '"' && isStringLiteral == false){
-            isStringLiteral = true;
-            buffer +=c;
-            continue;
-        }
-        else if(isStringLiteral == true){
-            buffer += c;
-            if(next == '\"'){
-                buffer += next;
-                i++;
-                isStringLiteral = false;
-                output.addToken({str_lit, buffer});
-                buffer.clear();
-            }
-            continue;
-        }
-        // Multiline and single line comments
-        else if(c == '/' and next == '*'){isComment = true; i++; continue;}
-        else if(c == '*' and next == '/'){isComment = false; i++; continue;}
-        else if(c == '/' and next == '/'){isSingleComment = true; i++; continue;}
-
-
-        else if(not (isspace(c) || isComment || isSingleComment)){
-            // [a-zA-Z][a-zA-Z0-9]+
-            if(isalpha(c)){
-                buffer += c;
-                if(!isalnum(next)){
-                    output.addToken({TokenType(search(buffer, keywords, 36) + 1),buffer});
-                    buffer.clear();
-                }
-                continue;
-            }
-            // [0-9]*
-            else if(isdigit(c)){
-                buffer += c;
-                if(!isdigit(next)){
-                    output.addToken({int_lit, buffer});
-                    buffer.clear();
-                }
-                continue;
-            }
-            // Punctuation
-            else if(isSymbol(c)){
-                buffer +=c;
-                output.addToken({TokenType(search(buffer, symbols, 28) + 0x201), buffer});
-                buffer.clear();
-                continue;
-            }
-            else{
-                wstring s;
-                s += c;
-                wcerr << "\tLexical Error: Unexpected token " << s << " at line " << to_wstring(lineno) << ".\n";
-            }
-        }        
+class Tokenizer{
+public:
+    inline Tokenizer(const string src){
+        this-> src = src;
     }
-    return output;
-}
+    /** 
+     *   Converts an input string into a list of Tokens.
+     *   @return A deque of tokens.
+    */
+    const TokenList tokenize() noexcept{
+        for (index = 0; index <= src.length(); index++)
+        {
+            char c = get(0);
+            char next = get(1);
+            if(c == '\n'){
+                line++;
+                isSingleComment = false;
+                continue;
+            }
+            if(c == '/'){
+                if(next == '/'){
+                    isSingleComment = true;
+                    index++;
+                    continue;
+                }
+                if(next == '*'){
+                    isComment = true;
+                    index++;
+                    continue;
+                }
+            }
+            if(c == '*' and next == '/'){
+                isComment = false;
+                index++;
+                continue;
+            }
+            if(c == '"' && isStringLiteral == false){
+                isStringLiteral = true;
+                consume();
+                continue;
+            }
+            else if(isStringLiteral == true){
+                consume();
+                if(next == '\"'){
+                    consume(1);
+                    index++;
+                    isStringLiteral = false;
+                    addToken(TokenType::str_lit);
+                }
+                continue;
+            }
+            if(not (isspace(c) || isComment || isSingleComment)){
+
+                if(isalpha(c)){
+                    consume();
+                    if(!isalnum(next)){
+                        addToken(TokenType(search(buffer, keywords, 36) + 1));
+                    }
+                    continue;
+                }
+
+                else if(isdigit(c)){
+                    consume();
+                    if(!isdigit(next)){
+                        addToken(TokenType::int_lit);
+                    }
+                    continue;
+                }
+
+                else if(isSymbol(c)){
+                    consume();
+                    addToken(TokenType(search(buffer, symbols, 28) + 0x201));
+                    continue;
+                }
+
+                else{
+                    wcerr << "Lexical Error: Unexpected token " << charToString(c) << " at line " << to_wstring(line) << ".\n";
+                }
+            }
+        }
+        return output;
+    }
+private:
+    string src, buffer;
+    uint line = 1;
+    uint index;
+    TokenList output;
+    bool isSingleComment, isComment, isStringLiteral;
+    /**
+     * Gets a character of the input
+     * @param n The position distance between actual index and the desired character index
+     * @return The [input + n] character
+    */
+    const char get(uint n) noexcept{
+        if(index + n > src.length()){
+            return '\0';
+        }
+        return src[index + n];
+    }
+    /**
+     * Adds a new Token in the output Tokenlist and consumes the buffer.
+     * @param t The new Token type
+    */
+    void addToken(TokenType t){
+        output.addToken({t, buffer});
+        buffer.clear();
+    }
+    /**
+     * Adds a new character to the buffer
+     * @param n The position distance between actual index and the desired character index
+    */
+    void consume(uint n = 0) noexcept{
+        if(index + n > src.length()) return;
+        buffer += get(n);
+    }
+};

@@ -10,17 +10,17 @@ deque<Statement> parse(TokenList input){
         Token t = input.get(i);
         switch (t.type)
         {
-        case exit_k:
-            if(i+1<= input.size() and input.get(i + 1).type == int_lit){
+        case TokenType::exit_k:
+            if(i+1<= input.size() and input.get(i + 1).type == TokenType::int_lit){
                 output.push_back({exit_stmt, {input.get(i+1).value}});
             }
             break;
         
-        case out_k:
+        case TokenType::out_k:
             if(i+3<=input.size() 
-                and input.get(i + 1).type == left_par
-                and input.get(i + 2).type == str_lit
-                and input.get(i + 3).type == rigth_par)
+                and input.get(i + 1).type == TokenType::left_par
+                and input.get(i + 2).type == TokenType::str_lit
+                and input.get(i + 3).type == TokenType::rigth_par)
             {
                 output.push_back({out_stmt, {input.get(i+2).value}});
             }

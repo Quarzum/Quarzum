@@ -4,13 +4,16 @@
     Minimal main.cpp, all the procedures are into Quarzum.h
 
 */
-int main(/*int argc, char *argv[]*/)
+int main(int argc, char *argv[])
 {   
     Source source = Source("../code.qz");
+    Tokenizer t = Tokenizer(source.getContent());
 
-    TokenList tokens = tokenize(source.getContent());
-
-    createFile("out.asm", analyze(parse(tokens)));
+    createFile("out.asm", 
+        analyze(
+            parse(t.tokenize())
+        )
+    );
     system("as -o out.o out.asm");
     system("ld -o out out.o");
     system("./out");

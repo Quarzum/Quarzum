@@ -1,5 +1,5 @@
 #pragma once
-enum TokenType{
+enum class TokenType{
     // 0x0 => Keywords
     int_k       = 0x001,
     num_k       = 0x002,
@@ -73,7 +73,9 @@ enum TokenType{
     num_lit     = 0x302,
     str_lit     = 0x303,
     bool_lit    = 0x304,
-    char_lit    = 0x305
+    char_lit    = 0x305,
+    byte_lit    = 0x306,
+    uint_lit    = 0x307
 };
 
 // A Token is the basic unit of recognition of the lexer

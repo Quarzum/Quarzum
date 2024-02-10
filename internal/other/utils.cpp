@@ -2,6 +2,13 @@
 #include "../Quarzum.h"
 typedef unsigned char int8;
 typedef unsigned int uint;
+#define NC "\e[0m"
+#define RED_BG "\e[30;41m"
+#define YELLOW_BG "\e[30;103m"
+#define GREEN_BG "\e[30;102m"
+#define TEAL "\e[36;40m"
+#define YELLOW "\e[93;40m"
+#define GRAY "\e[90;40m"
 
 bool isDebugging = false;
 /**
@@ -151,17 +158,6 @@ class TokenList{
         std::deque<Token> tokens;
 };
 
-/** 
- *    Shows in console every token with its type (converted to decimal) and its value.
- *    @param list The deque of tokens that will be debugged.
-*/
-void debugTokens(TokenList list) noexcept{
-    for (size_t i = 0; i < list.size(); i++)
-    {
-        cout << list.get(i).type << " - " << list.get(i).value << endl;
-    }
-}
-
 const std::string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
 
 bool isSymbol(char c){
@@ -192,6 +188,17 @@ public:
             input.close();
             return result;
         }
-        return "";
+        else{
+            cerr << "FileNotFoundError: The specified path does not match any file.\n";
+            exit(EXIT_FAILURE);
+        }
     }
 };
+bool isIntLiteral(TokenType t){
+    return t == TokenType::int_lit || t == TokenType::byte_lit;
+}
+wstring charToString(char c){
+    wstring s;
+    s += c;
+    return s;
+}
