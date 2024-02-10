@@ -37,6 +37,8 @@ enum class TokenType{
     short_k     = 0x022,
     long_k      = 0x023,
     byte_k      = 0x024,
+    async_k     = 0x025,
+    await_k     = 0x026,
     // 0x1 => Special tokens
     id          = 0x000,
     // 0x2 => Symbols

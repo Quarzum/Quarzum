@@ -77,7 +77,9 @@ const std::string keywords[] = {
     "uint",
     "short",
     "long",
-    "byte"
+    "byte",
+    "async",
+    "await"
 };
 /**
  *   The string array that contains all the Quarzum's symbols.

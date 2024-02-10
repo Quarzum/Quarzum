@@ -18,3 +18,5 @@ using namespace std;
 #include "parser/parser.cpp"
 
 #include "assembler/assembler.cpp"
+
+#include "other/cli.cpp"

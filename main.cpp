@@ -6,7 +6,7 @@
 */
 int main(int argc, char *argv[])
 {   
-    Source source = Source("../code.qe");
+    Source source = Source("../test/helloworld.qz");
 
 
     createFile("out.asm", 

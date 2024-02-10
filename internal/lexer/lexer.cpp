@@ -60,7 +60,7 @@ const TokenList tokenize(const string input) noexcept{
             if(isalpha(c)){
                 buffer += c;
                 if(!isalnum(next)){
-                    output.addToken({TokenType(search(buffer, keywords, 36) + 1),buffer});
+                    output.addToken({TokenType(search(buffer, keywords, 38) + 1),buffer});
                     buffer.clear();
                 }
                 continue;
