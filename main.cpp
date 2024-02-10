@@ -6,14 +6,11 @@
 */
 int main(int argc, char *argv[])
 {   
-    Source source = Source("../code.qz");
-    Tokenizer t = Tokenizer(source.getContent());
+    Source source = Source("../code.qe");
+
 
     createFile("out.asm", 
-        analyze(
-            parse(t.tokenize())
-        )
-    );
+    analyze(parse(tokenize(source.getContent()))));
     system("as -o out.o out.asm");
     system("ld -o out out.o");
     system("./out");

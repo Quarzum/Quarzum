@@ -1,10 +1,17 @@
 #pragma once
 #include "../Quarzum.h"
-
+#define NC "\e[0m"
+#define RED_BG "\e[30;41m"
+#define YELLOW_BG "\e[30;103m"
+#define GREEN_BG "\e[30;102m"
+#define TEAL "\e[36;40m"
+#define YELLOW "\e[93;40m"
+#define GRAY "\e[90;40m"
+#define RED "\e[31m"
 enum ErrorType{
-    file_not_found_err,
-    lexical_err,
-    syntax_err
+    file_not_found_err  = 0,
+    lexical_err = 1,
+    syntax_err = 2
 };
 
 struct Error{
@@ -18,9 +25,14 @@ class ErrorHandler{
     public:
         void run(){
             if(errors.size() > 0){
-                for (size_t i = 0; i <= errors.size(); i++)
+                for (size_t i = 0; i < errors.size(); i++)
                 {
-                    cout << errToStr(errors.at(i).type) << " - " << errors.at(i).description << " at line " << errors.at(i).line << endl; 
+                    if(errors.at(i).line > 0){
+                        cout << errToStr(errors.at(i).type).str() << " - " << errors.at(i).description << " at line " << errors.at(i).line << endl; 
+                    }
+                    else{
+                        cout << errToStr(errors.at(i).type).str() << " - " << errors.at(i).description << endl; 
+                    }
                 }
                 
                 exit(EXIT_FAILURE);
@@ -30,9 +42,19 @@ class ErrorHandler{
             errors.push_back(e);
         }
     private:
-        deque<Error> errors;
+        std::deque<Error> errors;
 
-        string errToStr(ErrorType e){
-            return "err";
+        stringstream errToStr(ErrorType e){
+            stringstream s;
+            switch (e)
+            {
+            case file_not_found_err:
+                s << RED << "FileNotFoundError" << NC;
+                break;
+            
+            default:
+                break;
+            }
+            return s;
         }
 };

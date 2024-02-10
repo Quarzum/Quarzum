@@ -25,6 +25,14 @@ deque<Statement> parse(TokenList input){
                 output.push_back({out_stmt, {input.get(i+2).value}});
             }
             break;
+        case TokenType::int_k:
+            if(i+3<=input.size() 
+                and input.get(i + 1).type == TokenType::id
+                and input.get(i + 2).type == TokenType::eq
+                and input.get(i + 3).type == TokenType::int_lit)
+            {
+                output.push_back({var_stmt, {input.get(i+1).value, input.get(i+3).value}});
+            }
         }
     }
     return output;

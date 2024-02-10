@@ -2,13 +2,6 @@
 #include "../Quarzum.h"
 typedef unsigned char int8;
 typedef unsigned int uint;
-#define NC "\e[0m"
-#define RED_BG "\e[30;41m"
-#define YELLOW_BG "\e[30;103m"
-#define GREEN_BG "\e[30;102m"
-#define TEAL "\e[36;40m"
-#define YELLOW "\e[93;40m"
-#define GRAY "\e[90;40m"
 
 bool isDebugging = false;
 /**
@@ -171,6 +164,7 @@ bool isSymbol(char c){
 class Source{
 public:
     string path;
+    ErrorHandler err;
     Source(string path){
         this->path = path;
     }
@@ -189,9 +183,9 @@ public:
             return result;
         }
         else{
-            cerr << "FileNotFoundError: The specified path does not match any file.\n";
-            exit(EXIT_FAILURE);
+            err.err({file_not_found_err, 0, "The specified path does not match any file."});
         }
+        err.run();
     }
 };
 bool isIntLiteral(TokenType t){
