@@ -2,7 +2,7 @@
 #include "../Quarzum.h"
 typedef unsigned char int8;
 typedef unsigned int uint;
-
+#define repeat(d, r) for(d = 0; d < r; d++)
 bool isDebugging = false;
 /**
  *    Searchs for a string inside a string array. 
@@ -104,7 +104,7 @@ const std::string symbols[]={
     "/",
     "^",
     "{",
-    "}"
+    "}",
     "[",
     "]",
     ";",
@@ -148,6 +148,14 @@ class TokenList{
         */
         const inline int size() noexcept{
             return tokens.size();
+        }
+
+        void toString(){
+            for (size_t i = 0; i < tokens.size(); i++)
+            {
+                cout <<  tokens.at(i).type << " - " << tokens.at(i).value << endl;
+            }
+            
         }
     private:
         std::deque<Token> tokens;

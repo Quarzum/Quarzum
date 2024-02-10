@@ -4,7 +4,8 @@
 enum StmtType{
     exit_stmt,
     out_stmt,
-    var_stmt
+    var_stmt,
+    func_stmt
 };
 
 // A Statement is a structure that contains one order of type "type" and with 8 possible arguments to pass in.

@@ -1,5 +1,5 @@
 #pragma once
-enum class TokenType{
+enum TokenType{
     // 0x0 => Keywords
     int_k       = 0x001,
     num_k       = 0x002,

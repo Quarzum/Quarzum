@@ -10,26 +10,39 @@ deque<Statement> parse(TokenList input){
         Token t = input.get(i);
         switch (t.type)
         {
-        case TokenType::exit_k:
-            if(i+1<= input.size() and input.get(i + 1).type == TokenType::int_lit){
+        case function_k:
+            if(i+5<=input.size() 
+                and input.get(i + 1).type == id
+                and input.get(i + 2).type == left_par
+                and input.get(i + 3).type == rigth_par
+                and input.get(i + 4).type == left_cb
+                and input.get(i + 5).type == rigth_cb)
+            {
+                cout << "f: " + input.get(i+1).value << endl;
+
+                output.push_back({func_stmt, {input.get(i+1).value}});
+            }
+            break;
+        case exit_k:
+            if(i+1<= input.size() and input.get(i + 1).type == int_lit){
                 output.push_back({exit_stmt, {input.get(i+1).value}});
             }
             break;
         
-        case TokenType::out_k:
+        case out_k:
             if(i+3<=input.size() 
-                and input.get(i + 1).type == TokenType::left_par
-                and input.get(i + 2).type == TokenType::str_lit
-                and input.get(i + 3).type == TokenType::rigth_par)
+                and input.get(i + 1).type == left_par
+                and input.get(i + 2).type == str_lit
+                and input.get(i + 3).type == rigth_par)
             {
                 output.push_back({out_stmt, {input.get(i+2).value}});
             }
             break;
-        case TokenType::int_k:
+        case int_k:
             if(i+3<=input.size() 
-                and input.get(i + 1).type == TokenType::id
-                and input.get(i + 2).type == TokenType::eq
-                and input.get(i + 3).type == TokenType::int_lit)
+                and input.get(i + 1).type == id
+                and input.get(i + 2).type == eq
+                and input.get(i + 3).type == int_lit)
             {
                 output.push_back({var_stmt, {input.get(i+1).value, input.get(i+3).value}});
             }
