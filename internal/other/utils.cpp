@@ -141,6 +141,9 @@ class TokenList{
          * @return The Token with index n inside the list.
         */
         const inline Token get(int n) noexcept{
+            if(n > size()){
+                return {};
+            }
             return tokens.at(n);
         }
         /**
