@@ -3,6 +3,7 @@
 typedef unsigned char int8;
 typedef unsigned int uint;
 #define repeat(d, r) for(d = 0; d < r; d++)
+const string ZERO = "0";
 bool isDebugging = false;
 /**
  *    Searchs for a string inside a string array. 

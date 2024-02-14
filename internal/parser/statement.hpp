@@ -13,3 +13,15 @@ struct Statement{
     StmtType type;
     any args[8];
 };
+
+struct NodeSum{
+
+};
+
+struct NodeExpr{
+    Token expr;
+};
+
+struct NodeExit{
+    NodeExpr expr;
+};

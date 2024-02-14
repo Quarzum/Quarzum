@@ -7,11 +7,13 @@ using namespace std;
 #include <any>
 #include <fstream> 
 #include <sstream>
+#include <variant>
+#include <map>
 
 #include "lexer/token.hpp"
 #include "other/errorhandler.cpp"
 #include "other/utils.cpp"
-
+#include "other/variables.cpp"
 #include "lexer/lexer.cpp"
 
 #include "parser/statement.hpp"

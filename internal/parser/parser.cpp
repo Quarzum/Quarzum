@@ -9,8 +9,8 @@ public:
     // Converts a list of Tokens into a list of Statements
     deque<Statement> parse(){
         repeat(i, input.size()){
-            Token t = input.get(i);
-            switch (t.type)
+            TokenType t = input.get(i).type;
+            switch (t)
             {
             case function_k:
                 if(followSyntax({id, left_par, right_par, left_cb, right_cb}))
@@ -21,21 +21,51 @@ public:
                 }
                 break;
             case exit_k:
-                if(followSyntax({int_lit})){
+                if(followSyntax({int_lit, semicolon})){
                     output.push_back({exit_stmt, {input.get(i+1).value}});
+                }
+                if(followSyntax({id, semicolon}) and varlist.getVariable(input.get(i+1).value).name != ""){
+                    output.push_back({exit_stmt, {varlist.getVariable(input.get(i+1).value).value}});
                 }
                 break;
         
             case out_k:
-                if(followSyntax({left_par, str_lit, right_par}))
+                if(followSyntax({left_par, str_lit, right_par, semicolon}))
                 {
                     output.push_back({out_stmt, {input.get(i+2).value}});
                 }
                 break;
             case int_k:
-                if(followSyntax({id, eq, int_lit}))
+                if(followSyntax({id, eq, int_lit, semicolon}))
                 {
-                    output.push_back({var_stmt, {input.get(i+1).value, input.get(i+3).value}});
+                    varlist.addVariable({
+                        .name = input.get(i+1).value, 
+                        .type = input.get(i).value, 
+                        .value = input.get(i+3).value 
+                    });
+                    output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, input.get(i+3).value}});
+                    break;
+                }
+                else if(followSyntax({id, semicolon}))
+                {
+                    varlist.addVariable({
+                        .name = input.get(i+1).value, 
+                        .type = input.get(i).value, 
+                        .value = ZERO
+                    });
+                    output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, ZERO}});
+                    break;
+                }
+            case str_k:
+                if(followSyntax({id, eq, str_lit, semicolon}))
+                {
+                    output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, input.get(i+3).value}});
+                    break;
+                }
+                else if(followSyntax({id, semicolon}))
+                {
+                    output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, ZERO}});
+                    break;
                 }
             }
         }

@@ -6,7 +6,8 @@
 */
 int main(int argc, char *argv[])
 {   
-    Source source = Source("../test/helloworld.qz");
+    Source source = Source("../code.qz");
+
     Tokenizer t = Tokenizer(source.getContent());
     Parser p = Parser(t.tokenize());
     
