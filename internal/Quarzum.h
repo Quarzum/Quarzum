@@ -9,6 +9,7 @@ using namespace std;
 #include <sstream>
 #include <variant>
 #include <map>
+#include <unordered_map>
 
 #include "lexer/token.hpp"
 #include "other/errorhandler.cpp"
@@ -22,3 +23,4 @@ using namespace std;
 #include "assembler/assembler.cpp"
 
 #include "other/cli.cpp"
+

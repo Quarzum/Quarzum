@@ -1,6 +1,4 @@
-#include "../Quarzum.h"
 #pragma once
-
 class Tokenizer{
 public:
     // Constructor
@@ -11,14 +9,15 @@ public:
     }
     /** 
      *   Converts an input string into a list of Tokens.
+     *   Algorithm time complexity: O(n).
      *   @return A deque of tokens.
     */
-    const TokenList tokenize() noexcept{
+    const TokenList tokenize(){
         bool isComment = false;
         bool isSingleComment = false;
         bool isStringLiteral = false;
 
-        repeat(i, input.length() + 1){
+        for(i = 0; i <= input.length(); i++){
             // The actual character
             char c = get();
             // The next character (null if c is the last character)
@@ -30,14 +29,14 @@ public:
                 line++;
                 continue;
             }
-            else if(c == '"' and isStringLiteral == false){
+            if(c == '"' and not isStringLiteral){
                 isStringLiteral = true;
                 consume();
                 continue;
             }
-            else if(isStringLiteral == true){
+            if(isStringLiteral){
                 consume();
-                if(next == '\"'){
+                if(next == '"'){
                     consume(1);
                     isStringLiteral = false;
                     addToken(str_lit);
@@ -45,22 +44,30 @@ public:
                 continue;
             }
             // Multiline and single line comments
-            else if(c == '/' and next == '*'){isComment = true; i++; continue;}
-            else if(c == '*' and next == '/'){isComment = false; i++; continue;}
-            else if(c == '/' and next == '/'){isSingleComment = true; i++; continue;}
+            if(opensComment(c, next)){
+                isComment = true; 
+                i++; 
+                continue;
+            }
+            if(closesComment(c, next)){
+                isComment = false; 
+                i++;
+                continue;
+            }
+            if(c == '/' and next == '/'){isSingleComment = true; i++; continue;}
 
-
-            else if(not (isspace(c) or isComment or isSingleComment)){
+            if(not (isspace(c) or isComment or isSingleComment)){
                 // [a-zA-Z][a-zA-Z0-9]+
                 if(isalpha(c)){
                     consume();
                     if(not isalnum(next)){
-                        addToken(TokenType(search(buffer, keywords, 38) + 1));
+                        auto it = keywords.find(buffer);
+                        addToken(TokenType( it != keywords.end() ? it->second: 0 ));
                     }
                     continue;
                 }
-                // [0-9]*
-                else if(isdigit(c)){
+                // [0-9]+
+                if(isdigit(c)){
                     consume();
                     if(not isdigit(next)){
                         addToken(int_lit);
@@ -68,14 +75,12 @@ public:
                     continue;
                 }
                 // Punctuation
-                else if(isSymbol(c)){
+                if(isSymbol(c)){
                     consume();
                     addToken(TokenType(search(buffer, symbols, 28) + 0x201));
                     continue;
                 }
-                else{
-                    wcerr << "Lexical Error: Unexpected token " << charToString(c) << " at line " << to_wstring(line) << ".\n";
-                }
+                wcerr << "Lexical Error: Unexpected token " << charToString(c) << " at line " << to_wstring(line) << ".\n";
             }        
         }
         return output;
@@ -84,18 +89,34 @@ private:
     uint i, line;
     string input, buffer;
     TokenList output;
-    char get(uint n = 0){
+    /**
+     * Returns the char at the (n + i) position. 
+     * If the index is out of range, returns a null character.
+    */
+    char get(uint n = 0) const{
         if(n + i < input.size()){
             return input[i+n];
         }
         return 0;
     }
+    /**
+     * Adds a new Token to the TokenList and clears the buffer.
+    */
     void addToken(TokenType t){
         output.addToken({t, buffer});
         buffer.clear();
     }
+    /**
+     * The buffer will consume the character, advancing the index.
+    */
     void consume(uint n = 0){
         buffer += get(n);
         i += n;
+    }
+    bool opensComment(char a, char b){
+        return a == '/' and b == '*';
+    }
+    bool closesComment(char a, char b){
+        return a == '*' and b == '/';
     }
 };

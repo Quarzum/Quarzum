@@ -6,10 +6,10 @@
 */
 int main(int argc, char *argv[])
 {   
-    Source source = Source("../code.qz");
+    Source source("../code.qz");
 
-    Tokenizer t = Tokenizer(source.getContent());
-    Parser p = Parser(t.tokenize());
+    Tokenizer t(source.getContent());
+    Parser p(t.tokenize());
     
 
     createFile("out.asm", analyze(p.parse()));
