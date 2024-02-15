@@ -27,7 +27,7 @@ inline void print(std::string content) noexcept{
  *   The string array that contains all the Quarzum's keywords and symbols.
 */
 
-const unordered_map<string, int> prefabs = {
+const unordered_map<string, int8> prefabs = {
     {"int",1},
     {"number",2},
     {"string",3},
@@ -72,11 +72,11 @@ const unordered_map<string, int> prefabs = {
     {"!!", 516},
     {"&", 517},
     {"|", 518},
-    {"%", 519},
+    {"$", 519},
     {"!", 520},
     {"&&",521},
     {"||",522},
-    {"%%",523},
+    {"$$",523},
     {".", 524},
     {",", 525},
     {"+", 526},
@@ -93,7 +93,8 @@ const unordered_map<string, int> prefabs = {
     {"<", 537},
     {"==",538},
     {">=",539},
-    {"<=",540}
+    {"<=",540},
+    {"%", 541}
 };
 
 /**

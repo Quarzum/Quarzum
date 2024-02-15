@@ -17,6 +17,7 @@ using namespace std;
 #include "other/variables.cpp"
 #include "lexer/lexer.cpp"
 
+#include "parser/node.hpp"
 #include "parser/statement.hpp"
 #include "parser/parser.cpp"
 

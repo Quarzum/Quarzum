@@ -10,7 +10,6 @@ int main(int argc, char *argv[])
 
     Tokenizer t(source.getContent());
     Parser p(t.tokenize());
-    
 
     createFile("out.asm", analyze(p.parse()));
     system("as -o out.o out.asm");

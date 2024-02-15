@@ -1,4 +1,5 @@
 #pragma once
+
 enum TokenType{
     // 0x0 => Keywords
     int_k       = 0x001,
@@ -70,6 +71,7 @@ enum TokenType{
     is_equal    = 0x21a,
     greater_eq  = 0x21b,
     less_eq     = 0x21c,
+    remainder   = 0x21d,
     // 0x3 => Literals
     int_lit     = 0x301,
     num_lit     = 0x302,

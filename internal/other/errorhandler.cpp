@@ -51,7 +51,8 @@ class ErrorHandler{
             case file_not_found_err:
                 s << RED << "FileNotFoundError" << NC;
                 break;
-            
+            case syntax_err:
+                s << RED << "SyntaxError" << NC;
             default:
                 break;
             }

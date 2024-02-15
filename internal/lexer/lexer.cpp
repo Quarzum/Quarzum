@@ -1,4 +1,5 @@
 #pragma once
+
 class Tokenizer{
 public:
     // Constructor
@@ -76,7 +77,7 @@ public:
                 // Punctuation
                 if(search(c) > 0){
                     consume();
-                    addToken(TokenType(search(c)));
+                    addToken(TokenType(search(c) + 512));
                     continue;
                 }
                 wcerr << "Lexical Error: Unexpected token " << charToString(c) << " at line " << to_wstring(line) << ".\n";
