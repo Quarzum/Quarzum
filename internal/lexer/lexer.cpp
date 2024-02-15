@@ -17,7 +17,7 @@ public:
         bool isSingleComment = false;
         bool isStringLiteral = false;
 
-        for(i = 0; i <= input.length(); i++){
+        for(i = 0; i < input.length(); i++){
             // The actual character
             char c = get();
             // The next character (null if c is the last character)
@@ -61,8 +61,7 @@ public:
                 if(isalpha(c)){
                     consume();
                     if(not isalnum(next)){
-                        auto it = keywords.find(buffer);
-                        addToken(TokenType( it != keywords.end() ? it->second: 0 ));
+                        addToken(TokenType(search(buffer)));
                     }
                     continue;
                 }
@@ -75,9 +74,9 @@ public:
                     continue;
                 }
                 // Punctuation
-                if(isSymbol(c)){
+                if(search(c) > 0){
                     consume();
-                    addToken(TokenType(search(buffer, symbols, 28) + 0x201));
+                    addToken(TokenType(search(c)));
                     continue;
                 }
                 wcerr << "Lexical Error: Unexpected token " << charToString(c) << " at line " << to_wstring(line) << ".\n";

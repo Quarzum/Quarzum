@@ -6,22 +6,6 @@ typedef unsigned int uint;
 const string ZERO = "0";
 bool isDebugging = false;
 /**
- *    Searchs for a string inside a string array. 
- *    If the target string is not found, returns -1.
- *    @param target The target string to find.
- *    @param list The list where the function will search.
- *    @param maxIndex The max index to find.
- *    @return The index of the target string inside the array.
-*/
-inline const signed int search(std::string target,const std::string list[], int maxIndex) noexcept{
-    for (uint i = 0; i < maxIndex; i++)
-    {
-        if(list[i] == target){ return i;}
-    }
-    return -1;
-}
-
-/**
  *   Creates a new file and writes content inside it.
  *   @param name The name of the created file.
  *   @param content The content that will be wrote inside the file.
@@ -40,10 +24,10 @@ inline void print(std::string content) noexcept{
     if(isDebugging == true){ std::cout << content << std::endl;}
 }
 /**
- *   The string array that contains all the Quarzum's keywords.
+ *   The string array that contains all the Quarzum's keywords and symbols.
 */
 
-const unordered_map<string, int> keywords = {
+const unordered_map<string, int> prefabs = {
     {"int",1},
     {"number",2},
     {"string",3},
@@ -81,40 +65,35 @@ const unordered_map<string, int> keywords = {
     {"long",35},
     {"byte",36},
     {"async",37},
-    {"await",38}
-};
-/**
- *   The string array that contains all the Quarzum's symbols.
-*/
-const std::string symbols[]={
-    "=",
-    "(",
-    ")",
-    "!!",
-    "&",
-    "|",
-    "%",
-    "!",
-    "&&",
-    "||",
-    "%%",
-    ".",
-    ",",
-    "+",
-    "-",
-    "*",
-    "/",
-    "^",
-    "{",
-    "}",
-    "[",
-    "]",
-    ";",
-    ">",
-    "<",
-    "==",
-    ">=",
-    "<="
+    {"await",38},
+    {"=", 513},
+    {"(",514},
+    {")",515},
+    {"!!", 516},
+    {"&", 517},
+    {"|", 518},
+    {"%", 519},
+    {"!", 520},
+    {"&&",521},
+    {"||",522},
+    {"%%",523},
+    {".", 524},
+    {",", 525},
+    {"+", 526},
+    {"-", 527},
+    {"*", 528},
+    {"/", 529},
+    {"^", 530},
+    {"{", 531},
+    {"}", 532},
+    {"[", 533},
+    {"]", 534},
+    {";", 535},
+    {">", 536},
+    {"<", 537},
+    {"==",538},
+    {">=",539},
+    {"<=",540}
 };
 
 /**
@@ -171,7 +150,25 @@ const std::string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
 bool isSymbol(char c){
     string s;
     s = c;
-    return search(s, symbols, 28) != 0x200;
+    auto it = prefabs.find(s);
+    return it != prefabs.end();
+}
+
+int search(string buff, int min = 0){
+    auto it = prefabs.find(buff);
+    if(it != prefabs.end() and it->second > min){
+        return it->second;
+    }
+    return 0;
+}
+int search(char c, int min = 0){
+    string buff;
+    buff += c;
+    auto it = prefabs.find(buff);
+    if(it != prefabs.end() and it->second > min){
+        return it->second;
+    }
+    return 0;
 }
 /**
  * This class manages the input file, creating a Source object with a specified path.

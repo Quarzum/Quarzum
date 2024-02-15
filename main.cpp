@@ -17,5 +17,5 @@ int main(int argc, char *argv[])
     system("ld -o out out.o");
     system("./out");
 
-    return EXIT_SUCCESS;
+    return 0;
 }
