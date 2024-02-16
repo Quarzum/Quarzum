@@ -5,7 +5,6 @@ public:
     // Constructor
     Tokenizer(const string input){
         this -> input = input;
-        this -> output = TokenList();
         line = 1;
     }
     /** 
@@ -104,7 +103,7 @@ private:
      * Adds a new Token to the TokenList and clears the buffer.
     */
     void addToken(TokenType t){
-        output.addToken({t, buffer});
+        output.addToken({t,buffer});
         buffer.clear();
     }
     /**

@@ -1,6 +1,8 @@
 #pragma once
 using namespace std;
 
+const bool DEBUGMODE = false;
+
 #include <string>
 #include <iostream>
 #include <deque>

@@ -41,6 +41,10 @@ class ErrorHandler{
         void err(Error e){
             errors.push_back(e);
         }
+        void errCritical(Error e){
+            errors.push_back(e);
+            run();
+        }
     private:
         std::deque<Error> errors;
 

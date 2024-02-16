@@ -7,8 +7,10 @@ class Source: public QComponent{
 private:
     string path;
 public:
-    Source(string path){
-        this->path = path;
+    Source(string path): path(move(path)){
+        if(not(this->path.substr(this->path.size() -3) == ".qz")){
+            errorHandler.errCritical({file_not_found_err, 0, "Invalid format."});
+        }
     }
     /**
      * @return The input file content
@@ -24,7 +26,6 @@ public:
             input.close();
             return result;
         }
-        errorHandler.err({file_not_found_err, 0, "The specified path does not match any file."});
-        errorHandler.run();
+        errorHandler.errCritical({file_not_found_err, 0, "The specified path does not match any file."});
     }
 };
