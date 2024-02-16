@@ -1,6 +1,6 @@
 #pragma once
 
-class Tokenizer{
+class Tokenizer: public QComponent{
 public:
     // Constructor
     Tokenizer(const string input){
@@ -80,9 +80,10 @@ public:
                     addToken(TokenType(search(c) + 512));
                     continue;
                 }
-                wcerr << "Lexical Error: Unexpected token " << charToString(c) << " at line " << to_wstring(line) << ".\n";
+                errorHandler.err({lexical_err, line, "Unexpected token " + c});
             }        
         }
+        errorHandler.run();
         return output;
     }
 private:

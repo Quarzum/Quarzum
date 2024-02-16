@@ -1,14 +1,13 @@
 #pragma once
 #include "../Quarzum.h"
 
-class Parser{
+class Parser: public QComponent{
 public:
     Parser(TokenList input){
         this -> input = input;
     }
     // Converts a list of Tokens into a list of Statements
     deque<Statement> parse(){
-        ErrorHandler err;
         repeat(i, input.size()){
             TokenType t = input.get(i).type;
             Expr e;
@@ -27,11 +26,11 @@ public:
                 e = parseExpr();
                 i++;
                 if(e.type != INT){
-                    err.err({syntax_err,0,"Exit statement should have an integer exit code"});
+                    errorHandler.err({syntax_err,0,"Exit statement should have an integer exit code"});
                     break;
                 }               
                 if(input.get(i).type != semicolon){
-                    err.err({syntax_err,0,"Expected semicolon"});
+                    errorHandler.err({syntax_err,0,"Expected semicolon"});
                     break;
                 } 
                 output.push_back({exit_stmt, {e.value.token.value}});
@@ -77,7 +76,7 @@ public:
                 }
             }
         }
-        err.run();
+        errorHandler.run();
         return output;
     }
 private:

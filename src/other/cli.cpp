@@ -1,5 +1,5 @@
 #pragma once
-class CLI{
+class CLI: public QComponent{
 public:
     inline CLI(char* args[]){
         command = args[1];
