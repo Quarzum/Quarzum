@@ -11,8 +11,10 @@ using namespace std;
 #include <map>
 #include <unordered_map>
 
+#include "qcomponent.hpp"
 #include "lexer/token.hpp"
 #include "other/errorhandler.cpp"
+#include "source/source.hpp"
 #include "other/utils.cpp"
 #include "other/variables.cpp"
 #include "lexer/lexer.cpp"

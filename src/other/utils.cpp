@@ -171,36 +171,7 @@ int search(char c, int min = 0){
     }
     return 0;
 }
-/**
- * This class manages the input file, creating a Source object with a specified path.
-*/
-class Source{
-public:
-    string path;
-    ErrorHandler err;
-    Source(string path){
-        this->path = path;
-    }
-    /**
-     * @return The input file content
-    */
-    const string getContent(){
-        string line, result;
-        ifstream input(path);
-        if(input.is_open()){
-            while (getline(input, line))
-            {
-                result += line + "\n";
-            }
-            input.close();
-            return result;
-        }
-        else{
-            err.err({file_not_found_err, 0, "The specified path does not match any file."});
-        }
-        err.run();
-    }
-};
+
 bool isIntLiteral(TokenType t){
     return t == TokenType::int_lit || t == TokenType::byte_lit;
 }
