@@ -9,26 +9,28 @@ enum exprType{
     CHAR,
     NULLEXPR
 };
-struct IntExpr{
-    Token token;
-};
 
 struct Expr{
     exprType type;
-    IntExpr value;
+    any value;
 };
 
+struct BinaryExpr{
+    any left;
+    any right;
+    TokenType op;
+};
 
-
-int getPrecedence(Token t){
-    switch (t.type)
-    {
-    case TokenType::prod:
-    case TokenType::division:
-    case TokenType::remainder:
-        return 1;
-    case TokenType::plus:
-    case TokenType::minus:
-        return 2;
-    }
+bool isExprValid(TokenType t){
+    return(
+        t == int_lit || 
+        t == TokenType::plus || 
+        t == TokenType::minus ||
+        t == prod ||
+        t == division ||
+        t == remainder
+        
+    );
 }
+
+Expr nullExpr = {NULLEXPR};

@@ -7,7 +7,7 @@ class Source: public QComponent{
 private:
     string path;
 public:
-    Source(string path): path(move(path)){
+    Source(const string path): path(move(path)){
         if(not(this->path.substr(this->path.size() -3) == ".qz")){
             errorHandler.errCritical({file_not_found_err, 0, "Invalid format."});
         }

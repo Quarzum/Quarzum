@@ -17,7 +17,7 @@ const string analyze(deque<Statement> input) noexcept{
         {
         case exit_stmt:
             output << "    movq $60, %rax\n";
-            output << "    movq $" << any_cast<string>(s.args[0]) << ", %rdi\n";
+            output << "    movq $" << any_cast<Token>(s.args[0]).value << ", %rdi\n";
             output << "    syscall\n\n";
             break;
         

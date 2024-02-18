@@ -135,6 +135,15 @@ class TokenList{
             return tokens.size();
         }
 
+        TokenList divide(int from = 0, int to = 1){
+            TokenList result;
+            for (size_t i = from; i < to; i++)
+            {
+                result.addToken(get(i));
+            }
+            return result;
+        }
+
         void toString(){
             for (size_t i = 0; i < tokens.size(); i++)
             {
@@ -148,21 +157,21 @@ class TokenList{
 
 const std::string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
 
-bool isSymbol(char c){
+const bool isSymbol(char c){
     string s;
     s = c;
     auto it = prefabs.find(s);
     return it != prefabs.end();
 }
 
-int search(string buff, int min = 0){
+const int search(string buff, int min = 0){
     auto it = prefabs.find(buff);
     if(it != prefabs.end() and it->second > min){
         return it->second;
     }
     return 0;
 }
-int search(char c, int min = 0){
+const int search(char c, int min = 0){
     string buff;
     buff += c;
     auto it = prefabs.find(buff);
@@ -172,10 +181,10 @@ int search(char c, int min = 0){
     return 0;
 }
 
-bool isIntLiteral(TokenType t){
+const bool isIntLiteral(TokenType t){
     return t == TokenType::int_lit || t == TokenType::byte_lit;
 }
-wstring charToString(char c){
+const wstring charToString(char c){
     wstring s;
     s += c;
     return s;

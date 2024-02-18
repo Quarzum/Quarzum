@@ -23,8 +23,7 @@ public:
                 break;
             case exit_k:
                 i++;
-                e = parseExpr();
-                i++;
+                e = parseExpr(getExprValids());
                 if(e.type != INT){
                     errorHandler.err({syntax_err,0,"Exit statement should have an integer exit code"});
                     break;
@@ -33,7 +32,7 @@ public:
                     errorHandler.err({syntax_err,0,"Expected semicolon"});
                     break;
                 } 
-                output.push_back({exit_stmt, {e.value.token.value}});
+                output.push_back({exit_stmt, {e.value}});
                 break;
         
             case out_k:
@@ -96,11 +95,48 @@ private:
         return true;
     }
 
+    TokenList getExprValids(){
 
-    Expr parseExpr(){
-        if(input.get(i).type == int_lit){
-            return Expr{INT, IntExpr{input.get(i)}};
+        TokenList exprValids;
+        // 1. Get every possible expression token - FINISHED
+        while(isExprValid(input.get(i).type)){
+            exprValids.addToken(input.get(i));
+            cout << input.get(i).value << "t - ";
+            i++; 
         }
-        return {NULLEXPR};
+        return exprValids;
+    }
+
+    Expr parseExpr(TokenList list){
+        
+        // 2. Iterate the TokenList. If finds a "+" divide into a binary expr. If not, push a single expr.
+
+        if(list.size() == 1){
+            return Expr{
+                .type = exprType::INT,
+                .value = list.get(0)
+            };
+        }
+
+        /*
+
+        Operator Precedence Level 0
+
+        */
+        // for (size_t n = list.size(); n > 0; n--)
+        // {
+        //     if (list.get(n).type == TokenType::plus)
+        //     {
+        //         Expr a = parseExpr( list.divide(0, n) );
+        //         Expr b = parseExpr(list.divide(n, list.size()));
+
+        //         return Expr{
+        //             exprType::INT,
+        //             BinaryExpr{a, b, TokenType::plus}
+        //         };
+        //     }
+        // }
+
+        return {INT, Token{int_lit, "7"}};
     }
 };
