@@ -7,7 +7,7 @@ public:
         this -> input = input;
     }
     // Converts a list of Tokens into a list of Statements
-    deque<Statement> parse(){
+    vector<Statement> parse(){
         repeat(i, input.size()){
             TokenType t = input.get(i).type;
             Expr e;
@@ -16,7 +16,7 @@ public:
             case function_k:
                 if(followSyntax({id, left_par, right_par, left_cb, right_cb}))
                 {
-                    cout << "f: " + input.get(i+1).value << endl;
+                    cout << "f: " + input.get(i+1).value << "\n";
 
                     output.push_back({func_stmt, {input.get(i+1).value}});
                 }
@@ -73,6 +73,19 @@ public:
                     output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, ZERO}});
                     break;
                 }
+            
+            case id:
+                string name = input.get(i).value;
+                if(followSyntax({eq})){
+                    i++;
+                    e = parseExpr(getExprValids());
+                    // if(input.get(i).type != semicolon){
+                    //     errorHandler.err({syntax_err,0,"Expected semicolon"});
+                    //     break;
+                    // }
+                    output.push_back({redec_stmt, {varlist.getVariable(name), e.value} });
+                }
+                break;
             }
         }
         errorHandler.run();
@@ -80,12 +93,12 @@ public:
     }
 private:
     uint i;
-    deque<Statement> output;
+    vector<Statement> output;
     TokenList input;
     bool isType(uint a, TokenType b){
         return input.get(i + a).type == b;
     }
-    bool followSyntax(deque<TokenType> t){
+    bool followSyntax(vector<TokenType> t){
         for (size_t j = 0; j < t.size(); j++)
         {
             if(not isType(j + 1, t.at(j))){

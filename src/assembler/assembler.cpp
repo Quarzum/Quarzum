@@ -2,9 +2,9 @@
 #include "../Quarzum.h"
 
 // Converts a list of statements into a string with the code in asm at&t for x86_32
-const string analyze(deque<Statement> input) noexcept{
+const string analyze(vector<Statement> input) noexcept{
     stringstream output;
-    deque<string> var;
+    vector<string> var;
 
     output << ".text\n";
     output << ".global _start\n";
@@ -13,6 +13,7 @@ const string analyze(deque<Statement> input) noexcept{
     for (size_t i = 0; i < input.size(); i++)
     {
         Statement s = input.at(i);
+        string varName;
         switch (s.type)
         {
         case exit_stmt:
@@ -22,12 +23,17 @@ const string analyze(deque<Statement> input) noexcept{
             break;
         
         case out_stmt:
-            string varName = "_out" + to_string(var.size());
+            varName = "_out" + to_string(var.size());
             var.push_back(any_cast<string>(s.args[0]));
             var[var.size()-1].pop_back();
             var[var.size()-1] += "\\n\"";
             output << STDWRITE + "    movq $"+varName+", %rsi\n    movq $_len" + to_string(var.size() - 1) + ", %rdx\n    syscall\n\n";
             break;
+        
+        case redec_stmt:
+            output << "     movq $"+any_cast<Token>(s.args[1]).value+", " + any_cast<string>(s.args[0]) + "\n\n";
+            break;
+    
         }
     }
     output << "    movq $60, %rax\n    movq $0, %rdi\n    syscall\n"; // exit 0 if not specified

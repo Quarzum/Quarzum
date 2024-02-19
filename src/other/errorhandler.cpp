@@ -46,7 +46,7 @@ class ErrorHandler{
             run();
         }
     private:
-        std::deque<Error> errors;
+        vector<Error> errors;
 
         stringstream errToStr(ErrorType e){
             stringstream s;

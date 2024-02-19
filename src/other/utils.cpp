@@ -21,7 +21,7 @@ inline void createFile(std::string name, std::string content = "") noexcept{
  *   @param content The content that will be printed. 
 */
 inline void print(std::string content) noexcept{
-    if(isDebugging == true){ std::cout << content << std::endl;}
+    if(isDebugging == true){ std::cout << content << "\n";}
 }
 /**
  *   The string array that contains all the Quarzum's keywords and symbols.
@@ -147,12 +147,12 @@ class TokenList{
         void toString(){
             for (size_t i = 0; i < tokens.size(); i++)
             {
-                cout <<  tokens.at(i).type << " - " << tokens.at(i).value << endl;
+                cout <<  tokens.at(i).type << " - " << tokens.at(i).value << "\n";
             }
             
         }
     private:
-        std::deque<Token> tokens;
+        std::vector<Token> tokens;
 };
 
 const std::string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
@@ -184,8 +184,10 @@ const int search(char c, int min = 0){
 const bool isIntLiteral(TokenType t){
     return t == TokenType::int_lit || t == TokenType::byte_lit;
 }
-const wstring charToString(char c){
+
+
+const wstring charToString(char n){
     wstring s;
-    s += c;
+    s += n;
     return s;
 }

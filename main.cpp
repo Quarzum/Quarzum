@@ -4,7 +4,9 @@
     Minimal main.cpp, all the procedures are into Quarzum.h
 
 */
-using namespace std::chrono;
+using std::chrono::high_resolution_clock;
+using std::chrono::milliseconds;
+using std::chrono::duration_cast;
 int main(int argc, char *argv[])
 {   
     auto start = high_resolution_clock::now();
@@ -18,7 +20,7 @@ int main(int argc, char *argv[])
     system("ld -o out out.o");
     system("./out");
     auto stop = high_resolution_clock::now();
-auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
+auto duration = duration_cast<milliseconds>(stop - start);
  
 // To get the value of duration use the count()
 // member function on the duration object

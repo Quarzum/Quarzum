@@ -36,7 +36,7 @@ public:
     // TO DO: updateVariable
 
 private:
-    deque<Variable> v_list;
+    vector<Variable> v_list;
     bool isUnique(string name){
         for (size_t i = 0; i < v_list.size(); i++)
         {
