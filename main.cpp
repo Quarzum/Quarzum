@@ -9,13 +9,9 @@ using std::chrono::milliseconds;
 using std::chrono::duration_cast;
 int main(int argc, char *argv[])
 {   
-    qstring str = "Hello world!";
-    qstring str2= "i";
-    qstring str3 = str + str2;
-    cout << str3.value << str2.length() << str2.size() << endl;
-
      auto start = high_resolution_clock::now();
-     Source source("../code.qz");
+     qstring path = "../code.qz";
+     Source source(path);
 
      Tokenizer t(source.getContent());
      Parser p(t.tokenize());

@@ -1,3 +1,7 @@
+typedef unsigned int uint;
+/**
+ * A dynamic array of char made with the necessary methods to develop Quarzum with them.
+*/
 class qstring{
     public:
         char* value;
@@ -5,23 +9,23 @@ class qstring{
             capacity = 0;
             for (; input[capacity]; capacity++){}
             value = new char[capacity];
-            for (int i = 0; input[i]; i++)
+            for (uint i = 0; input[i]; i++)
             {
                 value[i] = input[i];
             }
         }
 
-        qstring(int c = 0){
+        qstring(uint c = 0){
             capacity = c;
             value = new char[c];
         }
 
-        char operator[](int i){
+        char operator[](uint i){
             return value[i];
         }
 
         qstring operator=(char* input){
-            for (int i = 0; i < capacity; i++)
+            for (uint i = 0; i < capacity; i++)
             {
                 if(input[i] && value[i]){
                     value[i] = input[i];
@@ -35,8 +39,8 @@ class qstring{
         }
 
         qstring operator+(qstring extend){
-            int l = this->length();
-            int space = l + extend.length();
+            uint l = this->length();
+            uint space = l + extend.length();
             char* result = new char[space];
             for(int i = 0; value[i]; i++){
                 result[i] = value[i];
@@ -48,7 +52,7 @@ class qstring{
         }
 
         bool operator==(qstring target){
-            int finish = 0;
+            uint finish = 0;
             if(target.length() > this->length()){
                 finish = target.length();
             }
@@ -56,7 +60,7 @@ class qstring{
                 finish = length();
             }
             
-            for (int i = 0; i < finish; i++)
+            for (uint i = 0; i < finish; i++)
             {
                 if(target[i] != value[i]){
                     return false;
@@ -65,23 +69,40 @@ class qstring{
             return true;
             
         }
-
+        /**
+         * @return The length of the qstring.
+        */
         int length(){
-            int i = 0;
-            for (; value[i]; i++){}
-            return i;
+            uint length = 0;
+            for (; value[length]; length++){}
+            return length;
         }
-
-        int size(){
-            return capacity;
-        }
-
+        /**
+         * Converts all the characters of the qstring into null characters.
+        */
         void clear(){
-            for(int i = 0; value[i]; i++){
+            for(uint i = 0; value[i]; i++){
                 value[i] = 0;
             }
         }
+        /**
+         * Compares if a qstring ends with a determinated sequence of characters.
+         * @param ending The text to be compared.
+         * @return true if the qstring ends with the ending, false otherwise.
+        */
+        bool endsWith(char* ending){
+            uint l= 0;
+            for(; ending[l]; l++){}
+            for (uint i = 0; i < l; i++)
+            {
+                if(value[i + length() - l] != ending[i]){
+                    return false;
+                }
+
+            }
+            return true;
+            
+        }
     private:
-        int capacity;
-        
+        uint capacity;      
 };
