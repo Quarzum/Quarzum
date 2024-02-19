@@ -14,6 +14,8 @@ const bool DEBUGMODE = false;
 #include <unordered_map>
 #include <chrono>
 
+#include "lib/qstring.hpp"
+
 #include "other/errorhandler.cpp"
 #include "qcomponent.hpp"
 #include "lexer/token.hpp"
