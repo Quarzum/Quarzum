@@ -16,9 +16,9 @@ public:
             case function_k:
                 if(followSyntax({id, left_par, right_par, left_cb, right_cb}))
                 {
-                    cout << "f: " + input.get(i+1).value << "\n";
+                    cout << "f: " << input.get(i+1).value.value << "\n";
 
-                    output.push_back({func_stmt, {input.get(i+1).value}});
+                    output.push_back({func_stmt, {input.get(i+1).value.value}});
                 }
                 break;
             case exit_k:
@@ -47,7 +47,7 @@ public:
                     varlist.addVariable({
                         .name = input.get(i+1).value, 
                         .type = input.get(i).value, 
-                        .value = input.get(i+3).value 
+                        .value = input.get(i+3).value
                     });
                     output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, input.get(i+3).value}});
                     break;
@@ -75,7 +75,7 @@ public:
                 }
             
             case id:
-                string name = input.get(i).value;
+                qstring name = input.get(i).value;
                 if(followSyntax({eq})){
                     i++;
                     e = parseExpr(getExprValids());
@@ -114,7 +114,7 @@ private:
         // 1. Get every possible expression token - FINISHED
         while(isExprValid(input.get(i).type)){
             exprValids.addToken(input.get(i));
-            cout << input.get(i).value << "t - ";
+            cout << input.get(i).value.value << "t - ";
             i++; 
         }
         return exprValids;

@@ -1,9 +1,9 @@
 #pragma once
 
 struct Variable{
-    string name;
-    string type;
-    string value;
+    qstring name;
+    qstring type;
+    qstring value;
 };
 
 
@@ -12,11 +12,11 @@ class VarList{
 public:
     VarList(){}
     void addVariable(Variable var){
-        if(isUnique(var.name)){
+        if(isUnique(var.name.value)){
             v_list.push_back(var);
         }
     }
-    void removeVariable(string name){
+    void removeVariable(qstring name){
         for (size_t i = 0; i < v_list.size(); i++)
         {
             if(v_list.at(i).name == name){
@@ -24,7 +24,7 @@ public:
             }
         }
     }
-    Variable getVariable(string name){
+    Variable getVariable(qstring name){
         for (size_t i = 0; i < v_list.size(); i++)
         {
             if(v_list.at(i).name == name){
@@ -37,7 +37,7 @@ public:
 
 private:
     vector<Variable> v_list;
-    bool isUnique(string name){
+    bool isUnique(qstring name){
         for (size_t i = 0; i < v_list.size(); i++)
         {
             if(v_list.at(i).name == name){

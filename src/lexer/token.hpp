@@ -93,5 +93,5 @@ enum TokenType{
 // A Token is the basic unit of recognition of the lexer
 struct Token{
     TokenType type;
-    string value;
+    qstring value;
 };

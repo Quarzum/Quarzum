@@ -79,7 +79,12 @@ public:
                     addToken(TokenType(search(c) + 512));
                     continue;
                 }
-                errorHandler.err({lexical_err, line, "Unexpected token " + c});
+                else{
+                    qstring errmsg =  "Unexpected token ";
+                    errmsg += c;
+                    errorHandler.err({lexical_err, line, errmsg.value});
+                }
+                
             }        
         }
         errorHandler.run();
@@ -87,7 +92,8 @@ public:
     }
 private:
     uint i, line;
-    string input, buffer;
+    string input;
+    qstring buffer;
     TokenList output;
     /**
      * Returns the char at the (n + i) position. 

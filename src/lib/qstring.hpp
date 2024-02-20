@@ -114,7 +114,7 @@ class qstring{
          * @param ending The text to be compared.
          * @return true if the qstring ends with the ending, false otherwise.
         */
-        bool endsWith(char* ending){
+        constexpr bool endsWith(char* ending) const{
             uint l= 0;
             for(; ending[l]; l++){}
             for (uint i = 0; i < l; i++)
@@ -126,6 +126,10 @@ class qstring{
             }
             return true;
             
+        }
+
+        void pop(){
+            value[length() - 1] = 0;
         }
     private:
         uint capacity;  
