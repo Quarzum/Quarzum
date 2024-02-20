@@ -39,7 +39,7 @@ class qstring{
         }
 
         qstring operator+(qstring extend){
-            uint l = this->length();
+            uint l = length();
             uint space = l + extend.length();
             char* result = new char[space];
             for(int i = 0; value[i]; i++){
@@ -51,9 +51,33 @@ class qstring{
             return qstring(result);
         }
 
+        void operator+=(qstring extend){
+            if(length() + extend.length() > capacity){
+                reAlloc(capacity + capacity/2);
+            }
+            for (uint i = 0; i < extend.length(); i++)
+            {
+                value[i + length()] = extend[i];
+            }
+            
+        }
+
+        void operator+=(const char* extend){
+            uint l = 0;
+            for(;extend[l];l++){}
+            if(length() + l > capacity){
+                reAlloc(capacity + capacity/2);
+            }
+            for (uint i = 0; i < l; i++)
+            {
+                value[i + length()] = extend[i];
+            }
+            
+        }
+
         bool operator==(qstring target){
             uint finish = 0;
-            if(target.length() > this->length()){
+            if(target.length() > length()){
                 finish = target.length();
             }
             else{
@@ -72,7 +96,7 @@ class qstring{
         /**
          * @return The length of the qstring.
         */
-        int length(){
+        constexpr uint length() const{
             uint length = 0;
             for (; value[length]; length++){}
             return length;
@@ -104,5 +128,15 @@ class qstring{
             
         }
     private:
-        uint capacity;      
+        uint capacity;  
+
+        void reAlloc(int newCapacity){
+            char* newValue = new char[newCapacity];
+            for(int i = 0; value[i]; i++){
+                newValue[i] = value[i];
+            }
+            delete[] value;
+            value = newValue;
+            capacity = newCapacity;
+        }    
 };

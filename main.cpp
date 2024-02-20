@@ -13,16 +13,18 @@ int main(int argc, char *argv[])
      qstring path = "../code.qz";
      Source source(path);
 
-     Tokenizer t(source.getContent());
-     Parser p(t.tokenize());
+     cout << source.getContent() ;
 
-    createFile("out.asm", analyze(p.parse()));
-     system("as -o out.o out.asm");
-     system("ld -o out out.o");
-     system("./out");
+    // Tokenizer t(source.getContent());
+    // Parser p(t.tokenize());
+
+   // createFile("out.asm", analyze(p.parse()));
+    // system("as -o out.o out.asm");
+     //system("ld -o out out.o");
+     //system("./out");
      auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
 
-    cout << duration.count() << "\n";
+    //cout << duration.count() << "\n";
     return 0;
 }
