@@ -40,6 +40,9 @@ enum TokenType{
     byte_k      = 0x024,
     async_k     = 0x025,
     await_k     = 0x026,
+    operator_k  = 0x027,
+    foreach_k   = 0x028,
+    in_k        = 0x029,
     // 0x1 => Special tokens
     id          = 0x000,
     // 0x2 => Symbols
