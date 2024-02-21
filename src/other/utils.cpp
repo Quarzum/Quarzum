@@ -1,8 +1,10 @@
 #pragma once
 #include "../Quarzum.h"
-typedef unsigned char int8;
+
 typedef unsigned int uint;
-#define repeat(d, r) for(d = 0; d < r; d++)
+using tokens::TokenType;
+
+
 const qstring ZERO = "0";
 bool isDebugging = false;
 /**
@@ -27,7 +29,7 @@ inline void print(string content) noexcept{
  *   The string array that contains all the Quarzum's keywords and symbols.
 */
 
-const unordered_map<const char*, uint> prefabs = {
+const unordered_map<const char*, int8> prefabs = {
     {"int",1},
     {"number",2},
     {"string",3},
@@ -86,11 +88,6 @@ const unordered_map<const char*, uint> prefabs = {
     {"*", 56},
     {"/", 57},
     {"^", 58},
-    {"{", 59},
-    {"}", 60},
-    {"[", 61},
-    {"]", 62},
-    {";", 63},
     {">", 64},
     {"<", 65},
     {"==",66},
@@ -98,65 +95,6 @@ const unordered_map<const char*, uint> prefabs = {
     {"<=",68},
     {"%", 69}
 };
-
-/**
- * An object that stores a list of inmutable Tokens.
-*/
-class TokenList{
-    public:
-        /**
-         * Adds a new Token to the TokenList.
-         * @param t The new Token's type.
-         * @param v The new Token's value.
-        */
-        void addToken(TokenType t, qstring v) noexcept{
-            tokens.push_back({t,v});
-        }
-        /**
-         * Adds a new Token to the TokenList.
-         * @param t The new Token.
-        */
-        void addToken(Token t) noexcept{
-            tokens.push_back(t);
-        }
-        /**
-         * Returns an specified Token without deleting it.
-         * @param n The index of the target Token.
-         * @return The Token with index n inside the list.
-        */
-        const inline Token get(size_t n) noexcept{
-            if(n > size()){
-                return {};
-            }
-            return tokens.at(n);
-        }
-        /**
-         * @return The size of the TokenList.
-        */
-        inline size_t size() noexcept{
-            return tokens.size();
-        }
-
-        TokenList divide(size_t from = 0, size_t to = 1){
-            TokenList result;
-            for (size_t i = from; i < to; i++)
-            {
-                result.addToken(get(i));
-            }
-            return result;
-        }
-
-        void toString(){
-            for (size_t i = 0; i < tokens.size(); i++)
-            {
-                cout <<  tokens.at(i).type << " - " << tokens.at(i).value.value << "\n";
-            }
-            
-        }
-    private:
-        vector<Token> tokens;
-};
-
 const string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
 
 bool isSymbol(char c){

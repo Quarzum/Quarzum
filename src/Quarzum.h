@@ -1,6 +1,6 @@
 #pragma once
 using namespace std;
-
+typedef unsigned char int8;
 
 const bool DEBUGMODE = false;
 
@@ -15,10 +15,10 @@ const bool DEBUGMODE = false;
 #include <chrono>
 
 #include "lib/qstring.hpp"
+#include "lib/qtoken.hpp"
 
 #include "other/errorhandler.cpp"
 #include "qcomponent.hpp"
-#include "lexer/token.hpp"
 
 #include "source/source.hpp"
 #include "other/utils.cpp"

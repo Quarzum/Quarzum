@@ -1,5 +1,6 @@
 #pragma once
-
+using tokens::TokenList;
+using tokens::TokenType;
 class Tokenizer: public QComponent{
 public:
     // Constructor
@@ -39,7 +40,7 @@ public:
                 if(next == '"'){
                     consume(1);
                     isStringLiteral = false;
-                    addToken(str_lit);
+                    addToken(TokenType::str_lit);
                 }
                 continue;
             }
@@ -69,7 +70,7 @@ public:
                 if(isdigit(c)){
                     consume();
                     if(not isdigit(next)){
-                        addToken(int_lit);
+                        addToken(TokenType::int_lit);
                     }
                     continue;
                 }

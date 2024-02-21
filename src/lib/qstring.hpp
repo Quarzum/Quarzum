@@ -1,3 +1,4 @@
+#pragma once
 /**
  * A dynamic array of char made with the necessary methods to develop Quarzum with them.
 */
