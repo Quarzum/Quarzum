@@ -8,16 +8,16 @@ public:
     }
     // Converts a list of Tokens into a list of Statements
     vector<Statement> parse(){
-        repeat(i, input.size()){
+        for(; i < input.size(); i++){
             TokenType t = input.get(i).type;
             Expr e;
             switch (t)
             {
+            default:
+                break;
             case function_k:
                 if(followSyntax({id, left_par, right_par, left_cb, right_cb}))
                 {
-                    cout << "f: " << input.get(i+1).value.value << "\n";
-
                     output.push_back({func_stmt, {input.get(i+1).value.value}});
                 }
                 break;
@@ -52,7 +52,7 @@ public:
                     output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, input.get(i+3).value}});
                     break;
                 }
-                else if(followSyntax({id, semicolon}))
+                if(followSyntax({id, semicolon}))
                 {
                     varlist.addVariable({
                         .name = input.get(i+1).value, 
@@ -62,18 +62,19 @@ public:
                     output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, ZERO}});
                     break;
                 }
+                break;
             case str_k:
                 if(followSyntax({id, eq, str_lit, semicolon}))
                 {
                     output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, input.get(i+3).value}});
                     break;
                 }
-                else if(followSyntax({id, semicolon}))
+                if(followSyntax({id, semicolon}))
                 {
                     output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, ZERO}});
                     break;
                 }
-            
+                break;
             case id:
                 qstring name = input.get(i).value;
                 if(followSyntax({eq})){
@@ -86,13 +87,14 @@ public:
                     output.push_back({redec_stmt, {varlist.getVariable(name), e.value} });
                 }
                 break;
+            
             }
         }
         errorHandler.run();
         return output;
     }
 private:
-    uint i;
+    size_t i;
     vector<Statement> output;
     TokenList input;
     bool isType(uint a, TokenType b){

@@ -7,11 +7,11 @@
 using std::chrono::high_resolution_clock;
 using std::chrono::milliseconds;
 using std::chrono::duration_cast;
-int main(int argc, char *argv[])
+int main()
 {   
-     auto start = high_resolution_clock::now();
-     qstring path = "../code.qz";
-     Source source(path);
+    auto start = high_resolution_clock::now();
+    qstring path = "../code.qz";
+    Source source(path);
     Tokenizer t(source.getContent());
     Parser p(t.tokenize());
 

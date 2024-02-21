@@ -7,7 +7,7 @@ class Source: public QComponent{
 private:
     qstring path;
 public:
-    Source(qstring path): path(move(path)){
+    Source(const qstring path): path(move(path)){
         if(not(path.endsWith(".qz"))){
             errorHandler.errCritical({file_not_found_err, 0, "Invalid format."});
         }
@@ -27,5 +27,6 @@ public:
             return result;
         }
         errorHandler.errCritical({file_not_found_err, 0, "The specified path does not match any file."});
+        return "";
     }
 };

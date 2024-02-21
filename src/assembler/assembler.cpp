@@ -34,7 +34,9 @@ const string analyze(vector<Statement> input) noexcept{
             output << "     movq $" << any_cast<Token>(s.args[1]).value.value  << ", " << any_cast<qstring>(s.args[0]).value << "\n\n";
             break;
     
+        default: break;
         }
+        
     }
     output << "    movq $60, %rax\n    movq $0, %rdi\n    syscall\n"; // exit 0 if not specified
     output << ".data\n";

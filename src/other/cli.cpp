@@ -23,7 +23,7 @@ public:
     }
 private:
     string command;
-    const bool isFlag(string arg) noexcept{
-        return arg[0] = '-' and arg[1] == '-';
+    bool isFlag(string arg) noexcept{
+        return (arg[0] == '-' and arg[1] == '-');
     }
 };

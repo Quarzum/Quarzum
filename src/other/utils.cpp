@@ -27,7 +27,7 @@ inline void print(string content) noexcept{
  *   The string array that contains all the Quarzum's keywords and symbols.
 */
 
-const unordered_map<char*, uint> prefabs = {
+const unordered_map<const char*, uint> prefabs = {
     {"int",1},
     {"number",2},
     {"string",3},
@@ -67,37 +67,36 @@ const unordered_map<char*, uint> prefabs = {
     {"async",37},
     {"await",38},
     {"operator",39},
-    {"foreach", 40},
-    {"in", 41},
-    {"=", 513},
-    {"(",514},
-    {")",515},
-    {"!!", 516},
-    {"&", 517},
-    {"|", 518},
-    {"$", 519},
-    {"!", 520},
-    {"&&",521},
-    {"||",522},
-    {"$$",523},
-    {".", 524},
-    {",", 525},
-    {"+", 526},
-    {"-", 527},
-    {"*", 528},
-    {"/", 529},
-    {"^", 530},
-    {"{", 531},
-    {"}", 532},
-    {"[", 533},
-    {"]", 534},
-    {";", 535},
-    {">", 536},
-    {"<", 537},
-    {"==",538},
-    {">=",539},
-    {"<=",540},
-    {"%", 541}
+    {"in", 40},
+    {"=", 41},
+    {"(",42},
+    {")",43},
+    {"!!", 44},
+    {"&", 45},
+    {"|", 46},
+    {"$", 47},
+    {"!", 48},
+    {"&&",49},
+    {"||",50},
+    {"$$",51},
+    {".", 52},
+    {",", 53},
+    {"+", 54},
+    {"-", 55},
+    {"*", 56},
+    {"/", 57},
+    {"^", 58},
+    {"{", 59},
+    {"}", 60},
+    {"[", 61},
+    {"]", 62},
+    {";", 63},
+    {">", 64},
+    {"<", 65},
+    {"==",66},
+    {">=",67},
+    {"<=",68},
+    {"%", 69}
 };
 
 /**
@@ -125,7 +124,7 @@ class TokenList{
          * @param n The index of the target Token.
          * @return The Token with index n inside the list.
         */
-        const inline Token get(int n) noexcept{
+        const inline Token get(size_t n) noexcept{
             if(n > size()){
                 return {};
             }
@@ -134,11 +133,11 @@ class TokenList{
         /**
          * @return The size of the TokenList.
         */
-        const inline int size() noexcept{
+        inline size_t size() noexcept{
             return tokens.size();
         }
 
-        TokenList divide(int from = 0, int to = 1){
+        TokenList divide(size_t from = 0, size_t to = 1){
             TokenList result;
             for (size_t i = from; i < to; i++)
             {
@@ -160,20 +159,20 @@ class TokenList{
 
 const string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
 
-const bool isSymbol(char c){
+bool isSymbol(char c){
     qstring s = c;
     auto it = prefabs.find(s.value);
     return it != prefabs.end();
 }
 
-const int search(qstring buff, int min = 0){
+int search(qstring buff, const unsigned int min = 0){
     auto it = prefabs.find(buff.value);
     if(it != prefabs.end() and it->second > min){
         return it->second;
     }
     return 0;
 }
-const int search(char c, int min = 0){
+int search(char c,const unsigned int min = 0){
     qstring buff = c;
     auto it = prefabs.find(buff.value);
     if(it != prefabs.end() and it->second > min){
@@ -182,6 +181,6 @@ const int search(char c, int min = 0){
     return 0;
 }
 
-const bool isIntLiteral(TokenType t){
+bool isIntLiteral(TokenType t){
     return t == TokenType::int_lit || t == TokenType::byte_lit;
 }

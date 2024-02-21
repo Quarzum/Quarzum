@@ -76,15 +76,12 @@ public:
                 // Punctuation
                 if(search(c) > 0){
                     consume();
-                    addToken(TokenType(search(c) + 512));
+                    addToken(TokenType(search(c)));
                     continue;
                 }
-                else{
-                    qstring errmsg =  "Unexpected token ";
-                    errmsg += c;
-                    errorHandler.err({lexical_err, line, errmsg.value});
-                }
-                
+                qstring errmsg =  "Unexpected token ";
+                errmsg += c;
+                errorHandler.err({lexical_err, line, errmsg.value});      
             }        
         }
         errorHandler.run();

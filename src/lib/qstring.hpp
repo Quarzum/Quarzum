@@ -1,31 +1,30 @@
-typedef unsigned int uint;
 /**
  * A dynamic array of char made with the necessary methods to develop Quarzum with them.
 */
 class qstring{
     public:
         char* value;
-        qstring(char* input){
+        qstring(const char* input){
             capacity = 0;
             for (; input[capacity]; capacity++){}
             value = new char[capacity];
-            for (uint i = 0; input[i]; i++)
+            for (size_t i = 0; input[i]; i++)
             {
                 value[i] = input[i];
             }
         }
 
-        qstring(uint c = 0){
+        qstring(size_t c = 0){
             capacity = c;
             value = new char[c];
         }
 
-        char operator[](uint i){
+        char operator[](size_t i){
             return value[i];
         }
 
-        qstring operator=(char* input){
-            for (uint i = 0; i < capacity; i++)
+        void operator=(char* input){
+            for (size_t i = 0; i < capacity; i++)
             {
                 if(input[i] && value[i]){
                     value[i] = input[i];
@@ -39,8 +38,8 @@ class qstring{
         }
 
         qstring operator+(qstring extend){
-            uint l = length();
-            uint space = l + extend.length();
+            size_t l = length();
+            size_t space = l + extend.length();
             char* result = new char[space];
             for(int i = 0; value[i]; i++){
                 result[i] = value[i];
@@ -55,7 +54,7 @@ class qstring{
             if(length() + extend.length() > capacity){
                 reAlloc(capacity + capacity/2);
             }
-            for (uint i = 0; i < extend.length(); i++)
+            for (size_t i = 0; i < extend.length(); i++)
             {
                 value[i + length()] = extend[i];
             }
@@ -63,12 +62,12 @@ class qstring{
         }
 
         void operator+=(const char* extend){
-            uint l = 0;
+            size_t l = 0;
             for(;extend[l];l++){}
             if(length() + l > capacity){
                 reAlloc(capacity + capacity/2);
             }
-            for (uint i = 0; i < l; i++)
+            for (size_t i = 0; i < l; i++)
             {
                 value[i + length()] = extend[i];
             }
@@ -76,7 +75,7 @@ class qstring{
         }
 
         bool operator==(qstring target){
-            uint finish = 0;
+            size_t finish = 0;
             if(target.length() > length()){
                 finish = target.length();
             }
@@ -84,7 +83,7 @@ class qstring{
                 finish = length();
             }
             
-            for (uint i = 0; i < finish; i++)
+            for (size_t i = 0; i < finish; i++)
             {
                 if(target[i] != value[i]){
                     return false;
@@ -93,11 +92,15 @@ class qstring{
             return true;
             
         }
+
+        char at(size_t n){
+            return value[n];
+        }
         /**
          * @return The length of the qstring.
         */
-        constexpr uint length() const{
-            uint length = 0;
+        constexpr size_t length() const{
+            size_t length = 0;
             for (; value[length]; length++){}
             return length;
         }
@@ -105,7 +108,7 @@ class qstring{
          * Converts all the characters of the qstring into null characters.
         */
         void clear(){
-            for(uint i = 0; value[i]; i++){
+            for(size_t i = 0; value[i]; i++){
                 value[i] = 0;
             }
         }
@@ -114,10 +117,10 @@ class qstring{
          * @param ending The text to be compared.
          * @return true if the qstring ends with the ending, false otherwise.
         */
-        constexpr bool endsWith(char* ending) const{
-            uint l= 0;
+        constexpr bool endsWith(const char* ending) const{
+            size_t l= 0;
             for(; ending[l]; l++){}
-            for (uint i = 0; i < l; i++)
+            for (size_t i = 0; i < l; i++)
             {
                 if(value[i + length() - l] != ending[i]){
                     return false;
@@ -132,9 +135,9 @@ class qstring{
             value[length() - 1] = 0;
         }
     private:
-        uint capacity;  
+        size_t capacity;  
 
-        void reAlloc(int newCapacity){
+        void reAlloc(const size_t newCapacity){
             char* newValue = new char[newCapacity];
             for(int i = 0; value[i]; i++){
                 newValue[i] = value[i];
