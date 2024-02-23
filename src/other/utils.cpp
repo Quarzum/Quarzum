@@ -13,17 +13,12 @@ void createFile(const string name,const string content = "") noexcept{
     out.close();
 }
 
-/**
- *   Prints a string on the console if the compiler has the isDebugging condition true.
- *   @param content The content that will be printed. 
-*/
+// Prints a string on the console if the compiler has the isDebugging condition true.
 void print(const string content) noexcept{
     if(isDebugging == true){ cout << content << '\n';}
 }
 
-/**
- *   The string array that contains all the Quarzum's keywords and symbols.
-*/
+// The string array that contains all the Quarzum's keywords and symbols.
 const unordered_map<string, unsigned char> prefabs = {
     {"int",1},
     {"number",2},
@@ -123,7 +118,6 @@ const int search(const char c,const int min = 0){
 const bool isIntLiteral(const TokenType t){
     return t == TokenType::int_lit || t == TokenType::byte_lit;
 }
-
 
 const wstring charToString(const char n){
     wstring s;
