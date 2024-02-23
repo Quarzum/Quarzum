@@ -17,7 +17,7 @@ enum ErrorType{
 struct Error{
     ErrorType type;
     uint line;
-    const char* description;
+    string description;
 };
 
 // Stores a limited amount of Errors. At the end of a process, it should be executed by the run() method.

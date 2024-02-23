@@ -1,8 +1,6 @@
 #pragma once
 #include "../Quarzum.h"
-using tokens::Token;
-using tokens::TokenType;
-using tokens::TokenList;
+
 class Parser: public QComponent{
 public:
     Parser(TokenList input){
@@ -10,51 +8,51 @@ public:
     }
     // Converts a list of Tokens into a list of Statements
     vector<Statement> parse(){
-        for(; i < input.size(); i++){
+        repeat(i, input.size()){
             TokenType t = input.get(i).type;
             Expr e;
             switch (t)
             {
-            default:
-                break;
-            case TokenType::function_k:
-                if(followSyntax({TokenType::id, TokenType::left_par, TokenType::right_par, TokenType::left_cb, TokenType::right_cb}))
+            case function_k:
+                if(followSyntax({id, left_par, right_par, left_cb, right_cb}))
                 {
-                    output.push_back({func_stmt, {input.get(i+1).value.value}});
+                    cout << "f: " + input.get(i+1).value << "\n";
+
+                    output.push_back({func_stmt, {input.get(i+1).value}});
                 }
                 break;
-            case TokenType::exit_k:
+            case exit_k:
                 i++;
                 e = parseExpr(getExprValids());
                 if(e.type != INT){
                     errorHandler.err({syntax_err,0,"Exit statement should have an integer exit code"});
                     break;
                 }               
-                if(input.get(i).type != TokenType::semicolon){
+                if(input.get(i).type != semicolon){
                     errorHandler.err({syntax_err,0,"Expected semicolon"});
                     break;
                 } 
                 output.push_back({exit_stmt, {e.value}});
                 break;
         
-            case TokenType::out_k:
-                if(followSyntax({TokenType::left_par, TokenType::str_lit, TokenType::right_par, TokenType::semicolon}))
+            case out_k:
+                if(followSyntax({left_par, str_lit, right_par, semicolon}))
                 {
                     output.push_back({out_stmt, {input.get(i+2).value}});
                 }
                 break;
-            case TokenType::int_k:
-                if(followSyntax({TokenType::id, TokenType::eq, TokenType::int_lit, TokenType::semicolon}))
+            case int_k:
+                if(followSyntax({id, eq, int_lit, semicolon}))
                 {
                     varlist.addVariable({
                         .name = input.get(i+1).value, 
                         .type = input.get(i).value, 
-                        .value = input.get(i+3).value
+                        .value = input.get(i+3).value 
                     });
                     output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, input.get(i+3).value}});
                     break;
                 }
-                if(followSyntax({TokenType::id, TokenType::semicolon}))
+                else if(followSyntax({id, semicolon}))
                 {
                     varlist.addVariable({
                         .name = input.get(i+1).value, 
@@ -64,22 +62,21 @@ public:
                     output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, ZERO}});
                     break;
                 }
-                break;
-            case TokenType::str_k:
-                if(followSyntax({TokenType::id, TokenType::eq, TokenType::str_lit, TokenType::semicolon}))
+            case str_k:
+                if(followSyntax({id, eq, str_lit, semicolon}))
                 {
                     output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, input.get(i+3).value}});
                     break;
                 }
-                if(followSyntax({TokenType::id, TokenType::semicolon}))
+                else if(followSyntax({id, semicolon}))
                 {
                     output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, ZERO}});
                     break;
                 }
-                break;
-            case TokenType::id:
-                qstring name = input.get(i).value;
-                if(followSyntax({TokenType::eq})){
+            
+            case id:
+                string name = input.get(i).value;
+                if(followSyntax({eq})){
                     i++;
                     e = parseExpr(getExprValids());
                     // if(input.get(i).type != semicolon){
@@ -89,14 +86,13 @@ public:
                     output.push_back({redec_stmt, {varlist.getVariable(name), e.value} });
                 }
                 break;
-            
             }
         }
         errorHandler.run();
         return output;
     }
 private:
-    size_t i;
+    uint i;
     vector<Statement> output;
     TokenList input;
     bool isType(uint a, TokenType b){
@@ -118,7 +114,7 @@ private:
         // 1. Get every possible expression token - FINISHED
         while(isExprValid(input.get(i).type)){
             exprValids.addToken(input.get(i));
-            cout << input.get(i).value.value << "t - ";
+            cout << input.get(i).value << "t - ";
             i++; 
         }
         return exprValids;
@@ -154,6 +150,6 @@ private:
         //     }
         // }
 
-        return {INT, Token{TokenType::int_lit, "7"}};
+        return {INT, Token{int_lit, "7"}};
     }
 };

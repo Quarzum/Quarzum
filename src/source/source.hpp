@@ -5,10 +5,10 @@
 */
 class Source: public QComponent{
 private:
-    qstring path;
+    string path;
 public:
-    Source(const qstring path): path(move(path)){
-        if(not(path.endsWith(".qz"))){
+    Source(const string path): path(move(path)){
+        if(not(this->path.substr(this->path.size() -3) == ".qz")){
             errorHandler.errCritical({file_not_found_err, 0, "Invalid format."});
         }
     }
@@ -17,7 +17,7 @@ public:
     */
     const string getContent(){
         string line, result;
-        ifstream input(path.value);
+        ifstream input(path);
         if(input.is_open()){
             while (getline(input, line))
             {
@@ -27,6 +27,5 @@ public:
             return result;
         }
         errorHandler.errCritical({file_not_found_err, 0, "The specified path does not match any file."});
-        return "";
     }
 };

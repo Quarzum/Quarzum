@@ -1,6 +1,5 @@
 #pragma once
-using tokens::TokenList;
-using tokens::TokenType;
+
 class Tokenizer: public QComponent{
 public:
     // Constructor
@@ -40,7 +39,7 @@ public:
                 if(next == '"'){
                     consume(1);
                     isStringLiteral = false;
-                    addToken(TokenType::str_lit);
+                    addToken(str_lit);
                 }
                 continue;
             }
@@ -70,19 +69,17 @@ public:
                 if(isdigit(c)){
                     consume();
                     if(not isdigit(next)){
-                        addToken(TokenType::int_lit);
+                        addToken(int_lit);
                     }
                     continue;
                 }
                 // Punctuation
                 if(search(c) > 0){
                     consume();
-                    addToken(TokenType(search(c)));
+                    addToken(TokenType(search(c) + 512));
                     continue;
                 }
-                qstring errmsg =  "Unexpected token ";
-                errmsg += c;
-                errorHandler.err({lexical_err, line, errmsg.value});      
+                errorHandler.err({lexical_err, line, "Unexpected token " + c});
             }        
         }
         errorHandler.run();
@@ -90,8 +87,7 @@ public:
     }
 private:
     uint i, line;
-    string input;
-    qstring buffer;
+    string input, buffer;
     TokenList output;
     /**
      * Returns the char at the (n + i) position. 

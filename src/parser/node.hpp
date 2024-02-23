@@ -1,5 +1,5 @@
 #pragma once
-using tokens::TokenType;
+
 enum exprType{
     STRING,
     INT,
@@ -23,14 +23,14 @@ struct BinaryExpr{
 
 bool isExprValid(TokenType t){
     return(
-        t == TokenType::int_lit || 
+        t == int_lit || 
         t == TokenType::plus || 
         t == TokenType::minus ||
-        t == TokenType::prod ||
-        t == TokenType::division ||
-        t == TokenType::remainder
+        t == prod ||
+        t == division ||
+        t == remainder
         
     );
 }
 
-Expr nullExpr = {NULLEXPR, ""};
+Expr nullExpr = {NULLEXPR};
