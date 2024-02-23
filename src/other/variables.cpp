@@ -1,12 +1,10 @@
 #pragma once
-
+#include "../Quarzum.h"
 struct Variable{
     string name;
     string type;
     string value;
 };
-
-
 
 class VarList{
 public:

@@ -33,4 +33,4 @@ bool isExprValid(TokenType t){
     );
 }
 
-Expr nullExpr = {NULLEXPR};
+const Expr nullExpr = {NULLEXPR, ""};

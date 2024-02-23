@@ -25,6 +25,6 @@ int main()
  
 // To get the value of duration use the count()
 // member function on the duration object
-    cout << duration.count() << "\n";
+    cout << duration.count() << '\n';
     return 0;
 }

@@ -12,7 +12,7 @@ public:
         bool isSingleComment = false;
         bool isStringLiteral = false;
 
-        for(;m_index < m_input.length(); m_index++){
+        for(; m_index < m_input.length(); ++m_index){
             // The actual character
             char c = get();
             // The next character (null if c is the last character)
@@ -41,15 +41,15 @@ public:
             // Multim_line and single m_line comments
             if(opensComment(c, next)){
                 isComment = true; 
-                m_index++; 
+                ++m_index; 
                 continue;
             }
             if(closesComment(c, next)){
                 isComment = false; 
-                m_index++;
+                ++m_index;
                 continue;
             }
-            if(c == '/' and next == '/'){isSingleComment = true; m_index++; continue;}
+            if(c == '/' and next == '/'){isSingleComment = true; ++m_index; continue;}
 
             if(not (isspace(c) or isComment or isSingleComment)){
                 // [a-zA-Z][a-zA-Z0-9]+

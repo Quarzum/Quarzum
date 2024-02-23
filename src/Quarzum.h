@@ -1,16 +1,11 @@
 #pragma once
 using namespace std;
-
-
-const bool DEBUGMODE = false;
-
 #include <string>
 #include <iostream>
 #include <vector>
 #include <any>
 #include <fstream> 
 #include <sstream>
-#include <variant>
 #include <unordered_map>
 #include <chrono>
 

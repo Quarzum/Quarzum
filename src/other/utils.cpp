@@ -1,7 +1,7 @@
 #pragma once
 #include "../Quarzum.h"
 const string ZERO = "0";
-bool isDebugging = false;
+
 /**
  *   Creates a new file and writes content inside it.
  *   @param name The name of the created file.
@@ -11,11 +11,6 @@ void createFile(const string name,const string content = "") noexcept{
     ofstream out(name);
     out << content;
     out.close();
-}
-
-// Prints a string on the console if the compiler has the isDebugging condition true.
-void print(const string content) noexcept{
-    if(isDebugging == true){ cout << content << '\n';}
 }
 
 // The string array that contains all the Quarzum's keywords and symbols.
@@ -91,21 +86,21 @@ const unordered_map<string, unsigned char> prefabs = {
 
 const string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
 
-const bool isSymbol(const char c){
+bool isSymbol(const char c){
     string s;
     s = c;
     auto it = prefabs.find(s);
     return it != prefabs.end();
 }
 
-const int search(const string buff,const int min = 0){
+int search(const string buff,const int min = 0){
     auto it = prefabs.find(buff);
     if(it != prefabs.end() and it->second > min){
         return it->second;
     }
     return 0;
 }
-const int search(const char c,const int min = 0){
+int search(const char c,const int min = 0){
     string buff;
     buff += c;
     auto it = prefabs.find(buff);
@@ -113,10 +108,6 @@ const int search(const char c,const int min = 0){
         return it->second;
     }
     return 0;
-}
-
-const bool isIntLiteral(const TokenType t){
-    return t == TokenType::int_lit || t == TokenType::byte_lit;
 }
 
 const wstring charToString(const char n){

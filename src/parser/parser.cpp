@@ -3,11 +3,11 @@
 
 class Parser: public QComponent{
 public:
-    Parser(TokenList input): input(move(input)){}
+    Parser(TokenList input): m_input(input){}
     // Converts a list of Tokens into a list of Statements
-    vector<Statement> parse(){
-        for(i = 0; i< input.size(); i++){
-            TokenType t = input.get(i).type;
+    vector<Statement> parse() noexcept {
+        for(; m_index < m_input.size(); ++m_index){
+            TokenType t = m_input.get(m_index).type;
             /**
              * [data-type] [id] [;]  
              *          and  
@@ -16,14 +16,14 @@ public:
             if(isDataType(t)){
                 if(getType(1) == id){
                     if(getType(2) == eq){
-                        i += 3;
+                        m_index += 3;
                         // get expr and semicolon
                         Expr e = parseExpr(getExprValids());
 
                         if(getType(0) == semicolon){
                             // good path (int i = 5;)
-                            cout << "- (" << input.get(i).value << ") " << input.get(i + 1).value << " (= expr)\n";
-                            i++;
+                            cout << "- (" << m_input.get(m_index).value << ") " << m_input.get(m_index + 1).value << " (= expr)\n";
+                            ++m_index;
                         }
                         else{
                             errorHandler.err({syntax_err, 0, "Expected semicolon"});
@@ -31,13 +31,13 @@ public:
                     }
                     else if(getType(2) == semicolon){
                         
-                        cout << "- (" << input.get(i).value << ") " << input.get(i + 1).value << "\n";
-                        i += 2;
+                        cout << "- (" << m_input.get(m_index).value << ") " << m_input.get(m_index + 1).value << "\n";
+                        m_index += 2;
                         // good path (int i;)
                         continue;
                     }
                     else{
-                        i += 1;
+                        m_index += 1;
                         errorHandler.err({syntax_err, 0, "Expected semicolon"});
                     }
                 }
@@ -50,26 +50,26 @@ public:
         return output;
     }
 private:
-    size_t i;
+    size_t m_index { 0 };
     vector<Statement> output;
-    TokenList input;
+    TokenList m_input;
 
-    bool isDataType(TokenType t){
+    bool isDataType(TokenType t) const noexcept {
         return (t == int_k);
     }
 
-    TokenType getType(int n){
-        return input.get(i+ n).type;
+    TokenType getType(int n) const noexcept{
+        return m_input.get(m_index + n).type;
     }
 
     TokenList getExprValids(){
 
         TokenList exprValids;
         // 1. Get every possible expression token - FINISHED
-        while(isExprValid(input.get(i).type)){
-            exprValids.addToken(input.get(i));
-            //cout << input.get(i).value << "t - ";
-            i++; 
+        while(isExprValid(m_input.get(m_index).type)){
+            exprValids.addToken(m_input.get(m_index));
+            //cout << m_input.get(i).value << "t - ";
+            m_index++; 
         }
         return exprValids;
     }

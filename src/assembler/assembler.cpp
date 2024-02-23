@@ -33,7 +33,8 @@ const string analyze(vector<Statement> input) noexcept{
         case redec_stmt:
             output << "     movq $"+any_cast<Token>(s.args[1]).value+", " + any_cast<string>(s.args[0]) + "\n\n";
             break;
-    
+        default:
+            break;
         }
     }
     output << "    movq $60, %rax\n    movq $0, %rdi\n    syscall\n"; // exit 0 if not specified
