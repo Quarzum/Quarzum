@@ -7,7 +7,7 @@ bool isDebugging = false;
  *   @param name The name of the created file.
  *   @param content The content that will be wrote inside the file.
 */
-void createFile(string name, string content = "") noexcept{
+void createFile(const string name,const string content = "") noexcept{
     ofstream out(name);
     out << content;
     out.close();
@@ -17,8 +17,8 @@ void createFile(string name, string content = "") noexcept{
  *   Prints a string on the console if the compiler has the isDebugging condition true.
  *   @param content The content that will be printed. 
 */
-void print(string content) noexcept{
-    if(isDebugging == true){ cout << content << "\n";}
+void print(const string content) noexcept{
+    if(isDebugging == true){ cout << content << '\n';}
 }
 
 /**
@@ -94,81 +94,23 @@ const unordered_map<string, unsigned char> prefabs = {
     {"%", 541}
 };
 
-/**
- * An object that stores a list of inmutable Tokens.
-*/
-class TokenList{
-    public:
-        /**
-         * Adds a new Token to the TokenList.
-         * @param t The new Token's type.
-         * @param v The new Token's value.
-        */
-        void addToken(TokenType t, string v) noexcept{
-            tokens.push_back({t,v});
-        }
-        /**
-         * Adds a new Token to the TokenList.
-         * @param t The new Token.
-        */
-        void addToken(Token t) noexcept{
-            tokens.push_back(t);
-        }
-        /**
-         * Returns an specified Token without deleting it.
-         * @param n The index of the target Token.
-         * @return The Token with index n inside the list.
-        */
-        const Token get(const int n) noexcept{
-            if(n > size()){
-                return {};
-            }
-            return tokens.at(n);
-        }
-        /**
-         * @return The size of the TokenList.
-        */
-        const int size() noexcept{
-            return tokens.size();
-        }
-
-        TokenList divide(int from = 0, int to = 1){
-            TokenList result;
-            for (size_t i = from; i < to; i++)
-            {
-                result.addToken(get(i));
-            }
-            return result;
-        }
-
-        void toString(){
-            for (size_t i = 0; i < tokens.size(); i++)
-            {
-                cout <<  tokens.at(i).type << " - " << tokens.at(i).value << "\n";
-            }
-            
-        }
-    private:
-        vector<Token> tokens;
-};
-
 const string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
 
-const bool isSymbol(char c){
+const bool isSymbol(const char c){
     string s;
     s = c;
     auto it = prefabs.find(s);
     return it != prefabs.end();
 }
 
-const int search(string buff, int min = 0){
+const int search(const string buff,const int min = 0){
     auto it = prefabs.find(buff);
     if(it != prefabs.end() and it->second > min){
         return it->second;
     }
     return 0;
 }
-const int search(char c, int min = 0){
+const int search(const char c,const int min = 0){
     string buff;
     buff += c;
     auto it = prefabs.find(buff);
@@ -178,12 +120,12 @@ const int search(char c, int min = 0){
     return 0;
 }
 
-const bool isIntLiteral(TokenType t){
+const bool isIntLiteral(const TokenType t){
     return t == TokenType::int_lit || t == TokenType::byte_lit;
 }
 
 
-const wstring charToString(char n){
+const wstring charToString(const char n){
     wstring s;
     s += n;
     return s;

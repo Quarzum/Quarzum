@@ -7,7 +7,7 @@
 using std::chrono::high_resolution_clock;
 using std::chrono::milliseconds;
 using std::chrono::duration_cast;
-int main(int argc, char *argv[])
+int main()
 {   
     auto start = high_resolution_clock::now();
     Source source("../code.qz");
@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
     //system("ld -o out out.o");
     //system("./out");
     auto stop = high_resolution_clock::now();
-auto duration = duration_cast<milliseconds>(stop - start);
+    auto duration = duration_cast<milliseconds>(stop - start);
  
 // To get the value of duration use the count()
 // member function on the duration object
-cout << duration.count() << "\n";
+    cout << duration.count() << "\n";
     return 0;
 }

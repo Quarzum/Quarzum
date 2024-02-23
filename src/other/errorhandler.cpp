@@ -28,10 +28,10 @@ class ErrorHandler{
                 for (size_t i = 0; i < errors.size(); i++)
                 {
                     if(errors.at(i).line > 0){
-                        cout << errToStr(errors.at(i).type).str() << " - " << errors.at(i).description << " at line " << errors.at(i).line << "\n"; 
+                        cout << errToStr(errors.at(i).type).str() << " - " << errors.at(i).description << " at line " << errors.at(i).line << '\n'; 
                     }
                     else{
-                        cout << errToStr(errors.at(i).type).str() << " - " << errors.at(i).description << "\n"; 
+                        cout << errToStr(errors.at(i).type).str() << " - " << errors.at(i).description << '\n'; 
                     }
                 }
                 

@@ -3,10 +3,7 @@
 class Tokenizer: public QComponent{
 public:
     // Constructor
-    Tokenizer(const string input){
-        this -> input = input;
-        line = 1;
-    }
+    Tokenizer(const string input): input(move(input)){}
     /** 
      *   Converts an input string into a list of Tokens.
      *   Algorithm time complexity: O(n).
@@ -18,7 +15,7 @@ public:
         bool isSingleComment = false;
         bool isStringLiteral = false;
 
-        for(i = 0; i < input.length(); i++){
+        for(; i < input.length(); i++){
             // The actual character
             char c = get();
             // The next character (null if c is the last character)
@@ -87,7 +84,8 @@ public:
         return output;
     }
 private:
-    size_t i, line;
+    size_t i{ 0 };
+    size_t line{ 1 };
     string input, buffer;
     TokenList output;
     /**
