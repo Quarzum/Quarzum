@@ -16,7 +16,7 @@ enum ErrorType{
 
 struct Error{
     ErrorType type;
-    uint line;
+    size_t line;
     string description;
 };
 

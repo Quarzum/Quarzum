@@ -1,8 +1,5 @@
 #pragma once
 #include "../Quarzum.h"
-typedef unsigned char int8;
-typedef unsigned int uint;
-#define repeat(d, r) for(d = 0; d < r; d++)
 const string ZERO = "0";
 bool isDebugging = false;
 /**
@@ -10,7 +7,7 @@ bool isDebugging = false;
  *   @param name The name of the created file.
  *   @param content The content that will be wrote inside the file.
 */
-inline void createFile(std::string name, std::string content = "") noexcept{
+void createFile(string name, string content = "") noexcept{
     ofstream out(name);
     out << content;
     out.close();
@@ -20,14 +17,14 @@ inline void createFile(std::string name, std::string content = "") noexcept{
  *   Prints a string on the console if the compiler has the isDebugging condition true.
  *   @param content The content that will be printed. 
 */
-inline void print(std::string content) noexcept{
-    if(isDebugging == true){ std::cout << content << "\n";}
+void print(string content) noexcept{
+    if(isDebugging == true){ cout << content << "\n";}
 }
+
 /**
  *   The string array that contains all the Quarzum's keywords and symbols.
 */
-
-const unordered_map<string, int8> prefabs = {
+const unordered_map<string, unsigned char> prefabs = {
     {"int",1},
     {"number",2},
     {"string",3},
@@ -122,7 +119,7 @@ class TokenList{
          * @param n The index of the target Token.
          * @return The Token with index n inside the list.
         */
-        const inline Token get(int n) noexcept{
+        const Token get(const int n) noexcept{
             if(n > size()){
                 return {};
             }
@@ -131,7 +128,7 @@ class TokenList{
         /**
          * @return The size of the TokenList.
         */
-        const inline int size() noexcept{
+        const int size() noexcept{
             return tokens.size();
         }
 
@@ -152,10 +149,10 @@ class TokenList{
             
         }
     private:
-        std::vector<Token> tokens;
+        vector<Token> tokens;
 };
 
-const std::string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
+const string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
 
 const bool isSymbol(char c){
     string s;

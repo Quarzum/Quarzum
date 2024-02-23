@@ -13,6 +13,7 @@ public:
      *   @return A deque of tokens.
     */
     const TokenList tokenize(){
+        
         bool isComment = false;
         bool isSingleComment = false;
         bool isStringLiteral = false;
@@ -86,14 +87,14 @@ public:
         return output;
     }
 private:
-    uint i, line;
+    size_t i, line;
     string input, buffer;
     TokenList output;
     /**
      * Returns the char at the (n + i) position. 
      * If the index is out of range, returns a null character.
     */
-    char get(uint n = 0) const{
+    char get(size_t n = 0) const{
         if(n + i < input.size()){
             return input[i+n];
         }
@@ -109,7 +110,7 @@ private:
     /**
      * The buffer will consume the character, advancing the index.
     */
-    void consume(uint n = 0){
+    void consume(size_t n = 0){
         buffer += get(n);
         i += n;
     }

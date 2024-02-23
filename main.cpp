@@ -14,11 +14,12 @@ int main(int argc, char *argv[])
 
     Tokenizer t(source.getContent());
     Parser p(t.tokenize());
+    vector<Statement> s = p.parse();
 
-    createFile("out.asm", analyze(p.parse()));
-    system("as -o out.o out.asm");
-    system("ld -o out out.o");
-    system("./out");
+    //createFile("out.asm", analyze(p.parse()));
+    //system("as -o out.o out.asm");
+    //system("ld -o out out.o");
+    //system("./out");
     auto stop = high_resolution_clock::now();
 auto duration = duration_cast<milliseconds>(stop - start);
  

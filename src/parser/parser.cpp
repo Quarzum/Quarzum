@@ -3,109 +3,63 @@
 
 class Parser: public QComponent{
 public:
-    Parser(TokenList input){
-        this -> input = input;
-    }
+    Parser(TokenList input): input(move(input)){}
     // Converts a list of Tokens into a list of Statements
     vector<Statement> parse(){
-        repeat(i, input.size()){
+        for(i = 0; i< input.size(); i++){
             TokenType t = input.get(i).type;
-            Expr e;
-            switch (t)
-            {
-            case function_k:
-                if(followSyntax({id, left_par, right_par, left_cb, right_cb}))
-                {
-                    cout << "f: " + input.get(i+1).value << "\n";
+            /**
+             * [data-type] [id] [;]  
+             *          and  
+             * [data-type] [id] [=] [expression] [;]
+            */
+            if(isDataType(t)){
+                if(getType(1) == id){
+                    if(getType(2) == eq){
+                        i += 3;
+                        // get expr and semicolon
+                        Expr e = parseExpr(getExprValids());
 
-                    output.push_back({func_stmt, {input.get(i+1).value}});
+                        if(getType(0) == semicolon){
+                            // good path (int i = 5;)
+                            cout << "- (" << input.get(i).value << ") " << input.get(i + 1).value << " (= expr)\n";
+                            i++;
+                        }
+                        else{
+                            errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                        }
+                    }
+                    else if(getType(2) == semicolon){
+                        
+                        cout << "- (" << input.get(i).value << ") " << input.get(i + 1).value << "\n";
+                        i += 2;
+                        // good path (int i;)
+                        continue;
+                    }
+                    else{
+                        i += 1;
+                        errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                    }
                 }
-                break;
-            case exit_k:
-                i++;
-                e = parseExpr(getExprValids());
-                if(e.type != INT){
-                    errorHandler.err({syntax_err,0,"Exit statement should have an integer exit code"});
-                    break;
-                }               
-                if(input.get(i).type != semicolon){
-                    errorHandler.err({syntax_err,0,"Expected semicolon"});
-                    break;
-                } 
-                output.push_back({exit_stmt, {e.value}});
-                break;
-        
-            case out_k:
-                if(followSyntax({left_par, str_lit, right_par, semicolon}))
-                {
-                    output.push_back({out_stmt, {input.get(i+2).value}});
+                else{
+                    errorHandler.err({syntax_err, 0, "Invalid syntax"});
                 }
-                break;
-            case int_k:
-                if(followSyntax({id, eq, int_lit, semicolon}))
-                {
-                    varlist.addVariable({
-                        .name = input.get(i+1).value, 
-                        .type = input.get(i).value, 
-                        .value = input.get(i+3).value 
-                    });
-                    output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, input.get(i+3).value}});
-                    break;
-                }
-                else if(followSyntax({id, semicolon}))
-                {
-                    varlist.addVariable({
-                        .name = input.get(i+1).value, 
-                        .type = input.get(i).value, 
-                        .value = ZERO
-                    });
-                    output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, ZERO}});
-                    break;
-                }
-            case str_k:
-                if(followSyntax({id, eq, str_lit, semicolon}))
-                {
-                    output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, input.get(i+3).value}});
-                    break;
-                }
-                else if(followSyntax({id, semicolon}))
-                {
-                    output.push_back({var_stmt, {input.get(i).value,input.get(i+1).value, ZERO}});
-                    break;
-                }
-            
-            case id:
-                string name = input.get(i).value;
-                if(followSyntax({eq})){
-                    i++;
-                    e = parseExpr(getExprValids());
-                    // if(input.get(i).type != semicolon){
-                    //     errorHandler.err({syntax_err,0,"Expected semicolon"});
-                    //     break;
-                    // }
-                    output.push_back({redec_stmt, {varlist.getVariable(name), e.value} });
-                }
-                break;
             }
         }
         errorHandler.run();
         return output;
     }
 private:
-    uint i;
+    size_t i;
     vector<Statement> output;
     TokenList input;
-    bool isType(uint a, TokenType b){
-        return input.get(i + a).type == b;
+
+    bool isDataType(TokenType t){
+        return (t == int_k);
     }
-    bool followSyntax(vector<TokenType> t){
-        for (size_t j = 0; j < t.size(); j++)
-        {
-            if(not isType(j + 1, t.at(j))){
-                return false;
-            }
-        }
-        return true;
+
+    TokenType getType(int n){
+        return input.get(i+ n).type;
     }
 
     TokenList getExprValids(){
@@ -114,7 +68,7 @@ private:
         // 1. Get every possible expression token - FINISHED
         while(isExprValid(input.get(i).type)){
             exprValids.addToken(input.get(i));
-            cout << input.get(i).value << "t - ";
+            //cout << input.get(i).value << "t - ";
             i++; 
         }
         return exprValids;
