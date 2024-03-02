@@ -7,7 +7,6 @@ using namespace std;
 #include <fstream> 
 #include <sstream>
 #include <unordered_map>
-#include <chrono>
 
 #include "other/errorhandler.cpp"
 #include "qcomponent.hpp"

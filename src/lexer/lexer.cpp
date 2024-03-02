@@ -1,58 +1,62 @@
 #pragma once
 #include "../Quarzum.h"
+
 class Tokenizer: public QComponent{
+
 public:
-    // Constructor
+
     Tokenizer(const string input) : m_input(input) {}
 
-    // Converts an input string into a list of Tokens.
-    TokenList tokenize() noexcept{
+    TokenList tokenize() {
         
         bool isComment = false;
         bool isSingleComment = false;
         bool isStringLiteral = false;
 
         for(; m_index < m_input.length(); ++m_index){
-            // The actual character
-            char c = get();
-            // The next character (null if c is the last character)
+
+            char c = get(0);
             char next = get(1);
 
-            // If there is a new m_line, sum 1 to the m_line number
             if(c == '\n'){
                 isSingleComment = false;
                 m_line++;
                 continue;
             }
-            if(c == '"' and not isStringLiteral){
+
+            if(c == '"' && !isStringLiteral){
                 isStringLiteral = true;
                 consume();
                 continue;
             }
+
             if(isStringLiteral){
                 consume();
                 if(next == '"'){
-                    consume(1);
+                    ++m_index;
+                    consume();
                     isStringLiteral = false;
                     addToken(str_lit);
                 }
                 continue;
             }
-            // Multim_line and single m_line comments
+
             if(opensComment(c, next)){
                 isComment = true; 
                 ++m_index; 
                 continue;
             }
+
             if(closesComment(c, next)){
                 isComment = false; 
                 ++m_index;
                 continue;
             }
-            if(c == '/' and next == '/'){isSingleComment = true; ++m_index; continue;}
 
-            if(not (isspace(c) or isComment or isSingleComment)){
-                // [a-zA-Z][a-zA-Z0-9]+
+            if(c == '/' && next == '/'){isSingleComment = true; ++m_index; continue;}
+
+            if(not (isspace(c) || isComment || isSingleComment)){
+                
                 if(isalpha(c)){
                     consume();
                     if(not isalnum(next)){
@@ -60,7 +64,7 @@ public:
                     }
                     continue;
                 }
-                // [0-9]+
+                
                 if(isdigit(c)){
                     consume();
                     if(not isdigit(next)){
@@ -68,7 +72,7 @@ public:
                     }
                     continue;
                 }
-                // Punctuation
+                
                 if(search(c) > 0){
                     consume();
                     addToken(TokenType(search(c) + 512));
@@ -86,29 +90,27 @@ private:
     string m_input, m_buff;
     TokenList m_output;
 
-    // Returns the char at the (n + i) position. If the index is out of range, returns a null character.
-    char get(const size_t n = 0) const noexcept{
+    char get(const size_t n) const {
         if(n + m_index < m_input.size()){
             return m_input[m_index+n];
         }
         return 0;
     }
 
-    // Adds a new Token to the TokenList and clears the buffer.
-    void addToken(const TokenType t) noexcept{
-        m_output.addToken({t,m_buff});
+    void addToken(const TokenType t) {
+        m_output.addToken({type: t, value: m_buff});
         m_buff.clear();
     }
 
-    // The buffer will consume the character, advancing the index.
-    void consume(const size_t n = 0) noexcept{
-        m_buff += get(n);
-        m_index += n;
+    void consume() {
+        m_buff += get(0);
     }
-    bool opensComment(const char a, const char b) const noexcept {
-        return a == '/' and b == '*';
+
+    bool opensComment(const char a, const char b) const {
+        return a == '/' && b == '*';
     }
-    bool closesComment(const char a, const char b) const noexcept {
-        return a == '*' and b == '/';
+
+    bool closesComment(const char a, const char b) const {
+        return a == '*' && b == '/';
     }
 };

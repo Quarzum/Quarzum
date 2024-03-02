@@ -1,0 +1,98 @@
+int i = -4;
+int j;
+
+number pi = 3.14;
+
+char c = '\n';
+
+string s = "Hello world!";
+
+const uint = 7; // constant, positive integer
+
+byte b = 32;
+
+bool n = false;
+
+long int lnumber = 2424153513255;
+short number snumber = 324.232
+
+function print(string content) {
+    out(content);
+}
+
+// single comment
+
+/* multi-line
+comment */
+
+int sum(int a, int b){
+    return a + b;
+}
+
+var myVar = 4; // any type is allowed
+
+string response = input("What is your name?");
+
+byte nums[4] = [2,45,32,1];
+
+if(i > 5){
+
+}
+
+for(int k = 0; k < 45; k++){
+
+}
+
+foreach(character in response){
+    continue;
+}
+
+while(n == true){
+    break;
+}
+
+switch (myVar){
+    case 7:
+        break;
+
+    case "string":
+        break;
+}
+
+import Math from "./Math.qz";
+
+exit(0); // exits the program
+
+repeat(7){
+    out(s);
+}
+
+try{
+    int m = 7 / 0;
+}
+catch{
+    out("Exception");
+}
+finally{
+    break;
+}
+
+enum Type {keyword, value, symbol};
+
+struct Token{
+    Type t;
+    string value;
+}
+
+class MyClass{
+    public int num = 89;
+    private number q = 342.55353;
+
+    constructor(int n){
+        this.num = n;
+    }
+
+    function print(){
+        out("Num: " + num);
+    }
+}

@@ -1,6 +1,6 @@
 #pragma once
 
-enum TokenType{
+enum TokenType {
     // 0x0 => Keywords
     int_k       = 0x001,
     num_k       = 0x002,
@@ -92,7 +92,7 @@ enum TokenType{
 };
 
 // A Token is the basic unit of recognition of the lexer
-struct Token{
+struct Token {
     TokenType type;
     string value;
 };

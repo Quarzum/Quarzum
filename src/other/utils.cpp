@@ -7,7 +7,7 @@ const string ZERO = "0";
  *   @param name The name of the created file.
  *   @param content The content that will be wrote inside the file.
 */
-void createFile(const string name,const string content = "") noexcept{
+void createFile(const string name,const string content = "") {
     ofstream out(name);
     out << content;
     out.close();
