@@ -1,13 +1,17 @@
 #pragma once
 // This class manages the input file, creating a Source object with a specified path
 class Source: public QComponent{
+
 public:
+
     Source(const string path): m_path(path){
+
         if(m_path.substr(m_path.size() - 3) != ".qz") {
             errorHandler.errCritical({file_not_found_err, 0, "Invalid format."});
         }
+
     }
-    // Returns the input file content
+    
     const string getContent() {
         string line, result;
         ifstream input(m_path);
@@ -19,6 +23,9 @@ public:
         errorHandler.errCritical({file_not_found_err, 0, "The specified path does not match any file."});
         return "";        
     }
+
 private:
+
     string m_path;
+
 };

@@ -1,91 +1,78 @@
 #pragma once
 #include "../Quarzum.h"
-
 class Tokenizer: public QComponent{
 
 public:
 
     Tokenizer(const string input) : m_input(input) {}
 
-    TokenList tokenize() {
-        
-        bool isComment = false;
-        bool isSingleComment = false;
-        bool isStringLiteral = false;
+    TokenList tokenize() { 
 
-        for(; m_index < m_input.length(); ++m_index){
+        for(m_index = 0; m_index < m_input.length(); ++m_index){
 
-            char c = get(0);
-            char next = get(1);
-
-            if(c == '\n'){
-                isSingleComment = false;
-                m_line++;
-                continue;
-            }
-
-            if(c == '"' && !isStringLiteral){
-                isStringLiteral = true;
-                consume();
-                continue;
-            }
-
-            if(isStringLiteral){
-                consume();
-                if(next == '"'){
-                    ++m_index;
+            if(get(0) == '"'){
+                do{
                     consume();
-                    isStringLiteral = false;
-                    addToken(str_lit);
                 }
+                while(get(0) != '"');
+                consume();
+                addToken(str_lit);
                 continue;
             }
 
-            if(opensComment(c, next)){
-                isComment = true; 
-                ++m_index; 
-                continue;
-            }
-
-            if(closesComment(c, next)){
-                isComment = false; 
+            if(get(0) == '/' && get(1) == '*'){
+                while (get(0) != '*' || get(1) != '/')
+                {
+                    ++m_index;
+                }
                 ++m_index;
                 continue;
             }
 
-            if(c == '/' && next == '/'){isSingleComment = true; ++m_index; continue;}
+            if(get(0) == '/' && get(1) == '/'){
+                while(get(0) != '\n'){
+                    ++m_index;
+                } 
+                ++m_line; 
+                continue;
+            }
 
-            if(not (isspace(c) || isComment || isSingleComment)){
+            if(not (isspace(get(0)))){
                 
-                if(isalpha(c)){
+                if(isalpha(get(0))){
                     consume();
-                    if(not isalnum(next)){
-                        addToken(TokenType(search(m_buff)));
+                    while(isalpha(get(0)) || isdigit(get(0))){
+                        consume();
                     }
+                    addToken(TokenType(search(m_buff)));
                     continue;
                 }
                 
-                if(isdigit(c)){
+                if(isdigit(get(0))){
+                    bool isFloat = false;
                     consume();
-                    if(not isdigit(next)){
-                        addToken(int_lit);
+                    while(isdigit(get(0)) || (get(0) == '.' && !isFloat)){
+                        isFloat = get(0) == '.';
+                        consume();
                     }
+                    addToken(isFloat? num_lit : int_lit);
                     continue;
                 }
                 
-                if(search(c) > 0){
+                if(search(get(0)) > 0){
                     consume();
-                    addToken(TokenType(search(c) + 512));
+                    addToken(TokenType(search(get(0)) + 512));
                     continue;
                 }
-                errorHandler.err({lexical_err, m_line, "Unexpected token " + c});
+                errorHandler.err({lexical_err, m_line, "Unexpected token " + get(0)});
             }        
         }
         errorHandler.run();
         return m_output;
     }
 private:
-    size_t m_index { 0 };
+
+    size_t m_index;
     size_t m_line  { 1 };
     string m_input, m_buff;
     TokenList m_output;
@@ -104,13 +91,7 @@ private:
 
     void consume() {
         m_buff += get(0);
+        ++m_index;
     }
 
-    bool opensComment(const char a, const char b) const {
-        return a == '/' && b == '*';
-    }
-
-    bool closesComment(const char a, const char b) const {
-        return a == '*' && b == '/';
-    }
 };

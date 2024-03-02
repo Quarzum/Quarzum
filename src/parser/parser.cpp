@@ -2,17 +2,15 @@
 #include "../Quarzum.h"
 
 class Parser: public QComponent{
+    
 public:
+
     Parser(TokenList input): m_input(input){}
     // Converts a list of Tokens into a list of Statements
     vector<Statement> parse() noexcept {
         for(; m_index < m_input.size(); ++m_index){
             TokenType t = m_input.get(m_index).type;
-            /**
-             * [data-type] [id] [;]  
-             *          and  
-             * [data-type] [id] [=] [expression] [;]
-            */
+
             if(isDataType(t)){
                 if(getType(1) == id){
                     if(getType(2) == eq){
