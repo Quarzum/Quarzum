@@ -1,11 +1,11 @@
 #pragma once
 // An object that stores a list of inmutable Tokens.
 class TokenList {
-public:
-    // Adds a new Token to the TokenList
-    void addToken(Token t){ m_tokens.push_back(t); }
 
-    // Returns the nth token. If that token doesn't exist, returns a null token.
+public:
+
+    void addToken(const Token t){ m_tokens.push_back(t); }
+
     Token get(const size_t n) const{
         if(n > size()){
             return {};
@@ -13,7 +13,6 @@ public:
         return m_tokens.at(n);
     }
 
-    // The size of the TokenList
     size_t size() const{ return m_tokens.size(); }
 
     // Creates a TokenList that is a fragment of the original.
@@ -25,6 +24,9 @@ public:
         }
         return result;
     }
+
 private:
+
     vector<Token> m_tokens;
+
 };

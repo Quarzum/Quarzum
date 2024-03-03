@@ -1,4 +1,5 @@
 #pragma once
+#include "../Quarzum.h"
 class CLI: public QComponent{
 public:
     inline CLI(char* args[]){

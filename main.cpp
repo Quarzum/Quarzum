@@ -5,7 +5,13 @@ int main()
     Source source("../code.qz");
 
     Tokenizer t(source.getContent());
-    Parser p(t.tokenize());
+    TokenList tok = t.tokenize();
+    for (size_t i = 0; i < tok.size(); i++)
+    {
+        cout << tok.get(i).value << '\n';
+    }
+    
+    Parser p(tok);
     vector<Statement> s = p.parse();
 
     //createFile("out.asm", analyze(p.parse()));

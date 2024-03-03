@@ -11,7 +11,7 @@ public:
         for(m_index = 0; m_index < m_input.length(); ++m_index){
 
             if(get(0) == '"'){
-                do{
+                do {
                     consume();
                 }
                 while(get(0) != '"');
@@ -30,38 +30,42 @@ public:
             }
 
             if(get(0) == '/' && get(1) == '/'){
-                while(get(0) != '\n'){
+                while(get(0) != '\n') 
+                {
                     ++m_index;
                 } 
                 ++m_line; 
                 continue;
             }
 
-            if(not (isspace(get(0)))){
+            if(not (isspace(get(0)))) {
                 
-                if(isalpha(get(0))){
+                if(isalpha(get(0))) {
                     consume();
-                    while(isalpha(get(0)) || isdigit(get(0))){
+                    while(isalpha(get(0)) || isdigit(get(0))) {
                         consume();
                     }
                     addToken(TokenType(search(m_buff)));
+                    --m_index;
                     continue;
                 }
                 
-                if(isdigit(get(0))){
+                if(isdigit(get(0))) {
                     bool isFloat = false;
                     consume();
-                    while(isdigit(get(0)) || (get(0) == '.' && !isFloat)){
+                    while(isdigit(get(0)) || (get(0) == '.' && !isFloat)) {
                         isFloat = get(0) == '.';
                         consume();
                     }
                     addToken(isFloat? num_lit : int_lit);
+                    --m_index;
                     continue;
                 }
                 
-                if(search(get(0)) > 0){
+                if(isSymbol(get(0))) {
                     consume();
-                    addToken(TokenType(search(get(0)) + 512));
+                    --m_index;
+                    addToken(TokenType( search(get(0)) + 512 ));
                     continue;
                 }
                 errorHandler.err({lexical_err, m_line, "Unexpected token " + get(0)});

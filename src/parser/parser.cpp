@@ -6,43 +6,47 @@ class Parser: public QComponent{
 public:
 
     Parser(TokenList input): m_input(input){}
-    // Converts a list of Tokens into a list of Statements
-    vector<Statement> parse() noexcept {
+
+    vector<Statement> parse() {
+
         for(; m_index < m_input.size(); ++m_index){
+
             TokenType t = m_input.get(m_index).type;
 
-            if(isDataType(t)){
-                if(getType(1) == id){
-                    if(getType(2) == eq){
+            if(isDataType(t)) {
+                if(getType(1) == id) {
+                    if(getType(2) == eq) {
                         m_index += 3;
-                        // get expr and semicolon
                         Expr e = parseExpr(getExprValids());
-
-                        if(getType(0) == semicolon){
-                            // good path (int i = 5;)
-                            cout << "- (" << m_input.get(m_index).value << ") " << m_input.get(m_index + 1).value << " (= expr)\n";
-                            ++m_index;
+                        if(e.type == INT && t == int_k){
+                            if(getType(0) != semicolon) {
+                                errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                            }
+                            else {
+                                addVarDecl();
+                                cout << "Valid INT expression.\n";
+                            }
                         }
-                        else{
-                            errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                        else {
+                            errorHandler.err({syntax_err, 0, "Expected expression of type " + m_input.get(0).value});
                         }
+                    }   
+                    else if(getType(2) == semicolon) {
+                        addVarDecl();
+                    } 
+                    else {
+                        errorHandler.err({syntax_err, 0, "Expected semicolon or assignment"});
                     }
-                    else if(getType(2) == semicolon){
-                        
-                        cout << "- (" << m_input.get(m_index).value << ") " << m_input.get(m_index + 1).value << "\n";
-                        m_index += 2;
-                        // good path (int i;)
-                        continue;
-                    }
-                    else{
-                        m_index += 1;
-                        errorHandler.err({syntax_err, 0, "Expected semicolon"});
-                    }
+                    continue;
                 }
-                else{
-                    errorHandler.err({syntax_err, 0, "Invalid syntax"});
+                else {
+                    errorHandler.err({syntax_err, 0, "Expected identifier"});
+                    continue;
                 }
             }
+
+
+            
         }
         errorHandler.run();
         return output;
@@ -53,10 +57,13 @@ private:
     TokenList m_input;
 
     bool isDataType(TokenType t) const noexcept {
-        return (t == int_k);
+        return (t >= 1 && t <= 8);
     }
 
-    TokenType getType(int n) const noexcept{
+    TokenType getType(size_t n) const noexcept{
+        if(m_index + n >= m_input.size()){
+            return err;
+        }
         return m_input.get(m_index + n).type;
     }
 
@@ -66,8 +73,7 @@ private:
         // 1. Get every possible expression token - FINISHED
         while(isExprValid(m_input.get(m_index).type)){
             exprValids.addToken(m_input.get(m_index));
-            //cout << m_input.get(i).value << "t - ";
-            m_index++; 
+            ++m_index; 
         }
         return exprValids;
     }
@@ -103,5 +109,9 @@ private:
         // }
 
         return {INT, Token{int_lit, "7"}};
+    }
+
+    void addVarDecl(){
+
     }
 };
