@@ -15,6 +15,7 @@ public:
 
             if(isDataType(t)) {
                 if(getType(1) == id) {
+                    string varName = m_input.get(m_index + 1).value;
                     if(getType(2) == eq) {
                         m_index += 3;
                         Expr e = parseExpr(getExprValids());
@@ -23,7 +24,7 @@ public:
                                 errorHandler.err({syntax_err, 0, "Expected semicolon"});
                                 continue;
                             }
-                            addVarDecl();
+                            addVarDecl(varName, t, any_cast<string>(e.value));
                             cout << "Valid INT expression.\n";
                             continue;
                         }
@@ -31,7 +32,7 @@ public:
                         continue;
                     }   
                     if(getType(2) == semicolon) {
-                        addVarDecl();
+                        addVarDecl(varName, t);
                         continue;
                     } 
                     errorHandler.err({syntax_err, 0, "Expected semicolon or assignment"});
@@ -49,7 +50,7 @@ public:
                         errorHandler.err({syntax_err, 0, "Expected semicolon"});
                         continue;
                     }
-                    addVarDecl(); // add exit decl
+                    //addVarDecl();
                     continue;
                 }
                 errorHandler.err({syntax_err, 0, "Expected expression of type int"});
@@ -120,7 +121,7 @@ private:
         return {INT, Token{int_lit, "7"}};
     }
 
-    void addVarDecl(){
-
+    void addVarDecl(string name, TokenType type, string value = "0"){
+        symbolTable.add({name, SymbolType(type), value});
     }
 };

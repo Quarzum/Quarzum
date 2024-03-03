@@ -109,9 +109,3 @@ int search(const char c,const int min = 0){
     }
     return 0;
 }
-
-const wstring charToString(const char n){
-    wstring s;
-    s += n;
-    return s;
-}

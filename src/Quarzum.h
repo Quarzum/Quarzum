@@ -15,14 +15,12 @@ using namespace std;
 
 #include "source/source.hpp"
 #include "other/utils.cpp"
-#include "other/variables.cpp"
 #include "lexer/lexer.cpp"
 
+#include "other/symboltable.cpp"
 #include "parser/node.hpp"
 #include "parser/statement.hpp"
 #include "parser/parser.cpp"
-
 #include "assembler/assembler.cpp"
-
 #include "other/cli.cpp"
 
