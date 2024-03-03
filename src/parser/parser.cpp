@@ -45,8 +45,23 @@ public:
                 }
             }
 
+            if(t == exit_k){
+                ++m_index;
+                Expr e = parseExpr(getExprValids());
+                if(e.type == INT){
+                    if(getType(0) != semicolon) {
+                        errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                    }
+                    else {
+                        addVarDecl(); // add exit decl
+                    }
+                }
+                else{
+                    errorHandler.err({syntax_err, 0, "Expected expression of type int"});
+                    continue;
+                }
+            }
 
-            
         }
         errorHandler.run();
         return output;
@@ -60,17 +75,16 @@ private:
         return (t >= 1 && t <= 8);
     }
 
-    TokenType getType(size_t n) const noexcept{
+    TokenType getType(size_t n) const {
         if(m_index + n >= m_input.size()){
             return err;
         }
         return m_input.get(m_index + n).type;
     }
 
-    TokenList getExprValids(){
+    TokenList getExprValids() {
 
         TokenList exprValids;
-        // 1. Get every possible expression token - FINISHED
         while(isExprValid(m_input.get(m_index).type)){
             exprValids.addToken(m_input.get(m_index));
             ++m_index; 
