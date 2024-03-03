@@ -21,55 +21,51 @@ public:
             }
 
             if(get(0) == '/' && get(1) == '*'){
-                while (get(0) != '*' || get(1) != '/')
-                {
-                    ++m_index;
-                }
+                ignore('*', '/');
                 ++m_index;
                 continue;
             }
 
             if(get(0) == '/' && get(1) == '/'){
-                while(get(0) != '\n') 
-                {
-                    ++m_index;
-                } 
+                ignore('\n');
                 ++m_line; 
                 continue;
             }
 
-            if(not (isspace(get(0)))) {
+            if(isspace(get(0))){
+                continue;
+            }
                 
-                if(isalpha(get(0))) {
+            if(isalpha(get(0))) {
+                consume();
+                while(isalpha(get(0)) || isdigit(get(0))) {
                     consume();
-                    while(isalpha(get(0)) || isdigit(get(0))) {
-                        consume();
-                    }
-                    addToken(TokenType(search(m_buff)));
-                    --m_index;
-                    continue;
                 }
-                
-                if(isdigit(get(0))) {
-                    bool isFloat = false;
+                addToken(TokenType(search(m_buff)));
+                --m_index;
+                continue;
+            }
+            
+            if(isdigit(get(0))) {
+                bool isFloat = false;
+                consume();
+                while(isdigit(get(0)) || (get(0) == '.' && !isFloat)) {
+                    isFloat = get(0) == '.';
                     consume();
-                    while(isdigit(get(0)) || (get(0) == '.' && !isFloat)) {
-                        isFloat = get(0) == '.';
-                        consume();
-                    }
-                    addToken(isFloat? num_lit : int_lit);
-                    --m_index;
-                    continue;
                 }
-                
-                if(isSymbol(get(0))) {
-                    consume();
-                    --m_index;
-                    addToken(TokenType( search(get(0)) + 512 ));
-                    continue;
-                }
-                errorHandler.err({lexical_err, m_line, "Unexpected token " + get(0)});
-            }        
+                addToken(isFloat? num_lit : int_lit);
+                --m_index;
+                continue;
+            }
+            
+            if(isSymbol(get(0))) {
+                consume();
+                --m_index;
+                addToken(TokenType( search(get(0)) + 512 ));
+                continue;
+            }
+            errorHandler.err({lexical_err, m_line, "Unexpected token " + get(0)});
+                   
         }
         errorHandler.run();
         return m_output;
@@ -96,6 +92,20 @@ private:
     void consume() {
         m_buff += get(0);
         ++m_index;
+    }
+
+    void ignore(char a) {
+        while(get(0) != a) 
+        {
+            ++m_index;
+        } 
+    }
+
+    void ignore(char a, char b) {
+        while(get(0) != a || get(1) != b) 
+        {
+            ++m_index;
+        } 
     }
 
 };

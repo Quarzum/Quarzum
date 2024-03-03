@@ -21,28 +21,24 @@ public:
                         if(e.type == INT && t == int_k){
                             if(getType(0) != semicolon) {
                                 errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                                continue;
                             }
-                            else {
-                                addVarDecl();
-                                cout << "Valid INT expression.\n";
-                            }
+                            addVarDecl();
+                            cout << "Valid INT expression.\n";
+                            continue;
                         }
-                        else {
-                            errorHandler.err({syntax_err, 0, "Expected expression of type " + m_input.get(0).value});
-                        }
+                        errorHandler.err({syntax_err, 0, "Expected expression of type " + m_input.get(0).value});
+                        continue;
                     }   
-                    else if(getType(2) == semicolon) {
+                    if(getType(2) == semicolon) {
                         addVarDecl();
+                        continue;
                     } 
-                    else {
-                        errorHandler.err({syntax_err, 0, "Expected semicolon or assignment"});
-                    }
+                    errorHandler.err({syntax_err, 0, "Expected semicolon or assignment"});
                     continue;
                 }
-                else {
-                    errorHandler.err({syntax_err, 0, "Expected identifier"});
-                    continue;
-                }
+                errorHandler.err({syntax_err, 0, "Expected identifier"});
+                continue;
             }
 
             if(t == exit_k){
@@ -51,16 +47,15 @@ public:
                 if(e.type == INT){
                     if(getType(0) != semicolon) {
                         errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                        continue;
                     }
-                    else {
-                        addVarDecl(); // add exit decl
-                    }
-                }
-                else{
-                    errorHandler.err({syntax_err, 0, "Expected expression of type int"});
+                    addVarDecl(); // add exit decl
                     continue;
                 }
+                errorHandler.err({syntax_err, 0, "Expected expression of type int"});
+                continue;
             }
+
 
         }
         errorHandler.run();
