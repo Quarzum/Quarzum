@@ -12,11 +12,12 @@ int main()
     }
     
     Parser p(tok);
-    vector<Statement> s = p.parse();
 
-    //createFile("out.asm", analyze(p.parse()));
-    //system("as -o out.o out.asm");
-    //system("ld -o out out.o");
-    //system("./out");
+    Assembler a(p.parse());
+
+    createFile("out.asm", a.assemble());
+    system("as -o out.o out.asm");
+    system("ld -o out out.o");
+    system("./out");
     return 0;
 }

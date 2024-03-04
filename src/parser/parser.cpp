@@ -24,7 +24,7 @@ public:
                                 errorHandler.err({syntax_err, 0, "Expected semicolon"});
                                 continue;
                             }
-                            addVarDecl(varName, t, any_cast<string>(e.value));
+                            addVarDecl(varName, t, any_cast<Token>(e.value).value);
                             cout << "Valid INT expression.\n";
                             continue;
                         }
@@ -42,10 +42,10 @@ public:
                 continue;
             }
 
-            if(t == exit_k){
+            if(t == exit_k) {
                 ++m_index;
                 Expr e = parseExpr(getExprValids());
-                if(e.type == INT){
+                if(e.type == INT) {
                     if(getType(0) != semicolon) {
                         errorHandler.err({syntax_err, 0, "Expected semicolon"});
                         continue;
@@ -57,6 +57,32 @@ public:
                 continue;
             }
 
+            if(t == id) {
+
+                string varName = m_input.get(m_index).value; 
+
+                if(getType(1) == eq) {
+                    m_index += 2;
+                    Expr e = parseExpr(getExprValids());
+                    if(getType(0) != semicolon) {
+                        errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                        continue;
+                    }
+                    //addVarDecl();
+                    continue;
+                }
+
+                if(getType(1) == plus_eq) {
+                    m_index += 2;
+                    Expr e = parseExpr(getExprValids());
+                    if(getType(0) != semicolon) {
+                        errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                        continue;
+                    }
+                    addIncrement(varName, any_cast<Token>(e.value).value);
+                    continue;
+                }
+            }
 
         }
         errorHandler.run();
@@ -95,7 +121,7 @@ private:
         if(list.size() == 1){
             return Expr{
                 .type = exprType::INT,
-                .value = list.get(0)
+                .value = Token{ int_lit, "7"}
             };
         }
 
@@ -117,11 +143,17 @@ private:
         //         };
         //     }
         // }
-
-        return {INT, Token{int_lit, "7"}};
+        Token v = {int_lit, "7"};
+        return Expr {
+            .type = exprType::INT,
+            .value = v
+        };
     }
 
     void addVarDecl(string name, TokenType type, string value = "0"){
-        symbolTable.add({name, SymbolType(type), value});
+        symbolTable.add({name, "int", value});
+    }
+
+    void addIncrement(string name, string value){
     }
 };

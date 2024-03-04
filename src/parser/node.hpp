@@ -1,7 +1,7 @@
 #pragma once
 
 enum exprType{
-    INT,
+    INT = 1,
     NUMBER,
     STRING,
     CHAR,

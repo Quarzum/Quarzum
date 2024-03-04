@@ -1,33 +1,28 @@
 #pragma once
 #include "../Quarzum.h"
 
-enum SymbolType {
-    INT,
-    NUMBER,
-    BYTE,
-    BOOL,
-    CHAR,
-    STRING,
-    UINT,
-    FUNCTION,
-    CLASS,
-    OBJECT,
-    STRUCT,
-    VAR
-};
-
 struct Symbol {
     string name;
-    SymbolType type;
+    string type;
     string value;
 };
 
 class SymbolTable {
     
 public:
+
     void add(Symbol s) {
         m_content.push_back(s);
     }
+
+    size_t size(){
+        return m_content.size();
+    }
+
+    Symbol get(size_t n) {
+        return m_content[n];
+    }
+
 private:
     vector<Symbol> m_content;
 };
