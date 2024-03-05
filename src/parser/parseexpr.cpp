@@ -9,17 +9,18 @@ exprType typeToExpr(TokenType t){
         {false_k, BOOL},
         {byte_lit, BYTE},
         {char_lit, CHAR},
-        {uint_lit, UINT}
+        {uint_lit, UINT},
+        {num_lit, NUMBER}
     };
     auto it = types.find(t);
     return it->second;
 }
 
 Expr Parser::parseExpr(TokenList list) {
-    
-    if(list.size() == 1){
-        cout << "id\n";
-        return Expr{
+
+    if(list.size() == 1) {
+        cout << list[0].value;
+        return Expr {
             .type = typeToExpr(list[0].type),
             .value = list[0]
         };

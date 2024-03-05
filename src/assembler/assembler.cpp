@@ -16,12 +16,7 @@ public:
                 } 
             }
             else {
-                if(s.type == "int"){
-                    m_output << "\t" << s.name << ": .int " << s.value << "\n";
-                } 
-                if(s.type == "string"){
-                    m_output << "\t" << s.name << ": .string " << s.value << "\n";
-                } 
+                m_output << "\t" << s.name << ": ." <<s.type << " " << s.value << "\n";
             }
             
         }

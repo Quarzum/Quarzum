@@ -10,6 +10,15 @@ public:
 
         for(m_index = 0; m_index < m_input.length(); ++m_index){
 
+            if(get(0) == '\'' && isascii(get(1)) && get(2) == '\''){
+                consume();
+                consume();
+                consume();
+                --m_index;
+                addToken(char_lit);
+                continue;
+            }
+
             if(get(0) == '"') {
                 do {
                     consume();
@@ -47,7 +56,7 @@ public:
                 bool isFloat = false;
                 consume();
                 while(isdigit(get(0)) || (get(0) == '.' && !isFloat)) {
-                    isFloat = get(0) == '.';
+                    if(get(0) == '.') { isFloat = true; }
                     consume();
                 }
                 addToken(isFloat? num_lit : int_lit);

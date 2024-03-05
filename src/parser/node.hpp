@@ -24,7 +24,10 @@ bool isExprValid(TokenType t){
         t == prod ||
         t == division ||
         t == remainder ||
-        t == str_lit
+        t == str_lit || 
+        t == true_k || t == false_k ||
+        t == char_lit ||
+        t == num_lit
         
     );
 }

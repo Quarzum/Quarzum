@@ -29,6 +29,15 @@ public:
                             cout << "Valid STRING expression.\n";
                             continue;
                         }
+                        if(e.type == BOOL && t == bool_k){
+                            if(getType(0) != semicolon) {
+                                errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                                continue;
+                            }
+                            addVarDecl(varName, t,any_cast<Token>(e.value).value == "true" ? "1" : "0" , isConst);
+                            cout << "Valid BOOL expression.\n";
+                            continue;
+                        }
                         if(e.type == INT && t == int_k){
                             if(getType(0) != semicolon) {
                                 errorHandler.err({syntax_err, 0, "Expected semicolon"});
@@ -36,6 +45,24 @@ public:
                             }
                             addVarDecl(varName, t, any_cast<Token>(e.value).value, isConst);
                             cout << "Valid INT expression.\n";
+                            continue;
+                        }
+                        if(e.type == CHAR && t == char_k){
+                            if(getType(0) != semicolon) {
+                                errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                                continue;
+                            }
+                            addVarDecl(varName, t, any_cast<Token>(e.value).value, isConst);
+                            cout << "Valid CHAR expression.\n";
+                            continue;
+                        }
+                        if(e.type == NUMBER && t == num_k){
+                            if(getType(0) != semicolon) {
+                                errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                                continue;
+                            }
+                            addVarDecl(varName, t, any_cast<Token>(e.value).value, isConst);
+                            cout << "Valid NUMBER expression.\n";
                             continue;
                         }
                         errorHandler.err({syntax_err, 0, "Expected expression of type " + m_input.get(0).value});
@@ -146,7 +173,8 @@ private:
             {bool_k, "byte"},
             {byte_k, "byte"},
             {char_k, "byte"},
-            {uint_k, "int"}
+            {uint_k, "int"},
+            {num_k, "long"}
         };
         auto it = types.find(t);
         return it->second;
