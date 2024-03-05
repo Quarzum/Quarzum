@@ -62,6 +62,7 @@ public:
                 Expr e = parseExpr(getExprValids());
                 if(e.type == INT) {
                     if(getType(0) != semicolon) {
+                        cout << getType(0);
                         errorHandler.err({syntax_err, 0, "Expected semicolon"});
                         continue;
                     }

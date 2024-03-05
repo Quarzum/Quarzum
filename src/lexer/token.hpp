@@ -82,7 +82,8 @@ enum TokenType {
     div_eq      = 0x223,
     rem_eq      = 0x224,
     pow_eq      = 0x225,
-    endl        = 0x226,
+    not_equal   = 0x226,
+    endl        = 0x227,
     // 0x3 => Literals
     int_lit     = 0x301,
     num_lit     = 0x302,

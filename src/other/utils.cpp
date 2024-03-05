@@ -91,7 +91,8 @@ const unordered_map<string, unsigned char> prefabs = {
     {"*=", 546},
     {"/=", 547},
     {"%=", 548},
-    {"⁼", 549}
+    {"⁼", 549},
+    {"!=", 550}
 };
 
 const string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
