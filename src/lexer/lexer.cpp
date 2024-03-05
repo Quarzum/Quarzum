@@ -10,7 +10,7 @@ public:
 
         for(m_index = 0; m_index < m_input.length(); ++m_index){
 
-            if(get(0) == '"'){
+            if(get(0) == '"') {
                 do {
                     consume();
                 }
@@ -20,27 +20,23 @@ public:
                 continue;
             }
 
-            if(get(0) == '/' && get(1) == '*'){
-                ignore('*', '/');
+            if(get(0) == '/' && get(1) == '*') {
+                while(get(0) != '*' || get(1) != '/') ++m_index;
                 ++m_index;
                 continue;
             }
 
-            if(get(0) == '/' && get(1) == '/'){
-                ignore('\n');
+            if(get(0) == '/' && get(1) == '/') {
+                while(get(0) != '\n') ++m_index;
                 ++m_line; 
                 continue;
             }
 
-            if(isspace(get(0))){
-                continue;
-            }
+            if(isspace(get(0))) continue;
                 
             if(isalpha(get(0))) {
                 consume();
-                while(isalpha(get(0)) || isdigit(get(0))) {
-                    consume();
-                }
+                while(isalpha(get(0)) || isdigit(get(0))) consume();
                 addToken(TokenType(search(m_buff)));
                 --m_index;
                 continue;
@@ -59,9 +55,7 @@ public:
             }
             
             if(isSymbol(get(0))) {
-
                 consume();
-                
                 if(isSymbol(get(0))) {
                     consume();
                     --m_index;
@@ -69,12 +63,9 @@ public:
                         addToken(TokenType(search(m_buff) + 512));
                         continue;
                     }
-                    else {
-                        m_buff.pop_back();
-                    }
+                    else m_buff.pop_back();
                 }
                 --m_index;
-                
                 addToken(TokenType( search(get(0)) + 512 ));
                 continue;
             }
@@ -92,9 +83,7 @@ private:
     TokenList m_output;
 
     char get(const size_t n) const {
-        if(n + m_index < m_input.size()){
-            return m_input[m_index+n];
-        }
+        if(n + m_index < m_input.size()) return m_input[m_index+n];
         return 0;
     }
 
@@ -106,20 +95,6 @@ private:
     void consume() {
         m_buff += get(0);
         ++m_index;
-    }
-
-    void ignore(char a) {
-        while(get(0) != a) 
-        {
-            ++m_index;
-        } 
-    }
-
-    void ignore(char a, char b) {
-        while(get(0) != a || get(1) != b) 
-        {
-            ++m_index;
-        } 
     }
 
 };

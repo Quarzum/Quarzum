@@ -82,6 +82,18 @@ public:
                     addIncrement(varName, any_cast<Token>(e.value).value);
                     continue;
                 }
+
+                if(getType(1) == minus_eq) {
+                    m_index += 2;
+                    Expr e = parseExpr(getExprValids());
+                    if(getType(0) != semicolon) {
+                        errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                        continue;
+                    }
+                    addDecrement(varName, any_cast<Token>(e.value).value);
+                    continue;
+                }
+
             }
 
         }
@@ -155,5 +167,10 @@ private:
     }
 
     void addIncrement(string name, string value){
+        output.push_back({inc_stmt, {name, value}});
+    }
+
+    void addDecrement(string name, string value){
+        output.push_back({dec_stmt, {name, value}});
     }
 };
