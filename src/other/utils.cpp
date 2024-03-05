@@ -1,7 +1,5 @@
 #pragma once
 #include "../Quarzum.h"
-const string ZERO = "0";
-
 /**
  *   Creates a new file and writes content inside it.
  *   @param name The name of the created file.
@@ -65,34 +63,33 @@ const unordered_map<string, unsigned char> prefabs = {
     {"!", 520},
     {"&&",521},
     {"||",522},
-    {"$$",523},
-    {".", 524},
-    {",", 525},
-    {"+", 526},
-    {"-", 527},
-    {"*", 528},
-    {"/", 529},
-    {"^", 530},
-    {"{", 531},
-    {"}", 532},
-    {"[", 533},
-    {"]", 534},
-    {";", 535},
-    {">", 536},
-    {"<", 537},
-    {"==",538},
-    {">=",539},
-    {"<=",540},
-    {"%", 541},
-    {"+=", 542},
-    {"++",543},
-    {"-=",544},
-    {"--",545},
-    {"*=", 546},
-    {"/=", 547},
-    {"%=", 548},
-    {"⁼", 549},
-    {"!=", 550}
+    {".", 523},
+    {",", 524},
+    {"+", 525},
+    {"-", 526},
+    {"*", 527},
+    {"/", 528},
+    {"^", 529},
+    {"{", 530},
+    {"}", 531},
+    {"[", 532},
+    {"]", 533},
+    {";", 534},
+    {">", 535},
+    {"<", 536},
+    {"==",537},
+    {">=",538},
+    {"<=",539},
+    {"%", 540},
+    {"+=", 541},
+    {"++",542},
+    {"-=",543},
+    {"--",544},
+    {"*=", 545},
+    {"/=", 546},
+    {"%=", 547},
+    {"⁼", 548},
+    {"!=", 549}
 };
 
 const string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
@@ -104,18 +101,9 @@ bool isSymbol(const char c){
     return it != prefabs.end();
 }
 
-int search(const string buff,const int min = 0){
+int search(const string buff){
     auto it = prefabs.find(buff);
-    if(it != prefabs.end() and it->second > min){
-        return it->second;
-    }
-    return 0;
-}
-int search(const char c,const int min = 0){
-    string buff;
-    buff += c;
-    auto it = prefabs.find(buff);
-    if(it != prefabs.end() and it->second > min){
+    if(it != prefabs.end() and it->second > 0){
         return it->second;
     }
     return 0;

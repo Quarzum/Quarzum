@@ -79,7 +79,9 @@ public:
                     else m_buff.pop_back();
                 }
                 --m_index;
-                addToken(TokenType( search(get(0)) + 512 ));
+                string s;
+                s += get(0);
+                addToken(TokenType( search(s) + 512 ));
                 continue;
             }
             errorHandler.err({lexical_err, m_line, "Unexpected token " + get(0)});

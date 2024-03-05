@@ -95,13 +95,13 @@ Expr Parser::parseExpr(TokenList list) {
             divideNodes;
             return Expr {
                 .type = exprType::BOOL,
-                .value = stoi(a.value.value) == stoi(b.value.value)? trueToken : falseToken
+                .value = a.value.value == b.value.value ? trueToken : falseToken
             };
         case TokenType::not_equal:
             divideNodes;
             return Expr {
                 .type = exprType::BOOL,
-                .value = stoi(a.value.value) != stoi(b.value.value)? trueToken : falseToken
+                .value = a.value.value != b.value.value? trueToken : falseToken
             };
         default: continue;
         }
