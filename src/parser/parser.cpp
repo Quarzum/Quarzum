@@ -14,6 +14,11 @@ public:
             TokenType t = m_input.get(m_index).type;
 
             if(isDataType(t)) {
+                bool isConst;
+                if(getType(-1) == const_k) {
+                    cout << "CONSTANT\n"; 
+                    isConst = true;
+                }
                 if(getType(1) == id) {
                     string varName = m_input.get(m_index + 1).value;
                     if(getType(2) == eq) {
@@ -24,7 +29,7 @@ public:
                                 errorHandler.err({syntax_err, 0, "Expected semicolon"});
                                 continue;
                             }
-                            addVarDecl(varName, t, any_cast<Token>(e.value).value);
+                            addVarDecl(varName, t, any_cast<Token>(e.value).value, isConst);
                             cout << "Valid INT expression.\n";
                             continue;
                         }
@@ -42,6 +47,15 @@ public:
                 continue;
             }
 
+            if(t == module_k) {
+                if(getType(1) == id) {
+
+                    continue;
+                }
+                errorHandler.err({syntax_err, 0, "Expected identifier"});
+                continue;
+            }
+
             if(t == exit_k) {
                 ++m_index;
                 Expr e = parseExpr(getExprValids());
@@ -50,7 +64,7 @@ public:
                         errorHandler.err({syntax_err, 0, "Expected semicolon"});
                         continue;
                     }
-                    //addVarDecl();
+                    addExit(any_cast<Token>(e.value).value);
                     continue;
                 }
                 errorHandler.err({syntax_err, 0, "Expected expression of type int"});
@@ -162,8 +176,8 @@ private:
         };
     }
 
-    void addVarDecl(string name, TokenType type, string value = "0"){
-        symbolTable.add({name, "int", value});
+    void addVarDecl(string name, TokenType type, string value = "0", bool isConst = false){
+        symbolTable.add({name, "int", value, isConst});
     }
 
     void addIncrement(string name, string value){
@@ -172,5 +186,9 @@ private:
 
     void addDecrement(string name, string value){
         output.push_back({dec_stmt, {name, value}});
+    }
+
+    void addExit(string value) {
+        output.push_back({exit_stmt, {value}});
     }
 };

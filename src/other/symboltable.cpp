@@ -5,6 +5,7 @@ struct Symbol {
     string name;
     string type;
     string value;
+    bool isConst;
 };
 
 class SymbolTable {
