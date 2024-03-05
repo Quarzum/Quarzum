@@ -22,28 +22,28 @@ public:
                         Expr e = parseExpr(getExprValids());
                         if(matchTypes(e.type, t)){
                             if(getType(0) != semicolon) {
-                                errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                                errorHandler.err({syntax_err, m_line, "Expected semicolon"});
                                 continue;
                             }
                             addVarDecl(varName, t, e.value, isConst);
                             continue;
                         }
                         
-                        errorHandler.err({syntax_err, 0, "Expected expression of type " + m_input[0].value});
+                        errorHandler.err({syntax_err, m_line, "Expected expression of type " + m_input[0].value});
                         continue;
                     }   
                     if(getType(2) == semicolon) {
                         if(isConst){
-                            errorHandler.err({syntax_err, 0, "Variables marked as constant should be initialized"});
+                            errorHandler.err({syntax_err, m_line, "Variables marked as constant should be initialized"});
                             continue;
                         }
                         addVarDecl(varName, t);
                         continue;
                     } 
-                    errorHandler.err({syntax_err, 0, "Expected semicolon or assignment"});
+                    errorHandler.err({syntax_err, m_line, "Expected semicolon or assignment"});
                     continue;
                 }
-                errorHandler.err({syntax_err, 0, "Expected identifier"});
+                errorHandler.err({syntax_err, m_line, "Expected identifier"});
                 continue;
             }
 
@@ -52,7 +52,7 @@ public:
 
                     continue;
                 }
-                errorHandler.err({syntax_err, 0, "Expected identifier"});
+                errorHandler.err({syntax_err, m_line, "Expected identifier"});
                 continue;
             }
 
@@ -62,13 +62,13 @@ public:
                 if(e.type == INT) {
                     if(getType(0) != semicolon) {
                         cout << getType(0);
-                        errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                        errorHandler.err({syntax_err, m_line, "Expected semicolon"});
                         continue;
                     }
                     addExit(e.value);
                     continue;
                 }
-                errorHandler.err({syntax_err, 0, "Expected expression of type int"});
+                errorHandler.err({syntax_err, m_line, "Expected expression of type int"});
                 continue;
             }
 
@@ -80,7 +80,7 @@ public:
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
                     if(getType(0) != semicolon) {
-                        errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                        errorHandler.err({syntax_err, m_line, "Expected semicolon"});
                         continue;
                     }
                     addVarModification(varName, e.value);
@@ -92,7 +92,7 @@ public:
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
                     if(getType(0) != semicolon) {
-                        errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                        errorHandler.err({syntax_err, m_line, "Expected semicolon"});
                         continue;
                     }
                     symbol == plus_eq ? 
@@ -109,6 +109,7 @@ public:
 private:
     size_t m_index { 0 };
     int m_ident { 0 };
+    size_t m_line { 1 };
     vector<Statement> output;
     TokenList m_input;
 
@@ -116,9 +117,12 @@ private:
         return (t >= 1 && t <= 8);
     }
 
-    TokenType getType(size_t n) const {
+    TokenType getType(size_t n) {
         if(m_index + n >= m_input.size()){
             return err;
+        }
+        if(m_input.get(m_index + n).type == TokenType::endl){
+            ++m_line;
         }
         return m_input.get(m_index + n).type;
     }

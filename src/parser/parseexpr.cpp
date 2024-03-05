@@ -35,12 +35,12 @@ bool Parser::matchTypes(exprType e, TokenType t) {
 }
 
 exprType sumTypes (exprType a, exprType b) {
-    if(a == NUMBER && (b != STRING)|| b == NUMBER && (a != STRING))   { return NUMBER;}
-    if(a == INT && (b != STRING) || b == INT && (a != STRING))   { return INT;   }
-    if(a == UINT && (b != STRING) || b == UINT && (a != STRING)) { return UINT;  }
-    if(a == CHAR || b == CHAR) { return CHAR;  }
-    if(a == BYTE && (b != STRING ) || b == BYTE && (a != STRING)) { return BYTE;  }
-    if(a == STRING && (b == STRING || b == CHAR)) {return STRING;}
+    if( (a == NUMBER && b != STRING) || (b == NUMBER && a != STRING))   { return NUMBER;}
+    if( (a == INT && b != STRING) || (b == INT && a != STRING))   { return INT;   }
+    if( (a == UINT && b != STRING) || (b == UINT && a != STRING)) { return UINT;  }
+    if( a == CHAR || b == CHAR ) { return CHAR;  }
+    if( (a == BYTE && b != STRING ) || (b == BYTE && a != STRING)) { return BYTE;  }
+    if( (a == STRING && b == STRING) || b == CHAR) {return STRING;}
     return NULLEXPR;
 }
 
@@ -48,7 +48,7 @@ Expr Parser::parseExpr(TokenList list) {
     if(list.size() == 1) {
         if(list[0].type == id) {
             if(symbolTable.find(list[0].value).name == ""){
-                errorHandler.err({syntax_err,0,"Invalid reference to " + list[0].value});
+                errorHandler.err({syntax_err,m_line,"Invalid reference to " + list[0].value});
                 return nullExpr;
             }
             return Expr {
@@ -120,7 +120,7 @@ Expr Parser::parseExpr(TokenList list) {
             divideNodes;
             typeBlend = sumTypes(a.type, b.type);
             if(typeBlend == NULLEXPR) {
-                errorHandler.err({syntax_err, 0, "Invalid operands for '"+list[i].value+"' operation"});
+                errorHandler.err({syntax_err, m_line, "Invalid operands for '"+list[i].value+"' operation"});
                 return nullExpr;
             }
             return Expr{
@@ -141,6 +141,6 @@ Expr Parser::parseExpr(TokenList list) {
         }
     }
     
-    errorHandler.err({syntax_err, 0, "Invalid expression"});
+    errorHandler.err({syntax_err, m_line, "Invalid expression"});
     return nullExpr;   
 }

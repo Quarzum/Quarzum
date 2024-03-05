@@ -38,10 +38,15 @@ public:
 
             if(get(0) == '/' && get(1) == '/') {
                 while(get(0) != '\n') ++m_index;
-                ++m_line; 
+                ++m_line;
+                addToken(TokenType::endl);
                 continue;
             }
-
+            if(get(0) == '\n'){
+                ++m_line;
+                addToken(TokenType::endl);
+                continue;
+            }
             if(isspace(get(0))) continue;
                 
             if(isalpha(get(0))) {
