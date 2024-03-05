@@ -8,25 +8,24 @@ public:
     Parser(TokenList input): m_input(input){}
 
     vector<Statement> parse() {
-
         for(; m_index < m_input.size(); ++m_index){
 
             TokenType t = m_input[m_index].type;
-
+            
             if(isDataType(t)) {
                 bool isConst = getType(-1) == const_k;
                 if(getType(1) == id) {
                     string varName = m_input[m_index + 1].value;
                     if(getType(2) == eq) {
                         m_index += 3;
+                        
                         Expr e = parseExpr(getExprValids());
-
                         if(matchTypes(e.type, t)){
                             if(getType(0) != semicolon) {
                                 errorHandler.err({syntax_err, 0, "Expected semicolon"});
                                 continue;
                             }
-                            addVarDecl(varName, t, any_cast<Token>(e.value).value, isConst);
+                            addVarDecl(varName, t, e.value, isConst);
                             continue;
                         }
                         
@@ -66,7 +65,7 @@ public:
                         errorHandler.err({syntax_err, 0, "Expected semicolon"});
                         continue;
                     }
-                    addExit(any_cast<Token>(e.value).value);
+                    addExit(e.value);
                     continue;
                 }
                 errorHandler.err({syntax_err, 0, "Expected expression of type int"});
@@ -84,7 +83,7 @@ public:
                         errorHandler.err({syntax_err, 0, "Expected semicolon"});
                         continue;
                     }
-                    addVarModification(varName, e.value.value);
+                    addVarModification(varName, e.value);
                     continue;
                 }
 
@@ -97,8 +96,8 @@ public:
                         continue;
                     }
                     symbol == plus_eq ? 
-                        addIncrement(varName, any_cast<Token>(e.value).value) : 
-                        addDecrement(varName, any_cast<Token>(e.value).value);
+                        addIncrement(varName, e.value) : 
+                        addDecrement(varName, e.value);
                     continue;
                 }
             }

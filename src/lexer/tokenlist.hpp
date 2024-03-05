@@ -29,6 +29,15 @@ public:
         return result;
     }
 
+    string toString() {
+        string result;
+        for(Token token : m_tokens) {
+            result += token.value;
+            result += " ";
+        }
+        return result;
+    }
+
 private:
 
     vector<Token> m_tokens;

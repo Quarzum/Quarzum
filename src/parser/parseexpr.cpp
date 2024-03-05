@@ -1,6 +1,6 @@
 #pragma once
 #include "../Quarzum.h"
-#define divideNodes a = parseExpr(list.divide(0,n)); b = parseExpr(list.divide(n+1,list.size()));
+#define divideNodes a = parseExpr(list.divide(0,i)); b = parseExpr(list.divide(i+1,list.size()));
 
 exprType typeToExpr(TokenType t){
     const unordered_map<TokenType, exprType> types = {
@@ -16,120 +16,131 @@ exprType typeToExpr(TokenType t){
     auto it = types.find(t);
     return it->second;
 }
-
+exprType strToExpr(string t){
+    const unordered_map<string, exprType> types = {
+        {"int",INT},
+        {"string",STRING},
+        {"bool", BOOL},
+        {"byte", BYTE},
+        {"char", CHAR},
+        {"uint", UINT},
+        {"number", NUMBER}
+    };
+    auto it = types.find(t);
+    return it->second;
+}
 bool Parser::matchTypes(exprType e, TokenType t) {
     if(t == var_k) return true;
     return exprType(e) == TokenType(t);
 }
 
-Expr Parser::parseExpr(TokenList list) {
+exprType sumTypes (exprType a, exprType b) {
+    if(a == NUMBER && (b != STRING)|| b == NUMBER && (a != STRING))   { return NUMBER;}
+    if(a == INT && (b != STRING) || b == INT && (a != STRING))   { return INT;   }
+    if(a == UINT && (b != STRING) || b == UINT && (a != STRING)) { return UINT;  }
+    if(a == CHAR || b == CHAR) { return CHAR;  }
+    if(a == BYTE && (b != STRING ) || b == BYTE && (a != STRING)) { return BYTE;  }
+    if(a == STRING && (b == STRING || b == CHAR)) {return STRING;}
+    return NULLEXPR;
+}
 
+Expr Parser::parseExpr(TokenList list) {
     if(list.size() == 1) {
+        if(list[0].type == id) {
+            if(symbolTable.find(list[0].value).name == ""){
+                errorHandler.err({syntax_err,0,"Invalid reference to " + list[0].value});
+                return nullExpr;
+            }
+            return Expr {
+                .type = strToExpr(symbolTable.find(list[0].value).type),
+                .value = symbolTable.find(list[0].value).value
+            };
+        }
         return Expr {
             .type = typeToExpr(list[0].type),
-            .value = list[0]
+            .value = list[0].value
         };
     }
+    u_int8_t ident = 0;
     Expr a = nullExpr;
     Expr b = nullExpr;
-    // Operator Precedence Level 7 (||)
-    for (size_t n = 0; n < list.size(); ++n)
-    {
-        if(list[n].type == TokenType::or_s){
-            divideNodes;
-            return Expr {
-                .type = exprType::BOOL,
-                .value = (a.value.value == "1") || (b.value.value == "1") ? trueToken : falseToken
-            };
-        }
-    }  
-    // Operator Precedence Level 6 (&&)
-    for (size_t n = 0; n < list.size(); ++n)
-    {
-        if(list[n].type == TokenType::and_s){
-            divideNodes;
-            return Expr {
-                .type = exprType::BOOL,
-                .value = (a.value.value == "1") && (b.value.value == "1") ? trueToken : falseToken
-            };
-        }
-    }  
-    // Operator Precedence Level 5 (>, >=, <, <=)
-    for (size_t n = 0; n < list.size(); ++n)
-    {
-        switch (list[n].type)
+    exprType typeBlend;
+    for (size_t i = 0; i < list.size(); ++i)
+    {   
+        switch (list[i].type)
         {
-        case TokenType::greater_eq:
+        case or_s:
+        divideNodes;
+            return Expr{
+                .type = BOOL,
+                .value = a.value + list[i].value + b.value
+            };
+        case and_s:
             divideNodes;
-            return Expr {
-                .type = exprType::BOOL,
-                .value = stoi(a.value.value) >= stoi(b.value.value)? trueToken : falseToken
+            return Expr{
+                .type = BOOL,
+                .value = a.value + list[i].value + b.value
+            };
+        case or_bit:
+            divideNodes;
+            return Expr{
+                .type = BOOL,
+                .value = a.value + list[i].value + b.value
+            };
+        case xor_bit:
+            divideNodes;
+            return Expr{
+                .type = BOOL,
+                .value = a.value + list[i].value + b.value
+            };         
+        case and_bit:
+            divideNodes;
+            return Expr{
+                .type = BOOL,
+                .value = a.value + list[i].value + b.value
             };
         case TokenType::greater:
-            divideNodes;
-            return Expr {
-                .type = exprType::BOOL,
-                .value = stoi(a.value.value) > stoi(b.value.value)? trueToken : falseToken
-            };
-        case TokenType::less_eq:
-            divideNodes;
-            return Expr {
-                .type = exprType::BOOL,
-                .value = stoi(a.value.value) <= stoi(b.value.value)? trueToken : falseToken
-            };
+        case greater_eq:
         case TokenType::less:
+        case less_eq:
             divideNodes;
-            return Expr {
-                .type = exprType::BOOL,
-                .value = stoi(a.value.value) < stoi(b.value.value)? trueToken : falseToken
+            return Expr{
+                .type = BOOL,
+                .value = a.value + list[i].value + b.value
             };
-        default: continue;
-        }
-    } 
-    // Operator Precedence Level 4 (==, !=)
-    for (size_t n = 0; n < list.size(); ++n)
-    {
-        switch (list[n].type)
-        {
-        case TokenType::is_equal:
+        case is_equal:
+        case not_equal:
             divideNodes;
-            return Expr {
-                .type = exprType::BOOL,
-                .value = a.value.value == b.value.value ? trueToken : falseToken
+            return Expr{
+                .type = BOOL,
+                .value = a.value + list[i].value + b.value
             };
-        case TokenType::not_equal:
+        case TokenType::plus:
+        case TokenType::minus:
             divideNodes;
-            return Expr {
-                .type = exprType::BOOL,
-                .value = a.value.value != b.value.value? trueToken : falseToken
+            typeBlend = sumTypes(a.type, b.type);
+            if(typeBlend == NULLEXPR) {
+                errorHandler.err({syntax_err, 0, "Invalid operands for '"+list[i].value+"' operation"});
+                return nullExpr;
+            }
+            return Expr{
+                .type = typeBlend,
+                .value = a.value + list[i].value + b.value
             };
-        default: continue;
-        }
-    } 
-    
-    // Operator Precedence Level 1 (*, /, %)
+        case prod:
+        case division:
+        case remainder:
+        case power:
+            divideNodes;
+            return Expr{
+                .type = INT,
+                .value = a.value + list[i].value + b.value
+            };
 
-    // Operator Precedence Level 0 (+, -)
-    for (size_t n = 0; n < list.size(); ++n)
-    {
-        if (list[n].type == TokenType::plus)
-        {
-            divideNodes;
-            return Expr {
-                .type = exprType::INT,
-                .value = Token{ int_lit , to_string(stoi(a.value.value) + stoi(b.value.value)) }
-            };
-        };
-        if (list[n].type == TokenType::minus)
-        {
-            divideNodes;
-            return Expr {
-                .type = exprType::INT,
-                .value = Token{ int_lit , to_string(stoi(a.value.value) - stoi(b.value.value)) }
-            };
-        };
+        default: break;
+        }
     }
-
     
-
+    errorHandler.err({syntax_err, 0, "Invalid expression"});
+    return nullExpr;   
 }

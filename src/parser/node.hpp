@@ -13,7 +13,7 @@ enum exprType{
 
 struct Expr{
     exprType type;
-    Token value;
+    string value;
 };
 
 bool isExprValid(TokenType t){
@@ -35,11 +35,12 @@ bool isExprValid(TokenType t){
         t == less_eq ||
         t == and_s ||
         t == or_s ||
-        t == not_equal
+        t == not_equal ||
+        t == id
         
     );
 }
 
-const Expr nullExpr = {NULLEXPR,Token{err, ""}}; 
+const Expr nullExpr = {NULLEXPR, ""}; 
 const Token trueToken = {true_k, "1"};
 const Token falseToken = {false_k, "0"};

@@ -24,6 +24,15 @@ public:
         return m_content[n];
     }
 
+    Symbol find(string name) {
+        for(Symbol s: m_content) {
+            if(s.name == name){
+                return s;
+            }
+        }
+        return Symbol{"","","",false};
+    }
+
 private:
     vector<Symbol> m_content;
 };

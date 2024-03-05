@@ -67,13 +67,13 @@ public:
                 continue;
             }
             
-            if(isSymbol(get(0))) {
+            if( isSymbol(get(0))) {
                 consume();
                 if(isSymbol(get(0))) {
                     consume();
                     --m_index;
                     if(search(m_buff) > 0) {
-                        addToken(TokenType(search(m_buff) + 512));
+                        addToken(TokenType( search(m_buff) + 512));
                         continue;
                     }
                     else m_buff.pop_back();
