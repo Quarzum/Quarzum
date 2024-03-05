@@ -11,64 +11,33 @@ public:
 
         for(; m_index < m_input.size(); ++m_index){
 
-            TokenType t = m_input.get(m_index).type;
+            TokenType t = m_input[m_index].type;
 
             if(isDataType(t)) {
                 bool isConst = getType(-1) == const_k;
                 if(getType(1) == id) {
-                    string varName = m_input.get(m_index + 1).value;
+                    string varName = m_input[m_index + 1].value;
                     if(getType(2) == eq) {
                         m_index += 3;
                         Expr e = parseExpr(getExprValids());
-                        if(e.type == STRING && t == str_k){
+
+                        if(matchTypes(e.type, t)){
                             if(getType(0) != semicolon) {
                                 errorHandler.err({syntax_err, 0, "Expected semicolon"});
                                 continue;
                             }
                             addVarDecl(varName, t, any_cast<Token>(e.value).value, isConst);
-                            cout << "Valid STRING expression.\n";
                             continue;
                         }
-                        if(e.type == BOOL && t == bool_k){
-                            if(getType(0) != semicolon) {
-                                errorHandler.err({syntax_err, 0, "Expected semicolon"});
-                                continue;
-                            }
-                            addVarDecl(varName, t,any_cast<Token>(e.value).value == "true" ? "1" : "0" , isConst);
-                            cout << "Valid BOOL expression.\n";
-                            continue;
-                        }
-                        if(e.type == INT && t == int_k){
-                            if(getType(0) != semicolon) {
-                                errorHandler.err({syntax_err, 0, "Expected semicolon"});
-                                continue;
-                            }
-                            addVarDecl(varName, t, any_cast<Token>(e.value).value, isConst);
-                            cout << "Valid INT expression.\n";
-                            continue;
-                        }
-                        if(e.type == CHAR && t == char_k){
-                            if(getType(0) != semicolon) {
-                                errorHandler.err({syntax_err, 0, "Expected semicolon"});
-                                continue;
-                            }
-                            addVarDecl(varName, t, any_cast<Token>(e.value).value, isConst);
-                            cout << "Valid CHAR expression.\n";
-                            continue;
-                        }
-                        if(e.type == NUMBER && t == num_k){
-                            if(getType(0) != semicolon) {
-                                errorHandler.err({syntax_err, 0, "Expected semicolon"});
-                                continue;
-                            }
-                            addVarDecl(varName, t, any_cast<Token>(e.value).value, isConst);
-                            cout << "Valid NUMBER expression.\n";
-                            continue;
-                        }
-                        errorHandler.err({syntax_err, 0, "Expected expression of type " + m_input.get(0).value});
+                        
+                        errorHandler.err({syntax_err, 0, "Expected expression of type " + m_input[0].value});
                         continue;
                     }   
                     if(getType(2) == semicolon) {
+                        if(isConst){
+                            errorHandler.err({syntax_err, 0, "Variables marked as constant should be initialized"});
+                            continue;
+                        }
                         addVarDecl(varName, t);
                         continue;
                     } 
@@ -105,7 +74,7 @@ public:
 
             if(t == id) {
 
-                string varName = m_input.get(m_index).value; 
+                string varName = m_input[m_index].value; 
 
                 if(getType(1) == eq) {
                     m_index += 2;
@@ -114,24 +83,23 @@ public:
                         errorHandler.err({syntax_err, 0, "Expected semicolon"});
                         continue;
                     }
-                    //addVarDecl();
+                    addVarModification(varName, e.value.value);
                     continue;
                 }
 
                 if(getType(1) == plus_eq || getType(1) == minus_eq) {
+                    TokenType symbol = getType(1);
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
                     if(getType(0) != semicolon) {
                         errorHandler.err({syntax_err, 0, "Expected semicolon"});
                         continue;
                     }
-                    getType(1) == plus_eq ? 
+                    symbol == plus_eq ? 
                         addIncrement(varName, any_cast<Token>(e.value).value) : 
                         addDecrement(varName, any_cast<Token>(e.value).value);
-                    
                     continue;
                 }
-
             }
 
         }
@@ -140,6 +108,7 @@ public:
     }
 private:
     size_t m_index { 0 };
+    int m_ident { 0 };
     vector<Statement> output;
     TokenList m_input;
 
@@ -157,13 +126,14 @@ private:
     TokenList getExprValids() {
 
         TokenList exprValids;
-        while(isExprValid(m_input.get(m_index).type)){
-            exprValids.addToken(m_input.get(m_index));
+        while(isExprValid(m_input[m_index].type)){
+            exprValids.addToken(m_input[m_index]);
             ++m_index; 
         }
         return exprValids;
     }
 
+    bool matchTypes(exprType e, TokenType t);
     Expr parseExpr(TokenList list); // in parseexpr.cpp
 
     string typeToString(TokenType t){
@@ -194,5 +164,9 @@ private:
 
     void addExit(string value) {
         output.push_back({exit_stmt, {value}});
+    }
+
+    void addVarModification(string name, string value) {
+        output.push_back({redec_stmt, {name, value}});
     }
 };

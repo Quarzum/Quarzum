@@ -11,9 +11,7 @@ public:
         for(size_t i = 0; i < symbolTable.size(); ++i) {
             Symbol s = symbolTable.get(i);
             if(s.isConst) {
-                if(s.type == "int"){
-                    m_output << "\t" << s.name << " = " << s.value << "\n";
-                } 
+                m_output << "\t" << s.name << " = " << s.value << "\n";
             }
             else {
                 m_output << "\t" << s.name << ": ." <<s.type << " " << s.value << "\n";
@@ -25,6 +23,9 @@ public:
 
         for(size_t i = 0; i < m_input.size(); ++i) {
             Statement s = m_input[i];
+            if(s.type == redec_stmt) {
+                m_output << "\tmov $" << any_cast<string>(s.args[1]) << ", " << any_cast<string>(s.args[0]) << "\n";
+            }
             if(s.type == inc_stmt) {
                 m_output << "\tadd $" << any_cast<string>(s.args[1]) << ", " << any_cast<string>(s.args[0]) << "\n";
             }

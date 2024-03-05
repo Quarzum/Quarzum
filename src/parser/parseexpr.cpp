@@ -16,10 +16,14 @@ exprType typeToExpr(TokenType t){
     return it->second;
 }
 
+bool Parser::matchTypes(exprType e, TokenType t) {
+    if(t == var_k) return true;
+    return exprType(e) == TokenType(t);
+}
+
 Expr Parser::parseExpr(TokenList list) {
 
     if(list.size() == 1) {
-        cout << list[0].value;
         return Expr {
             .type = typeToExpr(list[0].type),
             .value = list[0]

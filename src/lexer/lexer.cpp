@@ -47,7 +47,10 @@ public:
             if(isalpha(get(0))) {
                 consume();
                 while(isalpha(get(0)) || isdigit(get(0))) consume();
-                addToken(TokenType(search(m_buff)));
+                TokenType t = TokenType(search(m_buff));
+                if(m_buff == "true") m_buff = "1";
+                if(m_buff == "false") m_buff = "0";
+                addToken(t);
                 --m_index;
                 continue;
             }
