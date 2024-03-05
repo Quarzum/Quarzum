@@ -53,6 +53,8 @@ const unordered_map<string, unsigned char> prefabs = {
     {"long",36},
     {"async",37},
     {"await",38},
+    {"true",39},
+    {"false",40},
     {"=", 513},
     {"(",514},
     {")",515},

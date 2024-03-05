@@ -13,6 +13,10 @@ public:
         return m_tokens.at(n);
     }
 
+    Token operator[](const size_t n){
+        return get(n);
+    }
+
     size_t size() const{ return m_tokens.size(); }
 
     // Creates a TokenList that is a fragment of the original.

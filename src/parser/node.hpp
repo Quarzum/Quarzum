@@ -13,13 +13,7 @@ enum exprType{
 
 struct Expr{
     exprType type;
-    any value;
-};
-
-struct BinaryExpr{
-    any left;
-    any right;
-    TokenType op;
+    Token value;
 };
 
 bool isExprValid(TokenType t){
@@ -29,9 +23,10 @@ bool isExprValid(TokenType t){
         t == TokenType::minus ||
         t == prod ||
         t == division ||
-        t == remainder
+        t == remainder ||
+        t == str_lit
         
     );
 }
 
-const Expr nullExpr = {NULLEXPR, ""};
+const Expr nullExpr = {NULLEXPR,Token{err, ""}}; 

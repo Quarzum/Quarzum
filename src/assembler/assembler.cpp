@@ -8,7 +8,7 @@ public:
 
     string assemble(){
         m_output << ".data\n";
-        for(int i = 0; i < symbolTable.size(); ++i) {
+        for(size_t i = 0; i < symbolTable.size(); ++i) {
             Symbol s = symbolTable.get(i);
             if(s.isConst) {
                 if(s.type == "int"){
@@ -19,13 +19,16 @@ public:
                 if(s.type == "int"){
                     m_output << "\t" << s.name << ": .int " << s.value << "\n";
                 } 
+                if(s.type == "string"){
+                    m_output << "\t" << s.name << ": .string " << s.value << "\n";
+                } 
             }
             
         }
 
         m_output << ".text\n.globl _start\n_start:\n";
 
-        for(int i = 0; i < m_input.size(); ++i) {
+        for(size_t i = 0; i < m_input.size(); ++i) {
             Statement s = m_input[i];
             if(s.type == inc_stmt) {
                 m_output << "\tadd $" << any_cast<string>(s.args[1]) << ", " << any_cast<string>(s.args[0]) << "\n";

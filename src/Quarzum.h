@@ -21,6 +21,7 @@ using namespace std;
 #include "parser/node.hpp"
 #include "parser/statement.hpp"
 #include "parser/parser.cpp"
+#include "parser/parseexpr.cpp"
 #include "assembler/assembler.cpp"
 #include "other/cli.cpp"
 

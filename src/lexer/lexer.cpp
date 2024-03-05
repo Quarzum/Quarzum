@@ -16,6 +16,7 @@ public:
                 }
                 while(get(0) != '"');
                 consume();
+                --m_index;
                 addToken(str_lit);
                 continue;
             }

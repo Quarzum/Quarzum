@@ -14,16 +14,21 @@ public:
             TokenType t = m_input.get(m_index).type;
 
             if(isDataType(t)) {
-                bool isConst;
-                if(getType(-1) == const_k) {
-                    cout << "CONSTANT\n"; 
-                    isConst = true;
-                }
+                bool isConst = getType(-1) == const_k;
                 if(getType(1) == id) {
                     string varName = m_input.get(m_index + 1).value;
                     if(getType(2) == eq) {
                         m_index += 3;
                         Expr e = parseExpr(getExprValids());
+                        if(e.type == STRING && t == str_k){
+                            if(getType(0) != semicolon) {
+                                errorHandler.err({syntax_err, 0, "Expected semicolon"});
+                                continue;
+                            }
+                            addVarDecl(varName, t, any_cast<Token>(e.value).value, isConst);
+                            cout << "Valid STRING expression.\n";
+                            continue;
+                        }
                         if(e.type == INT && t == int_k){
                             if(getType(0) != semicolon) {
                                 errorHandler.err({syntax_err, 0, "Expected semicolon"});
@@ -86,25 +91,17 @@ public:
                     continue;
                 }
 
-                if(getType(1) == plus_eq) {
+                if(getType(1) == plus_eq || getType(1) == minus_eq) {
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
                     if(getType(0) != semicolon) {
                         errorHandler.err({syntax_err, 0, "Expected semicolon"});
                         continue;
                     }
-                    addIncrement(varName, any_cast<Token>(e.value).value);
-                    continue;
-                }
-
-                if(getType(1) == minus_eq) {
-                    m_index += 2;
-                    Expr e = parseExpr(getExprValids());
-                    if(getType(0) != semicolon) {
-                        errorHandler.err({syntax_err, 0, "Expected semicolon"});
-                        continue;
-                    }
-                    addDecrement(varName, any_cast<Token>(e.value).value);
+                    getType(1) == plus_eq ? 
+                        addIncrement(varName, any_cast<Token>(e.value).value) : 
+                        addDecrement(varName, any_cast<Token>(e.value).value);
+                    
                     continue;
                 }
 
@@ -140,44 +137,23 @@ private:
         return exprValids;
     }
 
-    Expr parseExpr(TokenList list){
-        
-        // 2. Iterate the TokenList. If finds a "+" divide into a binary expr. If not, push a single expr.
+    Expr parseExpr(TokenList list); // in parseexpr.cpp
 
-        if(list.size() == 1){
-            return Expr{
-                .type = exprType::INT,
-                .value = Token{ int_lit, "7"}
-            };
-        }
-
-        /*
-
-        Operator Precedence Level 0
-
-        */
-        // for (size_t n = list.size(); n > 0; n--)
-        // {
-        //     if (list.get(n).type == TokenType::plus)
-        //     {
-        //         Expr a = parseExpr( list.divide(0, n) );
-        //         Expr b = parseExpr(list.divide(n, list.size()));
-
-        //         return Expr{
-        //             exprType::INT,
-        //             BinaryExpr{a, b, TokenType::plus}
-        //         };
-        //     }
-        // }
-        Token v = {int_lit, "7"};
-        return Expr {
-            .type = exprType::INT,
-            .value = v
+    string typeToString(TokenType t){
+        const unordered_map<TokenType, string> types = {
+            {int_k, "int"},
+            {str_k, "string"},
+            {bool_k, "byte"},
+            {byte_k, "byte"},
+            {char_k, "byte"},
+            {uint_k, "int"}
         };
+        auto it = types.find(t);
+        return it->second;
     }
 
     void addVarDecl(string name, TokenType type, string value = "0", bool isConst = false){
-        symbolTable.add({name, "int", value, isConst});
+        symbolTable.add({name, typeToString(type), value, isConst});
     }
 
     void addIncrement(string name, string value){
