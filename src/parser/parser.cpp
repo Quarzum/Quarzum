@@ -11,6 +11,8 @@ public:
         for(; m_index < m_input.size(); ++m_index){
 
             TokenType t = m_input[m_index].type;
+
+            if(t == TokenType::endl){ ++m_line; continue; }
             
             if(isDataType(t)) {
                 bool isConst = getType(-1) == const_k;
@@ -102,6 +104,28 @@ public:
                 }
             }
 
+            if(t == function_k) {
+                if(getType(1) == id) {
+                    if(getType(2) == left_par) {
+                        m_index += 3;
+                        getArgs(false);
+                        if(getType(0) == right_par) {
+                            if(getType(1) == left_cb){
+                                continue;
+                            }
+                            errorHandler.err({syntax_err, m_line, "Expected function body"});
+                            continue;
+                        }
+                        errorHandler.err({syntax_err, m_line, "Expected ')'"});
+                        continue;
+                    }
+                    errorHandler.err({syntax_err, m_line, "Expected function arguments"});
+                    continue;
+                }
+                errorHandler.err({syntax_err, m_line, "Expected identifier"});
+                continue;
+            }
+
         }
         errorHandler.run();
         return output;
@@ -137,6 +161,28 @@ private:
         return exprValids;
     }
 
+    void getArgs(bool mandatory) {
+        if(isDataType(getType(0))){
+            if(getType(1) == id) {
+                m_index += 2;
+            }
+            else {
+                errorHandler.err({syntax_err, m_line, "Expected identifier"});
+                return;
+            }
+        }
+        else if(mandatory) {
+            errorHandler.err({syntax_err, m_line, "Expected function argument after comma"});
+            return;
+        }
+
+        if(getType(0) == comma) {
+            ++m_index;
+            getArgs(true);
+        }
+
+    }
+
     bool matchTypes(exprType e, TokenType t);
     Expr parseExpr(TokenList list); // in parseexpr.cpp
 
@@ -155,6 +201,10 @@ private:
     }
 
     void addVarDecl(string name, TokenType type, string value = "0", bool isConst = false){
+        if(symbolTable.find(name).name != ""){
+            errorHandler.err({syntax_err, m_line, "Variable \"" + name + "\" already exists"});
+            return;
+        }
         symbolTable.add({name, typeToString(type), value, isConst});
     }
 
@@ -171,6 +221,10 @@ private:
     }
 
     void addVarModification(string name, string value) {
+        if(symbolTable.find(name).name == ""){
+            errorHandler.err({syntax_err, m_line, "Undefined reference to " + name});
+            return;
+        }
         output.push_back({redec_stmt, {name, value}});
     }
 };

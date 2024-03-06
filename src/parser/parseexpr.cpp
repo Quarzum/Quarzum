@@ -48,7 +48,7 @@ Expr Parser::parseExpr(TokenList list) {
     if(list.size() == 1) {
         if(list[0].type == id) {
             if(symbolTable.find(list[0].value).name == ""){
-                errorHandler.err({syntax_err,m_line,"Invalid reference to " + list[0].value});
+                errorHandler.err({syntax_err,m_line,"Undefined reference to " + list[0].value});
                 return nullExpr;
             }
             return Expr {
@@ -70,7 +70,7 @@ Expr Parser::parseExpr(TokenList list) {
         switch (list[i].type)
         {
         case or_s:
-        divideNodes;
+            divideNodes;
             return Expr{
                 .type = BOOL,
                 .value = a.value + list[i].value + b.value
