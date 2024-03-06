@@ -4,7 +4,7 @@
 class Assembler {
 
 public:
-    Assembler (vector<Statement> input) : m_input(input) {}
+    Assembler (StatementList input) : m_input(input.getAll()) {}
 
     string assemble(){
         m_output << ".data\n";
@@ -18,22 +18,24 @@ public:
             }
             
         }
-
         m_output << ".text\n.globl _start\n_start:\n";
 
         for(size_t i = 0; i < m_input.size(); ++i) {
             Statement s = m_input[i];
+            cout << "odent " << s.type; 
             if(s.type == redec_stmt) {
-                m_output << "\tmov $" << any_cast<string>(s.args[1]) << ", " << any_cast<string>(s.args[0]) << "\n";
+                
+                m_output << "\tmov $" << s.args[1] << ", " << s.args[0] << "\n";
             }
             if(s.type == inc_stmt) {
-                m_output << "\tadd $" << any_cast<string>(s.args[1]) << ", " << any_cast<string>(s.args[0]) << "\n";
+                m_output << "\tadd $" << s.args[1] << ", " << s.args[0] << "\n";
             }
             if(s.type == dec_stmt) {
-                m_output << "\tsub $" << any_cast<string>(s.args[1]) << ", " << any_cast<string>(s.args[0]) << "\n";
+
+                m_output << "\tsub $" << s.args[1] << ", " << s.args[0] << "\n";
             }
             if(s.type == exit_stmt) {
-                m_output << "\tmov $60, %rax\n\tmov $" << any_cast<string>(s.args[0]) << ", %rdi\n\tsyscall\n";
+                m_output << "\tmov $60, %rax\n\tmov $" << s.args[0] << ", %rdi\n\tsyscall\n";
             }
         }
 

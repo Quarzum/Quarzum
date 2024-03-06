@@ -8,13 +8,26 @@ public:
 
     Parser(TokenList input): m_input(input){}
 
-    vector<Statement> parse() {
+    StatementList parse() {
+        output.push_back({});
+        Statement buffer;
         for(; m_index < m_input.size(); ++m_index){
 
             TokenType t = m_input[m_index].type;
 
             if(t == TokenType::endl){ ++m_line; continue; }
-            
+
+            if(t == right_cb) {
+                if(m_ident == 0) {
+                    SyntaxErr("Unexpected '}'");
+                }
+                buffer.children = output[m_ident].getAll();
+                output.pop_back();
+                --m_ident;
+                addStmt(buffer);
+                buffer = {};
+            }
+
             if(isDataType(t)) {
                 bool isConst = getType(-1) == const_k;
                 if(getType(1) == id) {
@@ -53,7 +66,7 @@ public:
                 Expr e = parseExpr(getExprValids());
                 if(e.type == INT) {
                     if(getType(0) != semicolon) { SyntaxErr("Expected semicolon"); }
-                    addExit(e.value);
+                    addStmt({exit_stmt, {e.value}, NULL});
                     continue;
                 }
                 TypeErr("Expected expression of type 'int'");
@@ -72,7 +85,7 @@ public:
             }
 
             if(t == id) {
-
+                
                 string varName = m_input[m_index].value; 
 
                 if(getType(1) == eq) {
@@ -88,7 +101,7 @@ public:
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
                     if(getType(0) != semicolon) { SyntaxErr("Expected semicolon"); }
-                    symbol == plus_eq ? addIncrement(varName, e.value) : addDecrement(varName, e.value);
+                    addStmt( Statement{ (symbol == plus_eq ? inc_stmt : dec_stmt) , {varName, e.value}, NULL });
                     continue;
                 }
             }
@@ -120,6 +133,8 @@ public:
                     }
                     if(getType(0) == right_par) {
                         if(getType(1) == left_cb){
+                            addIdent();
+                            buffer = {if_stmt, {e.value}};
                             continue;
                         }
                         SyntaxErr("Expected 'if' body");
@@ -136,6 +151,8 @@ public:
                     if(e.type != BOOL) { TypeErr("Conditions must be of type 'bool'"); }
                     if(getType(0) == right_par) {
                         if(getType(1) == left_cb){
+                            addIdent();
+                            buffer = {while_stmt, {e.value}};
                             continue;
                         }
                         SyntaxErr("Expected 'while' body");
@@ -147,18 +164,16 @@ public:
 
         }
         errorHandler.run();
-        return output;
+        return output[0];
     }
 private:
     size_t m_index { 0 };
     int m_ident { 0 };
     size_t m_line { 0 };
-    vector<Statement> output;
+    deque<StatementList> output;
     TokenList m_input;
 
-    bool isDataType(TokenType t) const noexcept {
-        return (t >= 1 && t <= 8);
-    }
+    bool isDataType(TokenType t) const { return (t >= 1 && t <= 8); }
 
     TokenType getType(size_t n) {
         if(m_index + n >= m_input.size()){
@@ -171,7 +186,6 @@ private:
     }
 
     TokenList getExprValids() {
-
         TokenList exprValids;
         while(isExprValid(m_input[m_index].type)){
             exprValids.addToken(m_input[m_index]);
@@ -194,7 +208,6 @@ private:
             errorHandler.err({syntax_err, m_line, "Expected function argument after comma"});
             return;
         }
-
         if(getType(0) == comma) {
             ++m_index;
             getArgs(true);
@@ -219,6 +232,12 @@ private:
         return it->second;
     }
 
+    void addStmt(Statement s) { 
+        output[m_ident].add(s);
+    }
+
+    void addIdent() {output.push_back({}); m_ident = output.size() - 1;}
+
     void addVarDecl(string name, TokenType type, string value = "0", bool isConst = false){
         if(symbolTable.find(name).name != ""){
             errorHandler.err({syntax_err, m_line, "Variable '" + name + "' already exists"});
@@ -227,23 +246,11 @@ private:
         symbolTable.add({name, typeToString(type), value, isConst});
     }
 
-    void addIncrement(string name, string value){
-        output.push_back({inc_stmt, {name, value}});
-    }
-
-    void addDecrement(string name, string value){
-        output.push_back({dec_stmt, {name, value}});
-    }
-
-    void addExit(string value) {
-        output.push_back({exit_stmt, {value}});
-    }
-
     void addVarModification(string name, string value) {
         if(symbolTable.find(name).name == ""){
             errorHandler.err({syntax_err, m_line, "Undefined reference to '" + name +"'"});
             return;
         }
-        output.push_back({redec_stmt, {name, value}});
+        output[m_ident].add({redec_stmt, {name, value}, NULL});
     }
 };

@@ -7,6 +7,7 @@ using namespace std;
 #include <fstream> 
 #include <sstream>
 #include <unordered_map>
+#include <deque>
 
 #include "other/errorhandler.cpp"
 #include "qcomponent.hpp"
