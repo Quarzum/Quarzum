@@ -1,6 +1,7 @@
 #pragma once
 #include "../Quarzum.h"
-
+#define SyntaxErr(c) errorHandler.err({syntax_err, m_line, c}); continue;
+#define TypeErr(c) errorHandler.err({type_err, m_line, c}); continue;
 class Parser: public QComponent{
     
 public:
@@ -23,30 +24,20 @@ public:
                         
                         Expr e = parseExpr(getExprValids());
                         if(matchTypes(e.type, t)){
-                            if(getType(0) != semicolon) {
-                                errorHandler.err({syntax_err, m_line, "Expected semicolon"});
-                                continue;
-                            }
+                            if(getType(0) != semicolon) { SyntaxErr("Expected semicolon"); }
                             addVarDecl(varName, t, e.value, isConst);
                             continue;
                         }
-                        
-                        errorHandler.err({syntax_err, m_line, "Expected expression of type " + m_input[0].value});
-                        continue;
+                        TypeErr("Expected expression of type '" + m_input[0].value +"'");
                     }   
                     if(getType(2) == semicolon) {
-                        if(isConst){
-                            errorHandler.err({syntax_err, m_line, "Variables marked as constant should be initialized"});
-                            continue;
-                        }
+                        if(isConst){ SyntaxErr("Variables marked as constant should be initialized"); }
                         addVarDecl(varName, t);
                         continue;
                     } 
-                    errorHandler.err({syntax_err, m_line, "Expected semicolon or assignment"});
-                    continue;
+                    SyntaxErr("Expected semicolon or assignment");
                 }
-                errorHandler.err({syntax_err, m_line, "Expected identifier"});
-                continue;
+                SyntaxErr("Expected identifier");
             }
 
             if(t == module_k) {
@@ -54,23 +45,29 @@ public:
 
                     continue;
                 }
-                errorHandler.err({syntax_err, m_line, "Expected identifier"});
-                continue;
+                SyntaxErr("Expected identifier");
             }
 
             if(t == exit_k) {
                 ++m_index;
                 Expr e = parseExpr(getExprValids());
                 if(e.type == INT) {
-                    if(getType(0) != semicolon) {
-                        cout << getType(0);
-                        errorHandler.err({syntax_err, m_line, "Expected semicolon"});
-                        continue;
-                    }
+                    if(getType(0) != semicolon) { SyntaxErr("Expected semicolon"); }
                     addExit(e.value);
                     continue;
                 }
-                errorHandler.err({syntax_err, m_line, "Expected expression of type int"});
+                TypeErr("Expected expression of type 'int'");
+            }
+
+            if(t == return_k) {
+                ++m_index;
+                if(getType(0) == semicolon) {
+                    // addreturn(null);
+                    continue;
+                }
+                Expr e = parseExpr(getExprValids());
+                if(getType(0) != semicolon) { SyntaxErr("Expected semicolon"); }
+                // addreturn(expr);
                 continue;
             }
 
@@ -81,10 +78,7 @@ public:
                 if(getType(1) == eq) {
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
-                    if(getType(0) != semicolon) {
-                        errorHandler.err({syntax_err, m_line, "Expected semicolon"});
-                        continue;
-                    }
+                    if(getType(0) != semicolon) { SyntaxErr("Expected semicolon"); }
                     addVarModification(varName, e.value);
                     continue;
                 }
@@ -93,13 +87,8 @@ public:
                     TokenType symbol = getType(1);
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
-                    if(getType(0) != semicolon) {
-                        errorHandler.err({syntax_err, m_line, "Expected semicolon"});
-                        continue;
-                    }
-                    symbol == plus_eq ? 
-                        addIncrement(varName, e.value) : 
-                        addDecrement(varName, e.value);
+                    if(getType(0) != semicolon) { SyntaxErr("Expected semicolon"); }
+                    symbol == plus_eq ? addIncrement(varName, e.value) : addDecrement(varName, e.value);
                     continue;
                 }
             }
@@ -113,17 +102,47 @@ public:
                             if(getType(1) == left_cb){
                                 continue;
                             }
-                            errorHandler.err({syntax_err, m_line, "Expected function body"});
+                            SyntaxErr("Expected function body");
+                        }
+                        SyntaxErr("Expected ')'");
+                    }
+                    SyntaxErr("Expected function arguments");
+                }
+                SyntaxErr("Expected identifier");
+            }
+
+            if(t == if_k) {
+                if(getType(1) == left_par) {
+                    m_index += 2;
+                    Expr e = parseExpr(getExprValids());
+                    if(e.type != BOOL) {
+                        TypeErr("Conditions must be of type 'bool'");
+                    }
+                    if(getType(0) == right_par) {
+                        if(getType(1) == left_cb){
                             continue;
                         }
-                        errorHandler.err({syntax_err, m_line, "Expected ')'"});
-                        continue;
+                        SyntaxErr("Expected 'if' body");
                     }
-                    errorHandler.err({syntax_err, m_line, "Expected function arguments"});
-                    continue;
+                    SyntaxErr("Expected ')'");
                 }
-                errorHandler.err({syntax_err, m_line, "Expected identifier"});
-                continue;
+                SyntaxErr("Expected identifier");
+            }
+
+            if(t == while_k) {
+                if(getType(1) == left_par) {
+                    m_index += 2;
+                    Expr e = parseExpr(getExprValids());
+                    if(e.type != BOOL) { TypeErr("Conditions must be of type 'bool'"); }
+                    if(getType(0) == right_par) {
+                        if(getType(1) == left_cb){
+                            continue;
+                        }
+                        SyntaxErr("Expected 'while' body");
+                    }
+                    SyntaxErr("Expected ')'");
+                }
+                SyntaxErr("Expected identifier");
             }
 
         }
@@ -133,7 +152,7 @@ public:
 private:
     size_t m_index { 0 };
     int m_ident { 0 };
-    size_t m_line { 1 };
+    size_t m_line { 0 };
     vector<Statement> output;
     TokenList m_input;
 
@@ -202,7 +221,7 @@ private:
 
     void addVarDecl(string name, TokenType type, string value = "0", bool isConst = false){
         if(symbolTable.find(name).name != ""){
-            errorHandler.err({syntax_err, m_line, "Variable \"" + name + "\" already exists"});
+            errorHandler.err({syntax_err, m_line, "Variable '" + name + "' already exists"});
             return;
         }
         symbolTable.add({name, typeToString(type), value, isConst});
@@ -222,7 +241,7 @@ private:
 
     void addVarModification(string name, string value) {
         if(symbolTable.find(name).name == ""){
-            errorHandler.err({syntax_err, m_line, "Undefined reference to " + name});
+            errorHandler.err({syntax_err, m_line, "Undefined reference to '" + name +"'"});
             return;
         }
         output.push_back({redec_stmt, {name, value}});

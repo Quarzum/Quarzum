@@ -11,7 +11,8 @@
 enum ErrorType{
     file_not_found_err  = 0,
     lexical_err = 1,
-    syntax_err = 2
+    syntax_err = 2,
+    type_err = 3
 };
 
 struct Error{
@@ -57,6 +58,10 @@ private:
             break;
         case syntax_err:
             s << RED << "SyntaxError" << NC;
+            break;
+        case type_err:
+            s << RED << "TypeError" << NC;
+            break;
         default:
             break;
         }
