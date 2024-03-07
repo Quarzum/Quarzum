@@ -35,12 +35,10 @@ bool Parser::matchTypes(exprType e, TokenType t) {
 }
 
 exprType sumTypes (exprType a, exprType b) {
-    if( (a == NUMBER && b != STRING) || (b == NUMBER && a != STRING))   { return NUMBER;}
-    if( (a == INT && b != STRING) || (b == INT && a != STRING))   { return INT;   }
-    if( (a == UINT && b != STRING) || (b == UINT && a != STRING)) { return UINT;  }
-    if( a == CHAR || b == CHAR ) { return CHAR;  }
-    if( (a == BYTE && b != STRING ) || (b == BYTE && a != STRING)) { return BYTE;  }
-    if( (a == STRING && b == STRING) || b == CHAR) {return STRING;}
+    cout << a << b << '\n';
+    if(a < 7 && b < 7){return a > b? (a==CHAR? b : a) : a;}
+    if((a == 7 && b > 5) || (b == 7 && a > 5)){ return STRING;}
+    if(a == 6 && b == 6){ return CHAR;}
     return NULLEXPR;
 }
 

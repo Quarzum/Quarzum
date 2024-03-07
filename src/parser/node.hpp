@@ -1,13 +1,13 @@
 #pragma once
 
 enum exprType{
-    INT = 1,
-    NUMBER,
-    STRING,
-    CHAR,
-    BOOL,
+    BOOL = 1,
     BYTE,
     UINT,
+    INT,
+    NUMBER,
+    CHAR,
+    STRING,
     NULLEXPR
 };
 

@@ -113,6 +113,8 @@ public:
                         getArgs(false);
                         if(getType(0) == right_par) {
                             if(getType(1) == left_cb){
+                                addIdent();
+                                buffer = {func_stmt, {}};
                                 continue;
                             }
                             SyntaxErr("Expected function body");

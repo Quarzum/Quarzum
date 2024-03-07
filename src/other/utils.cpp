@@ -13,14 +13,14 @@ void createFile(const string name,const string content = "") {
 
 // The string array that contains all the Quarzum's keywords and symbols.
 const unordered_map<string, unsigned char> prefabs = {
-    {"int",1},
-    {"number",2},
-    {"string",3},
-    {"char",4},
-    {"bool",5},
-    {"var",6},
-    {"uint",7},
-    {"byte",8},
+    {"bool",1},
+    {"byte",2},
+    {"uint",3},
+    {"int",4},
+    {"number",5},
+    {"char",6},
+    {"string",7},
+    {"var",8},
     {"return",9},
     {"function",10},
     {"enum",11},

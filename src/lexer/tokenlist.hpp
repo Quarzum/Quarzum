@@ -32,8 +32,7 @@ public:
     string toString() {
         string result;
         for(Token token : m_tokens) {
-            result += token.value;
-            result += " ";
+            result += token.value + " ";
         }
         return result;
     }
