@@ -4,14 +4,14 @@
 
 exprType typeToExpr(TokenType t){
     const unordered_map<TokenType, exprType> types = {
-        {int_lit,INT},
-        {str_lit,STRING},
-        {true_k, BOOL},
-        {false_k, BOOL},
-        {byte_lit, BYTE},
-        {char_lit, CHAR},
-        {uint_lit, UINT},
-        {num_lit, NUMBER}
+        {TokenType::IntegerLit,INT},
+        {TokenType::StringLit,STRING},
+        {TokenType::True, BOOL},
+        {TokenType::False, BOOL},
+        {TokenType::ByteLit, BYTE},
+        {TokenType::CharLit, CHAR},
+        {TokenType::UintLit, UINT},
+        {TokenType::NumberLit, NUMBER}
     };
     auto it = types.find(t);
     return it->second;
@@ -30,8 +30,8 @@ exprType strToExpr(string t){
     return it->second;
 }
 bool Parser::matchTypes(exprType e, TokenType t) {
-    if(t == var_k) return true;
-    return exprType(e) == TokenType(t);
+    if(t == TokenType::Var) return true;
+    return (u_int8_t)exprType(e) == (u_int8_t)TokenType(t);
 }
 
 exprType sumTypes (exprType a, exprType b) {
@@ -44,7 +44,7 @@ exprType sumTypes (exprType a, exprType b) {
 
 Expr Parser::parseExpr(TokenList list) {
     if(list.size() == 1) {
-        if(list[0].type == id) {
+        if(list[0].type == TokenType::Identifier) {
             if(symbolTable.find(list[0].value).name == ""){
                 errorHandler.err({syntax_err,m_line,"Undefined reference to " + list[0].value});
                 return nullExpr;
@@ -67,54 +67,54 @@ Expr Parser::parseExpr(TokenList list) {
     {   
         switch (list[i].type)
         {
-        case or_s:
+        case TokenType::Or:
             divideNodes;
             return Expr{
                 .type = BOOL,
                 .value = a.value + list[i].value + b.value
             };
-        case and_s:
+        case TokenType::And:
             divideNodes;
             return Expr{
                 .type = BOOL,
                 .value = a.value + list[i].value + b.value
             };
-        case or_bit:
+        case TokenType::BitwiseOr:
             divideNodes;
             return Expr{
                 .type = BOOL,
                 .value = a.value + list[i].value + b.value
             };
-        case xor_bit:
+        case TokenType::BitwiseXor:
             divideNodes;
             return Expr{
                 .type = BOOL,
                 .value = a.value + list[i].value + b.value
             };         
-        case and_bit:
+        case TokenType::BitwiseAnd:
             divideNodes;
             return Expr{
                 .type = BOOL,
                 .value = a.value + list[i].value + b.value
             };
-        case TokenType::greater:
-        case greater_eq:
-        case TokenType::less:
-        case less_eq:
+        case TokenType::Greater:
+        case TokenType::GreaterEq:
+        case TokenType::Lower:
+        case TokenType::LowerEq:
             divideNodes;
             return Expr{
                 .type = BOOL,
                 .value = a.value + list[i].value + b.value
             };
-        case is_equal:
-        case not_equal:
+        case TokenType::IsEqual:
+        case TokenType::NotEqual:
             divideNodes;
             return Expr{
                 .type = BOOL,
                 .value = a.value + list[i].value + b.value
             };
-        case TokenType::plus:
-        case TokenType::minus:
+        case TokenType::Plus:
+        case TokenType::Minus:
             divideNodes;
             typeBlend = sumTypes(a.type, b.type);
             if(typeBlend == NULLEXPR) {
@@ -125,10 +125,10 @@ Expr Parser::parseExpr(TokenList list) {
                 .type = typeBlend,
                 .value = a.value + list[i].value + b.value
             };
-        case prod:
-        case division:
-        case remainder:
-        case power:
+        case TokenType::Product:
+        case TokenType::Division:
+        case TokenType::Remainder:
+        case TokenType::Power:
             divideNodes;
             return Expr{
                 .type = INT,

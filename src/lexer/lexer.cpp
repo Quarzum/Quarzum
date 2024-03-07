@@ -15,7 +15,7 @@ public:
                 consume();
                 consume();
                 --m_index;
-                addToken(char_lit);
+                addToken(TokenType::CharLit);
                 continue;
             }
 
@@ -26,7 +26,7 @@ public:
                 while(get(0) != '"');
                 consume();
                 --m_index;
-                addToken(str_lit);
+                addToken(TokenType::StringLit);
                 continue;
             }
 
@@ -39,12 +39,12 @@ public:
             if(get(0) == '/' && get(1) == '/') {
                 while(get(0) != '\n') ++m_index;
                 ++m_line;
-                addToken(TokenType::endl);
+                addToken(TokenType::Endl);
                 continue;
             }
             if(get(0) == '\n'){
                 ++m_line;
-                addToken(TokenType::endl);
+                addToken(TokenType::Endl);
                 continue;
             }
             if(isspace(get(0))) continue;
@@ -67,7 +67,7 @@ public:
                     if(get(0) == '.') { isFloat = true; }
                     consume();
                 }
-                addToken(isFloat? num_lit : int_lit);
+                addToken(isFloat? TokenType::NumberLit : TokenType::IntegerLit );
                 --m_index;
                 continue;
             }
@@ -78,7 +78,7 @@ public:
                     consume();
                     --m_index;
                     if(search(m_buff) > 0) {
-                        addToken(TokenType( search(m_buff) + 512));
+                        addToken(TokenType( search(m_buff) ));
                         continue;
                     }
                     else m_buff.pop_back();
@@ -86,7 +86,7 @@ public:
                 --m_index;
                 string s;
                 s += get(0);
-                addToken(TokenType( search(s) + 512 ));
+                addToken(TokenType( search(s) ));
                 continue;
             }
             errorHandler.err({lexical_err, m_line, "Unexpected token " + get(0)});
