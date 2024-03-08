@@ -1,5 +1,6 @@
 #pragma once
 #include "../Quarzum.h"
+using namespace Quarzum::Lex;
 #define SyntaxErr(c) errorHandler.err({syntax_err, m_line, c}); continue;
 #define TypeErr(c) errorHandler.err({type_err, m_line, c}); continue;
 class Parser: public QComponent{
@@ -174,8 +175,6 @@ private:
     size_t m_line { 0 };
     deque<StatementList> output;
     TokenList m_input;
-
-    bool isDataType(TokenType t) const { return ((unsigned char)(t) >= 1 && (unsigned char)t <= 8); }
 
     TokenType getType(size_t n) {
         if(m_index + n >= m_input.size()){

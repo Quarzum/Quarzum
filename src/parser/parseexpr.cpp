@@ -1,7 +1,7 @@
 #pragma once
 #include "../Quarzum.h"
 #define divideNodes a = parseExpr(list.divide(0,i)); b = parseExpr(list.divide(i+1,list.size()));
-
+using namespace Quarzum::Lex;
 exprType typeToExpr(TokenType t){
     const unordered_map<TokenType, exprType> types = {
         {TokenType::IntegerLit,INT},
@@ -35,7 +35,6 @@ bool Parser::matchTypes(exprType e, TokenType t) {
 }
 
 exprType sumTypes (exprType a, exprType b) {
-    cout << a << b << '\n';
     if(a < 7 && b < 7){return a > b? (a==CHAR? b : a) : a;}
     if((a == 7 && b > 5) || (b == 7 && a > 5)){ return STRING;}
     if(a == 6 && b == 6){ return CHAR;}

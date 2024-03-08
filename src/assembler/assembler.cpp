@@ -22,7 +22,6 @@ public:
 
         for(size_t i = 0; i < m_input.size(); ++i) {
             Statement s = m_input[i];
-            cout << "odent - " << s.type << " "; 
             if(s.type == redec_stmt) {
                 
                 m_output << "\tmov $" << s.args[1] << ", " << s.args[0] << "\n";

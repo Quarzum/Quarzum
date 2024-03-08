@@ -1,5 +1,6 @@
 #pragma once
 #include "../Quarzum.h"
+using namespace Quarzum::Lex;
 class Tokenizer: public QComponent{
 
 public:
@@ -11,9 +12,7 @@ public:
         for(m_index = 0; m_index < m_input.length(); ++m_index){
 
             if(get(0) == '\'' && isascii(get(1)) && get(2) == '\''){
-                consume();
-                consume();
-                consume();
+                consume(3);
                 --m_index;
                 addToken(TokenType::CharLit);
                 continue;
@@ -108,13 +107,16 @@ private:
     }
 
     void addToken(const TokenType t) {
-        m_output.addToken({type: t, value: m_buff});
+        m_output.addToken(Token{type: t, value: m_buff});
         m_buff.clear();
     }
 
-    void consume() {
-        m_buff += get(0);
-        ++m_index;
+    void consume(unsigned char n = 1) {
+        for (size_t i = 0; i < n; i++)
+        {
+            m_buff += get(0);
+            ++m_index;
+        }
     }
 
 };

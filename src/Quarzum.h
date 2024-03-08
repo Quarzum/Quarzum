@@ -9,10 +9,10 @@ using namespace std;
 #include <unordered_map>
 #include <deque>
 
+#include "lexer/lex.hpp"
+
 #include "other/errorhandler.cpp"
 #include "qcomponent.hpp"
-#include "lexer/token.hpp"
-#include "lexer/tokenlist.hpp"
 
 #include "source/source.hpp"
 #include "other/utils.cpp"

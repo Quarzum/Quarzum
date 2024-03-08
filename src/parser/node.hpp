@@ -42,5 +42,3 @@ bool isExprValid(TokenType t){
 }
 
 const Expr nullExpr = {NULLEXPR, ""}; 
-const Token trueToken = {TokenType::True, "1"};
-const Token falseToken = {TokenType::False, "0"};
