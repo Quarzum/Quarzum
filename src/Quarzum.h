@@ -1,6 +1,6 @@
 #pragma once
 using namespace std;
-#include <string>
+
 #include <iostream>
 #include <vector>
 #include <any>
@@ -8,6 +8,11 @@ using namespace std;
 #include <sstream>
 #include <unordered_map>
 #include <deque>
+
+namespace Quarzum {
+    typedef unsigned char byte;
+    typedef unsigned long size;
+}
 
 #include "lexer/lex.hpp"
 
