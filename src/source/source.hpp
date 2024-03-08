@@ -1,4 +1,4 @@
-
+using namespace Quarzum;
 // This class manages the input file, creating a Source object with a specified path
 class Source: public QComponent{
 

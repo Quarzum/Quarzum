@@ -1,7 +1,8 @@
 #pragma once
-#include "../Quarzum.h"
+#include "lex.hpp"
+using namespace Quarzum;
 using namespace Quarzum::Lex;
-class Tokenizer: public QComponent{
+class Tokenizer: public QComponent {
 
 public:
 
@@ -14,7 +15,7 @@ public:
             if(get(0) == '\'' && isascii(get(1)) && get(2) == '\''){
                 consume(3);
                 --m_index;
-                addToken(TokenType::CharLit);
+                addToken(CharLit);
                 continue;
             }
 
@@ -25,7 +26,7 @@ public:
                 while(get(0) != '"');
                 consume();
                 --m_index;
-                addToken(TokenType::StringLit);
+                addToken(StringLit);
                 continue;
             }
 
@@ -38,12 +39,12 @@ public:
             if(get(0) == '/' && get(1) == '/') {
                 while(get(0) != '\n') ++m_index;
                 ++m_line;
-                addToken(TokenType::Endl);
+                addToken(Endl);
                 continue;
             }
             if(get(0) == '\n'){
                 ++m_line;
-                addToken(TokenType::Endl);
+                addToken(Endl);
                 continue;
             }
             if(isspace(get(0))) continue;
@@ -66,7 +67,7 @@ public:
                     if(get(0) == '.') { isFloat = true; }
                     consume();
                 }
-                addToken(isFloat? TokenType::NumberLit : TokenType::IntegerLit );
+                addToken(isFloat? NumberLit : IntegerLit );
                 --m_index;
                 continue;
             }

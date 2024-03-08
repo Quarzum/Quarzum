@@ -1,9 +1,9 @@
 #pragma once
 #include "../Quarzum.h"
 #define divideNodes a = parseExpr(list.divide(0,i)); b = parseExpr(list.divide(i+1,list.size()));
-using namespace Quarzum::Lex;
-exprType typeToExpr(TokenType t){
-    const unordered_map<TokenType, exprType> types = {
+using namespace Quarzum::Parse;
+ExprType typeToExpr(TokenType t){
+    const unordered_map<TokenType, ExprType> types = {
         {TokenType::IntegerLit,INT},
         {TokenType::StringLit,STRING},
         {TokenType::True, BOOL},
@@ -16,8 +16,8 @@ exprType typeToExpr(TokenType t){
     auto it = types.find(t);
     return it->second;
 }
-exprType strToExpr(string t){
-    const unordered_map<string, exprType> types = {
+ExprType strToExpr(string t){
+    const unordered_map<string, ExprType> types = {
         {"int",INT},
         {"string",STRING},
         {"bool", BOOL},
@@ -29,12 +29,12 @@ exprType strToExpr(string t){
     auto it = types.find(t);
     return it->second;
 }
-bool Parser::matchTypes(exprType e, TokenType t) {
+bool Parser::matchTypes(ExprType e, TokenType t) {
     if(t == TokenType::Var) return true;
-    return (u_int8_t)exprType(e) == (u_int8_t)TokenType(t);
+    return (u_int8_t)ExprType(e) == (u_int8_t)TokenType(t);
 }
 
-exprType sumTypes (exprType a, exprType b) {
+ExprType sumTypes (ExprType a, ExprType b) {
     if(a < 7 && b < 7){return a > b? (a==CHAR? b : a) : a;}
     if((a == 7 && b > 5) || (b == 7 && a > 5)){ return STRING;}
     if(a == 6 && b == 6){ return CHAR;}
@@ -61,7 +61,7 @@ Expr Parser::parseExpr(TokenList list) {
     u_int8_t ident = 0;
     Expr a = nullExpr;
     Expr b = nullExpr;
-    exprType typeBlend;
+    ExprType typeBlend;
     for (size_t i = 0; i < list.size(); ++i)
     {   
         switch (list[i].type)

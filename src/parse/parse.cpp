@@ -1,6 +1,8 @@
 #pragma once
-#include "../Quarzum.h"
+#include "parse.hpp"
+using namespace Quarzum;
 using namespace Quarzum::Lex;
+using namespace Quarzum::Parse;
 #define SyntaxErr(c) errorHandler.err({syntax_err, m_line, c}); continue;
 #define TypeErr(c) errorHandler.err({type_err, m_line, c}); continue;
 class Parser: public QComponent{
@@ -16,9 +18,9 @@ public:
 
             TokenType t = m_input[m_index].type;
 
-            if(t == TokenType::Endl){ ++m_line; continue; }
+            if(t == Endl){ ++m_line; continue; }
 
-            if(t == TokenType::RightCurlyBracket) {
+            if(t == RightCurlyBracket) {
                 if(m_ident == 0) {
                     SyntaxErr("Unexpected '}'");
                 }
@@ -30,21 +32,21 @@ public:
             }
 
             if(isDataType(t)) {
-                bool isConst = getType(-1) == TokenType::Const;
-                if(getType(1) == TokenType::Identifier) {
+                bool isConst = getType(-1) == Const;
+                if(getType(1) == Identifier) {
                     string varName = m_input[m_index + 1].value;
-                    if(getType(2) == TokenType::Equal) {
+                    if(getType(2) == Equal) {
                         m_index += 3;
                         
                         Expr e = parseExpr(getExprValids());
                         if(matchTypes(e.type, t)){
-                            if(getType(0) != TokenType::Semicolon) { SyntaxErr("Expected semicolon"); }
+                            if(getType(0) != Semicolon) { SyntaxErr("Expected semicolon"); }
                             addVarDecl(varName, t, e.value, isConst);
                             continue;
                         }
                         TypeErr("Expected expression of type '" + m_input[0].value +"'");
                     }   
-                    if(getType(2) == TokenType::Semicolon) {
+                    if(getType(2) == Semicolon) {
                         if(isConst){ SyntaxErr("Variables marked as constant should be initialized"); }
                         addVarDecl(varName, t);
                         continue;
@@ -54,66 +56,66 @@ public:
                 SyntaxErr("Expected identifier");
             }
 
-            if(t == TokenType::Module) {
-                if(getType(1) == TokenType::Identifier) {
+            if(t == Module) {
+                if(getType(1) == Identifier) {
 
                     continue;
                 }
                 SyntaxErr("Expected identifier");
             }
 
-            if(t == TokenType::Exit) {
+            if(t == Exit) {
                 ++m_index;
                 Expr e = parseExpr(getExprValids());
                 if(e.type == INT) {
-                    if(getType(0) != TokenType::Semicolon) { SyntaxErr("Expected semicolon"); }
+                    if(getType(0) != Semicolon) { SyntaxErr("Expected semicolon"); }
                     addStmt({exit_stmt, {e.value}, NULL});
                     continue;
                 }
                 TypeErr("Expected expression of type 'int'");
             }
 
-            if(t == TokenType::Return) {
+            if(t == Return) {
                 ++m_index;
-                if(getType(0) == TokenType::Semicolon) {
+                if(getType(0) == Semicolon) {
                     // addreturn(null);
                     continue;
                 }
                 Expr e = parseExpr(getExprValids());
-                if(getType(0) != TokenType::Semicolon) { SyntaxErr("Expected semicolon"); }
+                if(getType(0) != Semicolon) { SyntaxErr("Expected semicolon"); }
                 // addreturn(expr);
                 continue;
             }
 
-            if(t == TokenType::Identifier) {
+            if(t == Identifier) {
                 
                 string varName = m_input[m_index].value; 
 
-                if(getType(1) == TokenType::Equal) {
+                if(getType(1) == Equal) {
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
-                    if(getType(0) != TokenType::Semicolon) { SyntaxErr("Expected semicolon"); }
+                    if(getType(0) != Semicolon) { SyntaxErr("Expected semicolon"); }
                     addVarModification(varName, e.value);
                     continue;
                 }
 
-                if(getType(1) == TokenType::PlusEq || getType(1) == TokenType::MinusEq) {
+                if(getType(1) == PlusEq || getType(1) == MinusEq) {
                     TokenType symbol = getType(1);
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
-                    if(getType(0) != TokenType::Semicolon) { SyntaxErr("Expected semicolon"); }
-                    addStmt( Statement{ (symbol == TokenType::PlusEq ? inc_stmt : dec_stmt) , {varName, e.value}, NULL });
+                    if(getType(0) != Semicolon) { SyntaxErr("Expected semicolon"); }
+                    addStmt( Statement{ (symbol == PlusEq ? inc_stmt : dec_stmt) , {varName, e.value}, NULL });
                     continue;
                 }
             }
 
-            if(t == TokenType::Function) {
-                if(getType(1) == TokenType::Identifier) {
-                    if(getType(2) == TokenType::LeftPar) {
+            if(t == Function) {
+                if(getType(1) == Identifier) {
+                    if(getType(2) == LeftPar) {
                         m_index += 3;
                         getArgs(false);
-                        if(getType(0) == TokenType::RigthPar) {
-                            if(getType(1) == TokenType::LeftCurlyBracket){
+                        if(getType(0) == RigthPar) {
+                            if(getType(1) == LeftCurlyBracket){
                                 addIdent();
                                 buffer = {func_stmt, {}};
                                 continue;
@@ -127,15 +129,15 @@ public:
                 SyntaxErr("Expected identifier");
             }
 
-            if(t == TokenType::If) {
-                if(getType(1) == TokenType::LeftPar) {
+            if(t == If) {
+                if(getType(1) == LeftPar) {
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
                     if(e.type != BOOL) {
                         TypeErr("Conditions must be of type 'bool'");
                     }
-                    if(getType(0) == TokenType::RigthPar) {
-                        if(getType(1) == TokenType::LeftCurlyBracket){
+                    if(getType(0) == RigthPar) {
+                        if(getType(1) == LeftCurlyBracket){
                             addIdent();
                             buffer = {if_stmt, {e.value}};
                             continue;
@@ -147,13 +149,13 @@ public:
                 SyntaxErr("Expected identifier");
             }
 
-            if(t == TokenType::While) {
-                if(getType(1) == TokenType::LeftPar) {
+            if(t == While) {
+                if(getType(1) == LeftPar) {
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
                     if(e.type != BOOL) { TypeErr("Conditions must be of type 'bool'"); }
-                    if(getType(0) == TokenType::RigthPar) {
-                        if(getType(1) == TokenType::LeftCurlyBracket){
+                    if(getType(0) == RigthPar) {
+                        if(getType(1) == LeftCurlyBracket){
                             addIdent();
                             buffer = {while_stmt, {e.value}};
                             continue;
@@ -170,9 +172,9 @@ public:
         return output[0];
     }
 private:
-    size_t m_index { 0 };
-    int m_ident { 0 };
-    size_t m_line { 0 };
+    unsigned long m_index { 0 };
+    unsigned char m_ident { 0 };
+    unsigned long m_line { 0 };
     deque<StatementList> output;
     TokenList m_input;
 
@@ -180,7 +182,7 @@ private:
         if(m_index + n >= m_input.size()){
             return TokenType::Error;
         }
-        if(m_input.get(m_index + n).type == TokenType::Endl){
+        if(m_input.get(m_index + n).type == Endl){
             ++m_line;
         }
         return m_input.get(m_index + n).type;
@@ -197,7 +199,7 @@ private:
 
     void getArgs(bool mandatory) {
         if(isDataType(getType(0))){
-            if(getType(1) == TokenType::Identifier) {
+            if(getType(1) == Identifier) {
                 m_index += 2;
             }
             else {
@@ -209,25 +211,25 @@ private:
             errorHandler.err({syntax_err, m_line, "Expected function argument after comma"});
             return;
         }
-        if(getType(0) == TokenType::Comma) {
+        if(getType(0) == Comma) {
             ++m_index;
             getArgs(true);
         }
 
     }
 
-    bool matchTypes(exprType e, TokenType t);
+    bool matchTypes(ExprType e, TokenType t);
     Expr parseExpr(TokenList list); // in parseexpr.cpp
 
     string typeToString(TokenType t){
         const unordered_map<TokenType, string> types = {
-            {TokenType::Integer, "int"},
-            {TokenType::String, "string"},
-            {TokenType::Bool, "byte"},
-            {TokenType::Byte, "byte"},
-            {TokenType::Char, "byte"},
-            {TokenType::Uint, "int"},
-            {TokenType::Number, "long"}
+            {Integer, "int"},
+            {String, "string"},
+            {Bool, "byte"},
+            {Byte, "byte"},
+            {Char, "byte"},
+            {Uint, "int"},
+            {Number, "long"}
         };
         auto it = types.find(t);
         return it->second;

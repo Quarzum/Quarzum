@@ -10,24 +10,80 @@ using namespace std;
 #include <deque>
 
 namespace Quarzum {
-    typedef unsigned char byte;
-    typedef unsigned long size;
+    #define NC "\e[0m"
+    #define RED "\e[31m"
+    enum ErrorType{
+        file_not_found_err  = 0,
+        lexical_err = 1,
+        syntax_err = 2,
+        type_err = 3
+    };
+
+    struct Error{
+        ErrorType type;
+        size_t line;
+        string description;
+    };
+
+    // Stores a limited amount of Errors. At the end of a process, it should be executed by the run() method.
+    class ErrorHandler{
+    public:
+        void run(){
+            if(errors.size() > 0){
+                for (size_t i = 0; i < errors.size(); i++)
+                {
+                    if(errors.at(i).line > 0){
+                        cout << errToStr(errors.at(i).type).str() << " - " << errors.at(i).description << " at line " << errors.at(i).line << ".\n"; 
+                    }
+                    else{
+                        cout << errToStr(errors.at(i).type).str() << " - " << errors.at(i).description << '\n'; 
+                    }
+                }
+                
+                exit(EXIT_FAILURE);
+            }
+        }
+        void err(Error e){
+            errors.push_back(e);
+        }
+        void errCritical(Error e){
+            errors.push_back(e);
+            run();
+        }
+    private:
+        vector<Error> errors;
+
+        stringstream errToStr(ErrorType e){
+            stringstream s;
+            switch (e)
+            {
+            case file_not_found_err:
+                s << RED << "FileNotFoundError" << NC;
+                break;
+            case syntax_err:
+                s << RED << "SyntaxError" << NC;
+                break;
+            case type_err:
+                s << RED << "TypeError" << NC;
+                break;
+            default:
+                break;
+            }
+            return s;
+        }
+    };
+    class QComponent{
+    public:
+        // An integrated ErrorHandler inside every QComponent.
+        ErrorHandler errorHandler;    
+    };
 }
-
-#include "lexer/lex.hpp"
-
-#include "other/errorhandler.cpp"
-#include "qcomponent.hpp"
-
+#include "lex/lex.cpp"
+#include "other/symboltable.cpp"
+#include "parse/parse.cpp"
+#include "parse/expr.cpp"
 #include "source/source.hpp"
 #include "other/utils.cpp"
-#include "lexer/lexer.cpp"
-
-#include "other/symboltable.cpp"
-#include "parser/node.hpp"
-#include "parser/statement.hpp"
-#include "parser/parser.cpp"
-#include "parser/parseexpr.cpp"
 #include "assembler/assembler.cpp"
 #include "other/cli.cpp"
 
