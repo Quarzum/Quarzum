@@ -10,8 +10,4 @@ void createFile(const string name,const string content = "") {
     out << content;
     out.close();
 }
-// The string array that contains all the Quarzum's keywords and symbols.
-
-
-const string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
 

@@ -17,7 +17,6 @@ public:
         for(; m_index < m_input.size(); ++m_index){
 
             TokenType t = m_input[m_index].type;
-
             if(t == Endl){ ++m_line; continue; }
 
             if(t == RightCurlyBracket) {
@@ -174,7 +173,7 @@ public:
 private:
     unsigned long m_index { 0 };
     unsigned char m_ident { 0 };
-    unsigned long m_line { 0 };
+    unsigned long m_line { 1 };
     deque<StatementList> output;
     TokenList m_input;
 

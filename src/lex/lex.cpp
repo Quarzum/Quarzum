@@ -113,7 +113,7 @@ private:
     }
 
     void consume(unsigned char n = 1) {
-        for (size_t i = 0; i < n; i++)
+        for (unsigned char i = 0; i < n; i++)
         {
             m_buff += get(0);
             ++m_index;
