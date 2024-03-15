@@ -1,7 +1,6 @@
 #pragma once
-#include "assembler.hpp"
-using namespace Quarzum::Asm;
 #include "../Quarzum.h"
+
 class Assembler {
 
 public:
@@ -35,7 +34,7 @@ public:
                 m_output << "\tsub $" << s.args[1] << ", " << s.args[0] << "\n";
             }
             if(s.type == exit_stmt) {
-                m_output << Asm::exit(s.args[0]);
+                m_output << "\tmov $60, %rax\n\tmov $" << s.args[0] << ", %rdi\n\tsyscall\n";
             }
         }
 
@@ -48,6 +47,6 @@ private:
     stringstream m_output;
 
     void exitProgram(){
-        m_output << Asm::exit("0");
+        m_output << "\n\tmov $60, %rax\n\tmov $0, %rdi\n\tsyscall\n";
     }
 };

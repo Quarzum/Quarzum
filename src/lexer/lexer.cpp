@@ -1,8 +1,6 @@
 #pragma once
-#include "lex.hpp"
-using namespace Quarzum;
-using namespace Quarzum::Lex;
-class Tokenizer: public QComponent {
+#include "../Quarzum.h"
+class Tokenizer: public QComponent{
 
 public:
 
@@ -13,9 +11,11 @@ public:
         for(m_index = 0; m_index < m_input.length(); ++m_index){
 
             if(get(0) == '\'' && isascii(get(1)) && get(2) == '\''){
-                consume(3);
+                consume();
+                consume();
+                consume();
                 --m_index;
-                addToken(CharLit);
+                addToken(TokenType::CharLit);
                 continue;
             }
 
@@ -26,7 +26,7 @@ public:
                 while(get(0) != '"');
                 consume();
                 --m_index;
-                addToken(StringLit);
+                addToken(TokenType::StringLit);
                 continue;
             }
 
@@ -39,12 +39,12 @@ public:
             if(get(0) == '/' && get(1) == '/') {
                 while(get(0) != '\n') ++m_index;
                 ++m_line;
-                addToken(Endl);
+                addToken(TokenType::Endl);
                 continue;
             }
             if(get(0) == '\n'){
                 ++m_line;
-                addToken(Endl);
+                addToken(TokenType::Endl);
                 continue;
             }
             if(isspace(get(0))) continue;
@@ -67,7 +67,7 @@ public:
                     if(get(0) == '.') { isFloat = true; }
                     consume();
                 }
-                addToken(isFloat? NumberLit : IntegerLit );
+                addToken(isFloat? TokenType::NumberLit : TokenType::IntegerLit );
                 --m_index;
                 continue;
             }
@@ -108,16 +108,13 @@ private:
     }
 
     void addToken(const TokenType t) {
-        m_output.addToken(Token{type: t, value: m_buff});
+        m_output.addToken({type: t, value: m_buff});
         m_buff.clear();
     }
 
-    void consume(unsigned char n = 1) {
-        for (unsigned char i = 0; i < n; i++)
-        {
-            m_buff += get(0);
-            ++m_index;
-        }
+    void consume() {
+        m_buff += get(0);
+        ++m_index;
     }
 
 };
