@@ -4,7 +4,7 @@ class Tokenizer: public QComponent{
 
 public:
 
-    Tokenizer(const string input) : m_input(input) {}
+    Tokenizer(const string& input) : m_input(input) {}
 
     TokenList tokenize() { 
 

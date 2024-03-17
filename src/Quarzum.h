@@ -14,7 +14,7 @@ using namespace std;
 #include "lexer/token.hpp"
 #include "lexer/tokenlist.hpp"
 
-#include "source/source.hpp"
+#include "source/source.c"
 #include "other/utils.cpp"
 #include "lexer/lexer.cpp"
 
