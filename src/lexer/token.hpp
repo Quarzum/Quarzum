@@ -1,6 +1,6 @@
 #pragma once
 
-enum class TokenType : u_int8_t {
+enum TokenType {
     Identifier = 0,
     Integer,
     Number,

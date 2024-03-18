@@ -9,7 +9,7 @@ int main()
 
     //Assembler a(p.parse());
 
-    //createFile("out.asm", a.assemble());
+    createFile("out.asm", ".data");
     //system("as -o out.o out.asm");
     //system("ld -o out out.o");
     //system("./out");

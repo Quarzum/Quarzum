@@ -1,5 +1,8 @@
 #pragma once
 using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <string>
 #include <iostream>
 #include <vector>
@@ -14,7 +17,8 @@ using namespace std;
 #include "lexer/token.hpp"
 #include "lexer/tokenlist.hpp"
 
-#include "source/source.c"
+#include "err.c"
+#include "io.c"
 #include "other/utils.cpp"
 #include "lexer/lexer.cpp"
 
