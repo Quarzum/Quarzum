@@ -1,7 +1,107 @@
-#pragma once
-#include "../Quarzum.h"
+#ifndef TOKEN_H
+#define TOKEN_H
 
-// The string array that contains all the Quarzum's keywords and symbols.
+enum TokenType {
+    Identifier = 0,
+    Integer,
+    Number,
+    String,
+    Char,
+    Bool,
+    Var,
+    Uint,
+    Byte,
+    Return,
+    Function,
+    Enum,
+    Const,
+    Exit,
+    Out,
+    Input,
+    Struct,
+    If,
+    Else,
+    For,
+    Foreach,
+    In,
+    While,
+    Do,
+    Switch,
+    Case,
+    Break,
+    Continue,
+    Repeat,
+    Try,
+    Catch,
+    Finally,
+    Throw,
+    Module,
+    Import,
+    Class,
+    Public,
+    Private,
+    Short,
+    Long,
+    Constuctor,
+    Destructor,
+    Async,
+    Await,
+    True,
+    False,
+    Equal,
+    LeftPar,
+    RigthPar,
+    BitwiseNot,
+    BitwiseAnd,
+    BitwiseOr,
+    BitwiseXor,
+    Not,
+    And,
+    Or,
+    Point,
+    Comma,
+    Plus,
+    Minus,
+    Product,
+    Division,
+    Power,
+    Remainder,
+    IntDivision,
+    LeftCurlyBracket,
+    RightCurlyBracket,
+    LeftSquareBracket,
+    RightSquareBracket,
+    Semicolon,
+    Greater,
+    Lower,
+    IsEqual,
+    GreaterEq,
+    LowerEq,
+    PlusEq,
+    PlusUnary,
+    MinusEq,
+    MinusUnary,
+    ProdEq,
+    DivEq,
+    RemEq,
+    PowEq,
+    IntDivEq,
+    NotEqual,
+    Endl,
+    IntegerLit,
+    NumberLit,
+    StringLit,
+    CharLit,
+    ByteLit,
+    UintLit,
+    Error
+};
+
+struct Token {
+    TokenType type;
+    std::string value;
+};
+
 const unordered_map<string, TokenType> prefabs = {
     {   "bool",    Bool              },
     {   "byte",    Byte              },
@@ -89,8 +189,6 @@ const unordered_map<string, TokenType> prefabs = {
     {   "!=",      NotEqual          }
 };
 
-const string STDWRITE = "\tmovq $1, %rax\n\tmovq $1, %rdi\n";
-
 bool isSymbol(const char c){
     string s;
     s = c;
@@ -105,3 +203,5 @@ u_int8_t search(const string buff){
     }
     return 0;
 }
+
+#endif

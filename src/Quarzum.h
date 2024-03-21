@@ -14,13 +14,14 @@ using namespace std;
 
 #include "other/errorhandler.cpp"
 #include "qcomponent.hpp"
-#include "lexer/token.hpp"
+#include "./include/token.h"
+//#include "lexer/token.hpp"
 #include "lexer/tokenlist.hpp"
 
 #include "err.c"
 #include "io.c"
-#include "other/utils.cpp"
-#include "lexer/lexer.cpp"
+
+#include "lex.c"
 
 #include "other/symboltable.cpp"
 #include "parser/node.hpp"

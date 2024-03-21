@@ -8,7 +8,7 @@ const char* getContent(const char* path) {
     int len = strlen(path);
 
     if(path[len - 3] != '.' || path[len - 2] != 'q' || path[len - 1] != 'z'){
-        err("File format must be \".qz\"");
+        warn("File format must be \".qz\"");
     }
     FILE *file;
     char* content;

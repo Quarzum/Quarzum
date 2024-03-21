@@ -2,9 +2,8 @@
 
 int main()
 {   
+    vector<Token> list = tokenize(getContent("../code.qz"));
 
-    Tokenizer t(getContent("../code.qz"));
-    TokenList tok = t.tokenize();
     //Parser p(tok);
 
     //Assembler a(p.parse());
