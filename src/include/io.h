@@ -1,3 +1,6 @@
+#ifndef IO_H
+#define IO_H
+
 /**
  * Reads a file and returns its content. If the file does not
  * exist or the file extension is not ".qz", the program stops.
@@ -47,3 +50,5 @@ void createFile(const char* name, const char* content = "") {
     fprintf(file, content);
     fclose(file);
 }
+
+#endif

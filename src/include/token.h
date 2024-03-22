@@ -99,7 +99,7 @@ enum TokenType {
 
 struct Token {
     TokenType type;
-    std::string value;
+    string value;
 };
 
 const unordered_map<string, TokenType> prefabs = {

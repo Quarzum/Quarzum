@@ -46,7 +46,7 @@ Expr Parser::parseExpr(TokenList list) {
     if(list.size() == 1) {
         if(list[0].type == TokenType::Identifier) {
             if(symbolTable.find(list[0].value).name == ""){
-                errorHandler.err({syntax_err,m_line,"Undefined reference to " + list[0].value});
+                
                 return nullExpr;
             }
             return Expr {
@@ -118,7 +118,7 @@ Expr Parser::parseExpr(TokenList list) {
             divideNodes;
             typeBlend = sumTypes(a.type, b.type);
             if(typeBlend == NULLEXPR) {
-                errorHandler.err({syntax_err, m_line, "Invalid operands for '"+list[i].value+"' operation"});
+                
                 return nullExpr;
             }
             return Expr{
@@ -139,6 +139,6 @@ Expr Parser::parseExpr(TokenList list) {
         }
     }
     
-    errorHandler.err({syntax_err, m_line, "Invalid expression"});
+   
     return nullExpr;   
 }

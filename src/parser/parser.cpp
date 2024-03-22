@@ -1,8 +1,6 @@
 #pragma once
 #include "../Quarzum.h"
-#define SyntaxErr(c) errorHandler.err({syntax_err, m_line, c}); continue;
-#define TypeErr(c) errorHandler.err({type_err, m_line, c}); continue;
-class Parser: public QComponent{
+class Parser {
     
 public:
 
@@ -19,7 +17,8 @@ public:
 
             if(t == TokenType::RightCurlyBracket) {
                 if(m_ident == 0) {
-                    SyntaxErr("Unexpected '}'");
+                    // err
+                    continue;
                 }
                 buffer.children = output[m_ident].getAll();
                 output.pop_back();
@@ -37,20 +36,28 @@ public:
                         
                         Expr e = parseExpr(getExprValids());
                         if(matchTypes(e.type, t)){
-                            if(getType(0) != TokenType::Semicolon) { SyntaxErr("Expected semicolon"); }
+                            if(getType(0) != TokenType::Semicolon) { 
+                                // err
+                                continue;
+                             }
                             addVarDecl(varName, t, e.value, isConst);
                             continue;
                         }
-                        TypeErr("Expected expression of type '" + m_input[0].value +"'");
+                        // err
+                        continue;
                     }   
                     if(getType(2) == TokenType::Semicolon) {
-                        if(isConst){ SyntaxErr("Variables marked as constant should be initialized"); }
+                        if(isConst){
+                            // err
+                            continue; }
                         addVarDecl(varName, t);
                         continue;
                     } 
-                    SyntaxErr("Expected semicolon or assignment");
+                    // err
+                    continue;
                 }
-                SyntaxErr("Expected identifier");
+                // err
+                continue;
             }
 
             if(t == TokenType::Module) {
@@ -58,18 +65,23 @@ public:
 
                     continue;
                 }
-                SyntaxErr("Expected identifier");
+                // err
+                continue;
             }
 
             if(t == TokenType::Exit) {
                 ++m_index;
                 Expr e = parseExpr(getExprValids());
                 if(e.type == INT) {
-                    if(getType(0) != TokenType::Semicolon) { SyntaxErr("Expected semicolon"); }
+                    if(getType(0) != TokenType::Semicolon) {
+                        // err
+                        continue; 
+                        }
                     addStmt({exit_stmt, {e.value}, NULL});
                     continue;
                 }
-                TypeErr("Expected expression of type 'int'");
+                // err
+                continue;
             }
 
             if(t == TokenType::Return) {
@@ -79,7 +91,9 @@ public:
                     continue;
                 }
                 Expr e = parseExpr(getExprValids());
-                if(getType(0) != TokenType::Semicolon) { SyntaxErr("Expected semicolon"); }
+                if(getType(0) != TokenType::Semicolon) { 
+                    // err
+                    continue; }
                 // addreturn(expr);
                 continue;
             }
@@ -91,7 +105,9 @@ public:
                 if(getType(1) == TokenType::Equal) {
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
-                    if(getType(0) != TokenType::Semicolon) { SyntaxErr("Expected semicolon"); }
+                    if(getType(0) != TokenType::Semicolon) { 
+                        // err
+                        continue; }
                     addVarModification(varName, e.value);
                     continue;
                 }
@@ -100,7 +116,8 @@ public:
                     TokenType symbol = getType(1);
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
-                    if(getType(0) != TokenType::Semicolon) { SyntaxErr("Expected semicolon"); }
+                    if(getType(0) != TokenType::Semicolon) {// err
+                    continue; }
                     addStmt( Statement{ (symbol == TokenType::PlusEq ? inc_stmt : dec_stmt) , {varName, e.value}, NULL });
                     continue;
                 }
@@ -117,13 +134,17 @@ public:
                                 buffer = {func_stmt, {}};
                                 continue;
                             }
-                            SyntaxErr("Expected function body");
+                            // err
+                    continue;
                         }
-                        SyntaxErr("Expected ')'");
+                        // err
+                    continue;
                     }
-                    SyntaxErr("Expected function arguments");
+                    // err
+                    continue;
                 }
-                SyntaxErr("Expected identifier");
+                // err
+                    continue;
             }
 
             if(t == TokenType::If) {
@@ -131,7 +152,8 @@ public:
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
                     if(e.type != BOOL) {
-                        TypeErr("Conditions must be of type 'bool'");
+                       // err
+                    continue;
                     }
                     if(getType(0) == TokenType::RigthPar) {
                         if(getType(1) == TokenType::LeftCurlyBracket){
@@ -139,33 +161,39 @@ public:
                             buffer = {if_stmt, {e.value}};
                             continue;
                         }
-                        SyntaxErr("Expected 'if' body");
+                        // err
+                    continue;
                     }
-                    SyntaxErr("Expected ')'");
+                   // err
+                    continue;
                 }
-                SyntaxErr("Expected identifier");
+               // err
+                    continue;
             }
 
             if(t == TokenType::While) {
                 if(getType(1) == TokenType::LeftPar) {
                     m_index += 2;
                     Expr e = parseExpr(getExprValids());
-                    if(e.type != BOOL) { TypeErr("Conditions must be of type 'bool'"); }
+                    if(e.type != BOOL) { // err
+                    continue; }
                     if(getType(0) == TokenType::RigthPar) {
                         if(getType(1) == TokenType::LeftCurlyBracket){
                             addIdent();
                             buffer = {while_stmt, {e.value}};
                             continue;
                         }
-                        SyntaxErr("Expected 'while' body");
+                       // err
+                    continue;
                     }
-                    SyntaxErr("Expected ')'");
+                    // err
+                    continue;
                 }
-                SyntaxErr("Expected identifier");
+               // err
+                    continue;
             }
 
         }
-        errorHandler.run();
         return output[0];
     }
 private:
@@ -202,12 +230,14 @@ private:
                 m_index += 2;
             }
             else {
-                errorHandler.err({syntax_err, m_line, "Expected identifier"});
+               // err
+                  
                 return;
             }
         }
         else if(mandatory) {
-            errorHandler.err({syntax_err, m_line, "Expected function argument after comma"});
+            // err
+                   
             return;
         }
         if(getType(0) == TokenType::Comma) {
@@ -242,7 +272,7 @@ private:
 
     void addVarDecl(string name, TokenType type, string value = "0", bool isConst = false){
         if(symbolTable.find(name).name != ""){
-            errorHandler.err({syntax_err, m_line, "Variable '" + name + "' already exists"});
+            
             return;
         }
         symbolTable.add({name, typeToString(type), value, isConst});
@@ -250,7 +280,7 @@ private:
 
     void addVarModification(string name, string value) {
         if(symbolTable.find(name).name == ""){
-            errorHandler.err({syntax_err, m_line, "Undefined reference to '" + name +"'"});
+            
             return;
         }
         output[m_ident].add({redec_stmt, {name, value}, NULL});

@@ -7,19 +7,16 @@ using namespace std;
 #include <iostream>
 #include <vector>
 #include <any>
-#include <fstream> 
 #include <sstream>
 #include <unordered_map>
 #include <deque>
 
-#include "other/errorhandler.cpp"
-#include "qcomponent.hpp"
-#include "./include/token.h"
-//#include "lexer/token.hpp"
-#include "lexer/tokenlist.hpp"
 
-#include "err.c"
-#include "io.c"
+#include "./include/token.h"
+#include "./include/err.h"
+#include "./include/io.h"
+
+#include "lexer/tokenlist.hpp"
 
 #include "lex.c"
 

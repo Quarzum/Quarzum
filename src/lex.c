@@ -95,9 +95,9 @@ vector<Token> tokenize(const char* input) {
         }
 
         if(isSymbol(input[i])) {
-            buffer += input[i++];
-            if(isSymbol(input[i])) {
-                buffer += input[i];
+            buffer += input[i];
+            if(isSymbol(input[i + 1])) {
+                buffer += input[++i];
                 if(search(buffer) > 0) {
                     output.push_back(Token {
                         .type = TokenType(search(buffer)),
@@ -108,7 +108,6 @@ vector<Token> tokenize(const char* input) {
                 }
                 buffer.pop_back();
             }
-            --i;
             string s;
             s += input[i];
             printf("SYMBOL (%s) ", buffer.c_str());

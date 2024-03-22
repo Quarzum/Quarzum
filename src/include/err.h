@@ -1,3 +1,6 @@
+#ifndef ERR_H
+#define ERR_H
+
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
 #define KYEL  "\x1B[33m"
@@ -20,3 +23,5 @@ void err(const char* description) {
 void warn(const char* description) {
     fprintf(stderr,KYEL "Warning" KNRM ": %s\n", description);
 }
+
+#endif
